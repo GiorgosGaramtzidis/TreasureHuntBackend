@@ -4,6 +4,7 @@ package com.example.demo.api;
 import com.example.demo.dao.QuestionsRepository;
 import com.example.demo.model.Questions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,10 +17,21 @@ public class QuestionsController {
     @Autowired
     public QuestionsRepository questionsRepository;
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "/find")
     public List<Questions> getAllQuestions(){
 
         return questionsRepository.findAll();
+    }
+
+    @GetMapping(value = "/find/{id}")
+    public Optional<Questions> getQuestionById(@PathVariable int id){
+
+        return questionsRepository.findById(id);
+    }
+
+    @GetMapping(value = "/find/points/{points}")
+    public List<Questions> getQuestionWithPoints(@PathVariable int points) {
+        return questionsRepository.getQuestionWithPoints(points);
     }
 
     @PostMapping(value = "/addQuestion")
@@ -28,9 +40,10 @@ public class QuestionsController {
         return "Added question";
     }
 
-    public List<Questions> getAllQuestions1(){
-
-        return questionsRepository.findAll();
+    @DeleteMapping(value = "/delete")
+    public String deleteAllQuestion(){
+        questionsRepository.deleteAll();
+        return "Delete All Questions";
     }
 }
 
