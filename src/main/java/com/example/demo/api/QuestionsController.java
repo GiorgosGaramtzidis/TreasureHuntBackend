@@ -45,5 +45,11 @@ public class QuestionsController {
         questionsRepository.deleteAll();
         return "Delete All Questions";
     }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public String deleteQuestion(@PathVariable int id){
+        questionsRepository.deleteById(id);
+        return "Question was deleted";
+    }
 }
 
