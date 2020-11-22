@@ -11,15 +11,17 @@ public class Users {
     public int userId;
     public String name;
     public int score;
+    public String password;
 
     public Users(){
         super();
     }
 
-    public Users(int userId, String name, int score) {
+    public Users(int userId, String name, int score,String password) {
         this.userId = userId;
         this.name = name;
         this.score = score;
+        this.password= password;
     }
 
     @Override
@@ -28,6 +30,7 @@ public class Users {
                 "userId=" + userId +
                 ", name='" + name + '\'' +
                 ", score=" + score +
+                ", password='" + password + '\'' +
                 '}';
     }
 }
