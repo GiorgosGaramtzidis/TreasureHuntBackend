@@ -16,7 +16,8 @@ public class LocationController {
 
     @GetMapping(value = "/find")
     public List<Locations> getAllLocations(){
-        return locationsRepository.findAll();
+        return
+                locationsRepository.findAll();
     }
 
     @PostMapping(value = "/add")
