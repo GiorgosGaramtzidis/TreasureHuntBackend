@@ -1,7 +1,6 @@
 package com.example.demo.api;
 
 import com.example.demo.dao.UsersRepository;
-import com.example.demo.model.Questions;
 import com.example.demo.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
