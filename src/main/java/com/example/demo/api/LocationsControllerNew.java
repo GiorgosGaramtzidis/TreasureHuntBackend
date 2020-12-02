@@ -33,8 +33,8 @@ public class LocationsControllerNew {
     }
 
     @PutMapping("/updateLocation")
-    ResponseEntity updateLocation(@RequestParam String id,@RequestBody LocationsNew locationsNew) throws Exception{
-        locationsNew.setLocationId(id);
+    ResponseEntity updateLocation(@RequestParam ObjectId id,@RequestBody LocationsNew locationsNew) throws Exception{
+        locationsNew.setId(id);
         return new ResponseEntity<>(locationServices.updateLocation(id,locationsNew),HttpStatus.OK);
 
     }

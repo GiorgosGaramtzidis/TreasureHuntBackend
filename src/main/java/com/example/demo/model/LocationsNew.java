@@ -4,6 +4,7 @@ package com.example.demo.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,11 +17,11 @@ import javax.validation.constraints.NotNull;
 @Setter
 
 
-@Document(collection = "Locations")
+@Document(collection = "DemoLocations")
 public class LocationsNew {
 
     @Id
-    private String LocationId;
+    private ObjectId Id;
 
     @NotNull(message = "coordinate v is mandatory")
     private @NonNull float v;

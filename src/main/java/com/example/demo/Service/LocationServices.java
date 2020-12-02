@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LocationServices implements LocationsRegistration<String,LocationsNew> {
+public class LocationServices implements LocationsRegistration<ObjectId,LocationsNew> {
 
     @Autowired
     LocationsRepositoryNew locationsRepositoryNew;
 
     @Override
     public LocationsNew registerNewLocation(LocationsNew locationsNew) throws Exception {
-        if (locationsRepositoryNew.existsById(locationsNew.getLocationId())) {
+        if (locationsRepositoryNew.existsById(locationsNew.getId())) {
             throw new Exception("Id dosen't exist" + locationsNew.getId());
         }else {
             return locationsRepositoryNew.save(locationsNew);
@@ -36,8 +36,8 @@ public class LocationServices implements LocationsRegistration<String,LocationsN
     }
 
     @Override
-    public LocationsNew updateLocation(String id ,LocationsNew location) throws Exception {
-        if (locationsRepositoryNew.existsById(location.getLocationId())) {
+    public LocationsNew updateLocation(ObjectId id ,LocationsNew location) throws Exception {
+        if (locationsRepositoryNew.existsById(location.getId())) {
             throw new Exception("Id dosen't exist" + location.getId());
         }else {
             return locationsRepositoryNew.save(location);
@@ -45,7 +45,7 @@ public class LocationServices implements LocationsRegistration<String,LocationsN
     }
 
     @Override
-    public void deleteLocation(String LocationId) throws Exception {
+    public void deleteLocation(ObjectId LocationId) throws Exception {
         if (LocationId == null) {
             throw new Exception("user id is null");
         } else {
