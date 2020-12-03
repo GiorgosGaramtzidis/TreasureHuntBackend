@@ -38,4 +38,14 @@ public class LocationsControllerNew {
         return new ResponseEntity<>(locationServices.updateLocation(id,locationsNew),HttpStatus.OK);
 
     }
+
+    @GetMapping("/Start")
+    ResponseEntity StartLocation() throws Exception {
+        return new ResponseEntity<>(locationServices.getStartLocation(),HttpStatus.OK);
+    }
+
+    @GetMapping("/Next")
+    ResponseEntity nextLocation(@RequestBody LocationsNew locationsNew) throws Exception {
+        return new ResponseEntity<>(locationServices.getNextLocation(locationsNew),HttpStatus.OK);
+    }
 }

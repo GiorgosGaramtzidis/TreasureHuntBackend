@@ -24,12 +24,15 @@ public class LocationsNew {
     private ObjectId Id;
 
     @NotNull(message = "coordinate v is mandatory")
-    private @NonNull float v;
+    private @NonNull double v;
 
     @NotNull(message = "coordinate v1 is mandatory")
-    private @NonNull float v1;
+    private @NonNull double v1;
 
     private String title;
 
     private Question questions;
+
+    @NotNull
+    private String nextLocation;
 }

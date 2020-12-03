@@ -22,7 +22,6 @@ public class LocationServices implements LocationsRegistration<ObjectId,Location
         }else {
             return locationsRepositoryNew.save(locationsNew);
         }
-
     }
 
 
@@ -47,10 +46,26 @@ public class LocationServices implements LocationsRegistration<ObjectId,Location
     @Override
     public void deleteLocation(ObjectId LocationId) throws Exception {
         if (LocationId == null) {
-            throw new Exception("user id is null");
+            throw new Exception("location id is null");
         } else {
             locationsRepositoryNew.deleteById(LocationId);
         }
 
+    }
+
+    public LocationsNew getStartLocation() throws Exception {
+        if (locationsRepositoryNew.getStartLocation()==null){
+            throw new Exception("Start Locations doesn't exist");
+        }
+        return locationsRepositoryNew.getStartLocation();
+    }
+
+
+    public LocationsNew getNextLocation(LocationsNew locationsNew) throws Exception{
+        String title = locationsNew.getNextLocation();
+        if (locationsRepositoryNew.getNextLocation(title) == null){
+            throw new Exception("The location you ask does not exist");
+        }
+        return locationsRepositoryNew.getNextLocation(title);
     }
 }
