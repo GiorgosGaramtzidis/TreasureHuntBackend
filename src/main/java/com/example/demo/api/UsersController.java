@@ -28,12 +28,13 @@ public class UsersController {
         resp.put("user", user);
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
-    @GetMapping("/getUser" )
-    public ResponseEntity getUser(@RequestParam("id") String id) throws Exception {
-        Optional<Users> user = usersService.getUser(id);
+
+    @GetMapping(path="/getUser" )
+    public ResponseEntity getUser(@RequestParam("userName") String userName) throws Exception {
+        Optional<Users> user = usersService.getUser(userName);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-    @GetMapping("/getAllUser" )
+    @GetMapping(path="/getAllUser" )
     public ResponseEntity getAllUser() throws Exception {
         List<Users> users = usersService.getAllUser();
         return new ResponseEntity<>(users, HttpStatus.OK);
@@ -46,11 +47,11 @@ public class UsersController {
         resp.put("user", user);
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
-    @DeleteMapping("/deleteUser")
-    public ResponseEntity deleteUser(@RequestParam("id") String id) throws Exception {
-        usersService.deleteUser(id);
+    @DeleteMapping(value = "/deleteUser")
+    public ResponseEntity deleteUser(@RequestBody Users user) throws Exception {
         HashMap<String,String> resp = new HashMap<>();
-        resp.put("message", "User is successfully deleted");
+        usersService.deleteUser(user);
+        resp.put("Message","User succesfully deleted");
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 }
