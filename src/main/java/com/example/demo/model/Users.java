@@ -13,12 +13,13 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "Users")
+@Document(collection = "UsersNew")
 public class Users {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private ObjectId id;
+    @Id //@GeneratedValue(strategy = GenerationType.AUTO)
+    private String id;
     private String userName;
     private int score;
     private String password;
+    private int userLives;
 }
