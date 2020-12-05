@@ -25,27 +25,28 @@ public class UsersService implements IUserService<UUID, Users> {
     }
 
     @Override
-    public Optional<Users> getUser(String userId) throws Exception {
-        return usersRepository.findById(userId);
+    public Optional<Users> getUser(String userName) throws Exception {
+        if(usersRepository.existsByUserName(userName))
+            usersRepository.findByUserName(userName);
+        throw new Exception("User with this userName : "+userName+" doesn't exists");
     }
 
     public List<Users> getAllUser() throws Exception {
-        List<Users> users = usersRepository.findAll();
-        return users;
+        return usersRepository.findAll();
     }
 
     @Override
     public Users updateUser(Users user) throws Exception {
-        user = usersRepository.save(user);
-        return user;
+        if (usersRepository.existsByUserName(user.getUserName()))
+                throw new Exception("UserName used");
+        else
+            return usersRepository.save(user);
     }
 
     @Override
-    public void deleteUser(String userId) throws Exception {
-        if (userId == null) {
-            throw new Exception("user id is null");
-        } else {
-            usersRepository.deleteById(userId);
-        }
+    public void deleteUser(Users user) throws Exception {
+        usersRepository.delete(user);
     }
+
+
 }
