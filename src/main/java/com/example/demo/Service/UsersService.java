@@ -1,40 +1,42 @@
 package com.example.demo.Service;
 
-import com.example.demo.Registration.UsersRegistration;
-import com.example.demo.dao.UsersRepositoryNew;
-import com.example.demo.model.UsersNew;
+import com.example.demo.Registration.IUserService;
+import com.example.demo.dao.UsersRepository;
+import com.example.demo.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
-public class UsersService implements UsersRegistration<String, UsersNew> {
+public class UsersService implements IUserService<UUID, Users> {
     @Autowired
-    private UsersRepositoryNew usersRepositoryNew;
+    private UsersRepository usersRepository;
+
     @Override
-    public Boolean registerUser(UsersNew user) throws Exception {
-        if (usersRepositoryNew.existsById(user.getId())) {
-            return false;
+    public Boolean registerUser(Users user) throws Exception {
+        if (usersRepository.existsByUserName(user.getUserName())) {
+            throw new Exception("User with this username : "+user.getUserName()+" already exists");
         }
-        usersRepositoryNew.save(user);
+        usersRepository.save(user);
         return true;
     }
 
     @Override
-    public Optional<UsersNew> getUser(String userId) throws Exception {
-        return usersRepositoryNew.findById(userId);
+    public Optional<Users> getUser(String userId) throws Exception {
+        return usersRepository.findById(userId);
     }
 
-    public List<UsersNew> getAllUser() throws Exception {
-        List<UsersNew> users = usersRepositoryNew.findAll();
+    public List<Users> getAllUser() throws Exception {
+        List<Users> users = usersRepository.findAll();
         return users;
     }
 
     @Override
-    public UsersNew updateUser(UsersNew user) throws Exception {
-        user = usersRepositoryNew.save(user);
+    public Users updateUser(Users user) throws Exception {
+        user = usersRepository.save(user);
         return user;
     }
 
@@ -43,7 +45,7 @@ public class UsersService implements UsersRegistration<String, UsersNew> {
         if (userId == null) {
             throw new Exception("user id is null");
         } else {
-            usersRepositoryNew.deleteById(userId);
+            usersRepository.deleteById(userId);
         }
     }
 }
