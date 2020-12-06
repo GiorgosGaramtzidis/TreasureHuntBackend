@@ -1,36 +1,25 @@
 package com.example.demo.model;
 
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Document(collection = "Users")
 public class Users {
 
     @Id
-    public int userId;
-    public String name;
-    public int score;
-    public String password;
+    private String id;
+    private String userName;
+    private int score;
+    private String password;
+    private int userLives;
 
-    public Users(){
-        super();
-    }
 
-    public Users(int userId, String name, int score,String password) {
-        this.userId = userId;
-        this.name = name;
-        this.score = score;
-        this.password= password;
-    }
-
-    @Override
-    public String toString() {
-        return "Users{" +
-                "userId=" + userId +
-                ", name='" + name + '\'' +
-                ", score=" + score +
-                ", password='" + password + '\'' +
-                '}';
-    }
 }
