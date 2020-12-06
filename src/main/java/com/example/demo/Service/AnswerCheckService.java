@@ -16,17 +16,17 @@ public class AnswerCheckService implements AnswerCheck<String> {
     @Autowired
     private LocationsRepositoryNew locationsRepositoryNew;
     @Override
-    public Integer AnswerCheck(String usersAnswer,String locationTitle) throws Exception {
+    public Boolean AnswerCheck(String usersAnswer,String locationTitle) throws Exception {
 
         if(locationsRepositoryNew.existsByTitle(locationTitle)) {
             List<LocationsNew> locationsNews = locationsRepositoryNew.findAll().stream().filter(locationsNew -> locationsNew.getTitle().equals(locationTitle))
                     .collect(Collectors.toList());
             if (usersAnswer.equals(locationsNews.get(0).getQuestions().getAnswer())) {
                 System.out.println("correct title correct answer yikes");
-                return 1;
+                return true;
             } else {
                 System.out.println("wrong answer correct title");
-                return 0;
+                return false;
             }
         }
         System.out.println("failed wrong Location title");
