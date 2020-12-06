@@ -3,8 +3,6 @@ import com.example.demo.model.Users;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 public interface UsersRepository extends MongoRepository<Users,String>
 {
@@ -13,6 +11,8 @@ public interface UsersRepository extends MongoRepository<Users,String>
 
     Boolean existsByUserName(String userName);
 
-    Optional<Users> findByUserName(String userName);
+    void findByUserName(String userName);
+
+
 
 }
