@@ -19,11 +19,11 @@ public class LoseConditionController {
     private LoseConditionService loseConditionService;
     private Users user;
 
-    @PutMapping(path = "/updateUserLives")
-    public ResponseEntity updateUserLives(@RequestBody Users user)
+    @PatchMapping(path = "/updateUserLives")
+    public ResponseEntity updateUserLives(@RequestParam String userName)
             throws Exception {
 
-        return new ResponseEntity<>(loseConditionService.loseCondition(user), HttpStatus.OK);}
+        return new ResponseEntity<>(loseConditionService.loseCondition(userName), HttpStatus.OK);}
 
     @GetMapping(value = "/getUserLives")
     public Integer getUserLives(@PathVariable int userLives) {
