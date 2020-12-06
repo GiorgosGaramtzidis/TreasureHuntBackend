@@ -12,6 +12,6 @@ public interface IUserService<ID, USER> {
 
     int addScore(String userName,int score) throws Exception;
 
-
+    int getUserScore(String userName) throws Exception;
 
 }

@@ -59,4 +59,9 @@ public class UsersController {
         return new ResponseEntity<>(usersService.addScore(userName,score),HttpStatus.OK);
     }
 
+    @GetMapping("/getUserScore")
+    public ResponseEntity getUserScore(@RequestParam ("userName") String userName) throws Exception {
+        return new ResponseEntity<>(usersService.getUserScore(userName),HttpStatus.OK);
+    }
+
 }

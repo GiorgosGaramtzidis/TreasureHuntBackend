@@ -20,22 +20,21 @@ public class AnswerCheckControllerTest {
         String usersAnswer = "Κουτάλι";
         String locationTitle = "Start";
         Integer i=1;
-        assertEquals(new ResponseEntity<>(1, HttpStatus.OK),answerCheckController.AnswerCheck(usersAnswer,locationTitle));
+        assertEquals(new ResponseEntity<>(true, HttpStatus.OK),answerCheckController.AnswerCheck(usersAnswer,locationTitle));
     }
 
     @Test
     public void answerCheckIfLocationTitleExistsAndAnswerIsNotCorrect() throws Exception{
         String usersAnswer = "dfsgdah";
         String locationTitle = "Start";
-        Integer i=0;
-        assertEquals(new ResponseEntity<>(0, HttpStatus.OK),answerCheckController.AnswerCheck(usersAnswer,locationTitle));
+        assertEquals(new ResponseEntity<>(false, HttpStatus.OK),answerCheckController.AnswerCheck(usersAnswer,locationTitle));
     }
     @Test(expected = Exception.class)
     public void answerCheckIfLocationTitleDoesntExistsAndAnswerIsNotCorrectOrCorrect() throws Exception{
         String usersAnswer = "dfsgdah";
         String locationTitle = "GFDSGFD";
         Integer i=0;
-        assertEquals(new ResponseEntity<>(0, HttpStatus.OK),answerCheckController.AnswerCheck(usersAnswer,locationTitle));
+        assertEquals(new ResponseEntity<>(false, HttpStatus.OK),answerCheckController.AnswerCheck(usersAnswer,locationTitle));
     }
 
 }

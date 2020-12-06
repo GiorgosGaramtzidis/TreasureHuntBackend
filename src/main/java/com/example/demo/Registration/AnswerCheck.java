@@ -4,5 +4,5 @@ import com.example.demo.model.LocationsNew;
 
 public interface AnswerCheck <STRING>{
 
-    Integer AnswerCheck (STRING usersAnswer,STRING locationTitle) throws Exception;
+    Boolean AnswerCheck (STRING usersAnswer,STRING locationTitle) throws Exception;
 }

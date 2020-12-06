@@ -64,5 +64,15 @@ public class UsersService implements IUserService<UUID, Users> {
         throw new Exception("User does not exist");
     }
 
+    @Override
+    public int getUserScore(String userName) throws Exception{
+        if(usersRepository.existsByUserName(userName)) {
+            List<Users> user =usersRepository.findAll().stream().filter(users ->users.getUserName().equals(userName))
+                    .collect(Collectors.toList());
+            return user.get(0).getScore();
+        }
+        throw new Exception("User does not exist");
+    }
+
 
 }
