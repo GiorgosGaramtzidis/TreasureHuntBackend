@@ -53,4 +53,10 @@ public class UsersController {
         resp.put("message", "User is successfully deleted");
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
+
+    @PatchMapping("/addScore")
+    public ResponseEntity addScore(@RequestParam String userName,@RequestParam("score") int score) throws Exception {
+        return new ResponseEntity<>(usersService.addScore(userName,score),HttpStatus.OK);
+    }
+
 }

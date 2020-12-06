@@ -10,4 +10,8 @@ public interface IUserService<ID, USER> {
 
     void deleteUser(String userName) throws Exception;
 
+    int addScore(String userName,int score) throws Exception;
+
+
+
 }

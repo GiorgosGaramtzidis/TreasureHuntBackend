@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UsersService implements IUserService<UUID, Users> {
+
     @Autowired
     private UsersRepository usersRepository;
 
@@ -48,4 +50,19 @@ public class UsersService implements IUserService<UUID, Users> {
             usersRepository.deleteById(userId);
         }
     }
+
+
+    @Override
+    public int addScore(String userName,int score) throws Exception{
+        if(usersRepository.existsByUserName(userName)) {
+            List<Users> user =usersRepository.findAll().stream().filter(users ->users.getUserName().equals(userName))
+                    .collect(Collectors.toList());
+            user.get(0).setScore(user.get(0).getScore()+score);
+            usersRepository.save(user.get(0));
+            return 1;
+        }
+        throw new Exception("User does not exist");
+    }
+
+
 }
