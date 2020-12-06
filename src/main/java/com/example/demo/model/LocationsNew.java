@@ -35,4 +35,16 @@ public class LocationsNew {
 
     @NotNull
     private String nextLocation;
+
+    @Override
+    public String toString() {
+        return "LocationsNew{" +
+                "Id=" + Id +
+                ", v=" + v +
+                ", v1=" + v1 +
+                ", title='" + title + '\'' +
+                ", questions=" + questions +
+                ", nextLocation='" + nextLocation + '\'' +
+                '}';
+    }
 }
