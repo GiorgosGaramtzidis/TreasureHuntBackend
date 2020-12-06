@@ -39,14 +39,13 @@ public class UsersService implements IUserService<UUID, Users> {
     public Users updateUser(Users user) throws Exception {
         if (usersRepository.existsByUserName(user.getUserName()))
                 throw new Exception("UserName used");
-        else
-            return usersRepository.save(user);
+        else {
+            usersRepository.save(user);
+        }
+        return user;
     }
-
     @Override
     public void deleteUser(Users user) throws Exception {
         usersRepository.delete(user);
     }
-
-
 }
