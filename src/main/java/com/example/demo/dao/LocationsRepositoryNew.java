@@ -15,4 +15,8 @@ public interface LocationsRepositoryNew  extends MongoRepository<LocationsNew, O
 
     @Query("{ 'title' : ?0 }")
     LocationsNew getNextLocation(String title);
+
+
+    Boolean existsByTitle(String locationTitle);
+
 }

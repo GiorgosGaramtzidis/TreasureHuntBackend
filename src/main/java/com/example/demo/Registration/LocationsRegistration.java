@@ -1,9 +1,7 @@
 package com.example.demo.Registration;
 
-import com.example.demo.model.Locations;
 import com.example.demo.model.LocationsNew;
 
-import javax.xml.stream.Location;
 import java.util.List;
 
 public interface LocationsRegistration<ID,LOCATION> {
