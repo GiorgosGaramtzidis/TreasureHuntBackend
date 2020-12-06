@@ -15,7 +15,7 @@ import javax.persistence.GeneratedValue;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "Users")
-public class Users {
+public class User {
 
     @Id
     @GeneratedValue(generator = "UUID")

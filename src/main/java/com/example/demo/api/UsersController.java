@@ -1,7 +1,7 @@
 package com.example.demo.api;
 
 import com.example.demo.Service.UsersService;
-import com.example.demo.model.Users;
+import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class UsersController {
     private UsersService usersService;
 
     @PostMapping(path = "/registerUser")
-    public ResponseEntity registerUser(@RequestBody Users user) throws Exception {
+    public ResponseEntity registerUser(@RequestBody User user) throws Exception {
         HashMap<String, Object> resp = new HashMap<>();
         if (usersService.registerUser(user)){
             resp.put("user", user);
@@ -31,16 +31,16 @@ public class UsersController {
 
     @GetMapping(path="/getUser" )
     public ResponseEntity getUser(@RequestParam("userName") String userName) throws Exception {
-        Optional<Users> user = usersService.getUser(userName);
+        Optional<User> user = usersService.getUser(userName);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-    @GetMapping(path="/getAllUser" )
-    public ResponseEntity getAllUser() throws Exception {
-        List<Users> users = usersService.getAllUser();
+    @GetMapping(path="/getAllUsers" )
+    public ResponseEntity getAllUsers() throws Exception {
+        List<User> users = usersService.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
     @PutMapping(path = "/updateUser")
-    public ResponseEntity updateUser(@RequestParam("id") String id, @RequestBody Users user)
+    public ResponseEntity updateUser(@RequestParam("id") String id, @RequestBody User user)
             throws Exception {
         HashMap<String, Object> resp = new HashMap<>();
         usersService.updateUser(user);
@@ -48,10 +48,16 @@ public class UsersController {
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
     @DeleteMapping(value = "/deleteUser")
-    public ResponseEntity deleteUser(@RequestBody Users user) throws Exception {
+    public ResponseEntity deleteUser(@RequestBody User user) throws Exception {
         HashMap<String,String> resp = new HashMap<>();
         usersService.deleteUser(user);
         resp.put("Message","User succesfully deleted");
         return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
+    @PostMapping("/loginUser")
+    public ResponseEntity loginUser(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception{
+        String str = usersService.loginConfirmation(username,password);
+        return new ResponseEntity(str,HttpStatus.OK);
     }
 }
