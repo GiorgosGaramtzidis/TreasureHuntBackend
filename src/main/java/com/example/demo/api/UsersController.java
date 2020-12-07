@@ -1,7 +1,7 @@
 package com.example.demo.api;
 
 import com.example.demo.Service.UsersService;
-import com.example.demo.model.Users;
+import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class UsersController {
     private UsersService usersService;
 
     @PostMapping(path = "/registerUser")
-    public ResponseEntity registerUser(@RequestBody Users user) throws Exception {
+    public ResponseEntity registerUser(@RequestBody User user) throws Exception {
         HashMap<String, Object> resp = new HashMap<>();
         if (usersService.registerUser(user)){
             resp.put("user", user);
@@ -30,16 +30,16 @@ public class UsersController {
     }
     @GetMapping("/getUser" )
     public ResponseEntity getUser(@RequestParam("id") String id) throws Exception {
-        Optional<Users> user = usersService.getUser(id);
+        Optional<User> user = usersService.getUser(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
     @GetMapping("/getAllUser" )
     public ResponseEntity getAllUser() throws Exception {
-        List<Users> users = usersService.getAllUser();
+        List<User> users = usersService.getAllUser();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
     @PutMapping(path = "/updateUser")
-    public ResponseEntity updateUser(@RequestParam("id") String id, @RequestBody Users user)
+    public ResponseEntity updateUser(@RequestParam("id") String id, @RequestBody User user)
             throws Exception {
         HashMap<String, Object> resp = new HashMap<>();
         usersService.updateUser(user);

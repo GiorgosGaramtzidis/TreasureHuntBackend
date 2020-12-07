@@ -2,7 +2,7 @@ package com.example.demo.Service;
 
 import com.example.demo.Registration.IUserService;
 import com.example.demo.dao.UsersRepository;
-import com.example.demo.model.Users;
+import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +12,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class UsersService implements IUserService<UUID, Users> {
+public class UsersService implements IUserService<UUID, User> {
 
     @Autowired
     private UsersRepository usersRepository;
 
     @Override
-    public Boolean registerUser(Users user) throws Exception {
+    public Boolean registerUser(User user) throws Exception {
         if (usersRepository.existsByUserName(user.getUserName())) {
             throw new Exception("User with this username : "+user.getUserName()+" already exists");
         }
@@ -27,17 +27,17 @@ public class UsersService implements IUserService<UUID, Users> {
     }
 
     @Override
-    public Optional<Users> getUser(String userId) throws Exception {
+    public Optional<User> getUser(String userId) throws Exception {
         return usersRepository.findById(userId);
     }
 
-    public List<Users> getAllUser() throws Exception {
-        List<Users> users = usersRepository.findAll();
-        return users;
+    public List<User> getAllUser() throws Exception {
+        List<User> user = usersRepository.findAll();
+        return user;
     }
 
     @Override
-    public Users updateUser(Users user) throws Exception {
+    public User updateUser(User user) throws Exception {
         user = usersRepository.save(user);
         return user;
     }
@@ -55,7 +55,9 @@ public class UsersService implements IUserService<UUID, Users> {
     @Override
     public int addScore(String userName,int score) throws Exception{
         if(usersRepository.existsByUserName(userName)) {
-            List<Users> user =usersRepository.findAll().stream().filter(users ->users.getUserName().equals(userName))
+            List<User> user = usersRepository.findAll().stream()
+                    .filter(user1 -> user1.getUserName()
+                            .equals(userName))
                     .collect(Collectors.toList());
             user.get(0).setScore(user.get(0).getScore()+score);
             usersRepository.save(user.get(0));
@@ -67,8 +69,10 @@ public class UsersService implements IUserService<UUID, Users> {
     @Override
     public int getUserScore(String userName) throws Exception{
         if(usersRepository.existsByUserName(userName)) {
-            List<Users> user =usersRepository.findAll().stream().filter(users ->users.getUserName().equals(userName))
-                    .collect(Collectors.toList());
+              List<User> user = usersRepository.findAll().stream()
+                      .filter(user1 -> user1.getUserName()
+                              .equals(userName))
+                      .collect(Collectors.toList());
             return user.get(0).getScore();
         }
         throw new Exception("User does not exist");

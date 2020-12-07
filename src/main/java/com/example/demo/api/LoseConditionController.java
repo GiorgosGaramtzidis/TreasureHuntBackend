@@ -2,14 +2,11 @@ package com.example.demo.api;
 
 import com.example.demo.Service.LoseConditionService;
 
-import com.example.demo.model.Users;
-
+import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 
 
 @RequestMapping(value = "/LoseCondition")
@@ -17,7 +14,7 @@ import java.util.HashMap;
 public class LoseConditionController {
     @Autowired
     private LoseConditionService loseConditionService;
-    private Users user;
+    private User user;
 
     @PatchMapping(path = "/updateUserLives")
     public ResponseEntity updateUserLives(@RequestParam String userName)
