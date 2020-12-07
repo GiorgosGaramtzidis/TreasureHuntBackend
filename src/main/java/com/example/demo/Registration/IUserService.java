@@ -14,4 +14,6 @@ public interface IUserService<ID, USER> {
 
     int getUserScore(String userName) throws Exception;
 
+    Boolean loginConfirmation(String username, String password) throws  Exception;
+
 }
