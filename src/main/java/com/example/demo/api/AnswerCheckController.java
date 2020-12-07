@@ -1,8 +1,6 @@
 package com.example.demo.api;
 
 import com.example.demo.Service.AnswerCheckService;
-import com.example.demo.model.AnswerString;
-import com.example.demo.model.LocationsNew;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -3,7 +3,7 @@ package com.example.demo.Service;
 import com.example.demo.Registration.AnswerCheck;
 import com.example.demo.api.AnswerCheckController;
 import com.example.demo.dao.LocationsRepositoryNew;
-import com.example.demo.model.AnswerString;
+
 import com.example.demo.model.LocationsNew;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

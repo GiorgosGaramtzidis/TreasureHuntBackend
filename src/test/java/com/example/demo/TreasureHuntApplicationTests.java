@@ -2,7 +2,7 @@ package com.example.demo;
 
 import com.example.demo.Service.LocationServices;
 import com.example.demo.api.LocationsControllerNew;
-import com.example.demo.dao.LocationRepository;
+
 import com.example.demo.model.LocationsNew;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
