@@ -13,7 +13,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-
 public class Question {
 
 
@@ -22,5 +21,13 @@ public class Question {
     public int points;
 
 
+    @Override
+    public String toString() {
+        return "Question{" +
+                "question='" + question + '\'' +
+                ", answer='" + answer + '\'' +
+                ", points=" + points +
+                '}';
+    }
 }
 

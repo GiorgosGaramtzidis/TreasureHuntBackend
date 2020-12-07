@@ -1,49 +1,63 @@
 package com.example.demo.Service;
 
-import com.example.demo.Registration.UsersRegistration;
-import com.example.demo.dao.UsersRepositoryNew;
-import com.example.demo.model.UsersNew;
+import com.example.demo.Registration.IUserService;
+import com.example.demo.dao.UsersRepository;
+import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
-public class UsersService implements UsersRegistration<String, UsersNew> {
+public class UsersService implements IUserService<UUID, User> {
     @Autowired
-    private UsersRepositoryNew usersRepositoryNew;
+    private UsersRepository usersRepository;
+
     @Override
-    public Boolean registerUser(UsersNew user) throws Exception {
-        if (usersRepositoryNew.existsById(user.getId())) {
-            return false;
+    public Boolean registerUser(User user) throws Exception {
+        if (usersRepository.existsByUserName(user.getUserName())) {
+            throw new Exception("User with this username : "+user.getUserName()+" already exists");
         }
-        usersRepositoryNew.save(user);
+        usersRepository.save(user);
         return true;
     }
 
     @Override
-    public Optional<UsersNew> getUser(String userId) throws Exception {
-        return usersRepositoryNew.findById(userId);
+    public Optional<User> getUser(String userName) throws Exception {
+        if(usersRepository.existsByUserName(userName))
+            usersRepository.findByUserName(userName);
+        throw new Exception("User with this userName : "+userName+" doesn't exists");
     }
 
-    public List<UsersNew> getAllUser() throws Exception {
-        List<UsersNew> users = usersRepositoryNew.findAll();
-        return users;
+    public List<User> getAllUsers() throws Exception {
+        return usersRepository.findAll();
     }
 
     @Override
-    public UsersNew updateUser(UsersNew user) throws Exception {
-        user = usersRepositoryNew.save(user);
+    public User updateUser(User user) throws Exception {
+        if (usersRepository.existsByUserName(user.getUserName()))
+                throw new Exception("UserName used");
+        else {
+            usersRepository.save(user);
+        }
         return user;
     }
+    @Override
+    public void deleteUser(User user) throws Exception {
+        usersRepository.delete(user);
+    }
 
     @Override
-    public void deleteUser(String userId) throws Exception {
-        if (userId == null) {
-            throw new Exception("user id is null");
-        } else {
-            usersRepositoryNew.deleteById(userId);
+    public  Boolean loginConfirmation(String username, String password) throws Exception{
+        if (usersRepository.existsByUserName(username)) {
+            String UsersPassword =usersRepository.findUserByUserName(username).getPassword();
+            if (UsersPassword.equals(password))
+                return true;
+            return false;
         }
+        //return "User not found";
+        throw new Exception("UserName doesn't Exists");
     }
 }
