@@ -59,13 +59,4 @@ public class LocationServices implements LocationsRegistration<ObjectId,Location
         }
         return locationsRepositoryNew.getStartLocation();
     }
-
-
-    public LocationsNew getNextLocation(LocationsNew locationsNew) throws Exception{
-        String title = locationsNew.getNextLocation();
-        if (locationsRepositoryNew.getNextLocation(title) == null){
-            throw new Exception("The location you ask does not exist");
-        }
-        return locationsRepositoryNew.getNextLocation(title);
-    }
 }

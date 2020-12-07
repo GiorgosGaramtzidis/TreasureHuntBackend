@@ -20,5 +20,13 @@ public class Question {
     public int points;
 
 
+    @Override
+    public String toString() {
+        return "Question{" +
+                "question='" + question + '\'' +
+                ", answer='" + answer + '\'' +
+                ", points=" + points +
+                '}';
+    }
 }
 
