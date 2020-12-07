@@ -2,21 +2,23 @@ package com.example.demo.Service;
 
 import com.example.demo.Registration.IUserService;
 import com.example.demo.dao.UsersRepository;
-import com.example.demo.model.User;
+import com.example.demo.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
-public class UsersService implements IUserService<UUID, User> {
+public class UsersService implements IUserService<UUID, Users> {
+
     @Autowired
     private UsersRepository usersRepository;
 
     @Override
-    public Boolean registerUser(User user) throws Exception {
+    public Boolean registerUser(Users user) throws Exception {
         if (usersRepository.existsByUserName(user.getUserName())) {
             throw new Exception("User with this username : "+user.getUserName()+" already exists");
         }
@@ -25,39 +27,52 @@ public class UsersService implements IUserService<UUID, User> {
     }
 
     @Override
-    public Optional<User> getUser(String userName) throws Exception {
-        if(usersRepository.existsByUserName(userName))
-            usersRepository.findByUserName(userName);
-        throw new Exception("User with this userName : "+userName+" doesn't exists");
+    public Optional<Users> getUser(String userId) throws Exception {
+        return usersRepository.findById(userId);
     }
 
-    public List<User> getAllUsers() throws Exception {
-        return usersRepository.findAll();
+    public List<Users> getAllUser() throws Exception {
+        List<Users> users = usersRepository.findAll();
+        return users;
     }
 
     @Override
-    public User updateUser(User user) throws Exception {
-        if (usersRepository.existsByUserName(user.getUserName()))
-                throw new Exception("UserName used");
-        else {
-            usersRepository.save(user);
-        }
+    public Users updateUser(Users user) throws Exception {
+        user = usersRepository.save(user);
         return user;
     }
+
     @Override
-    public void deleteUser(User user) throws Exception {
-        usersRepository.delete(user);
+    public void deleteUser(String userId) throws Exception {
+        if (userId == null) {
+            throw new Exception("user id is null");
+        } else {
+            usersRepository.deleteById(userId);
+        }
+    }
+
+
+    @Override
+    public int addScore(String userName,int score) throws Exception{
+        if(usersRepository.existsByUserName(userName)) {
+            List<Users> user =usersRepository.findAll().stream().filter(users ->users.getUserName().equals(userName))
+                    .collect(Collectors.toList());
+            user.get(0).setScore(user.get(0).getScore()+score);
+            usersRepository.save(user.get(0));
+            return 1;
+        }
+        throw new Exception("User does not exist");
     }
 
     @Override
-    public  Boolean loginConfirmation(String username, String password) throws Exception{
-        if (usersRepository.existsByUserName(username)) {
-            String UsersPassword =usersRepository.findUserByUserName(username).getPassword();
-            if (UsersPassword.equals(password))
-                return true;
-            return false;
+    public int getUserScore(String userName) throws Exception{
+        if(usersRepository.existsByUserName(userName)) {
+            List<Users> user =usersRepository.findAll().stream().filter(users ->users.getUserName().equals(userName))
+                    .collect(Collectors.toList());
+            return user.get(0).getScore();
         }
-        //return "User not found";
-        throw new Exception("UserName doesn't Exists");
+        throw new Exception("User does not exist");
     }
+
+
 }
