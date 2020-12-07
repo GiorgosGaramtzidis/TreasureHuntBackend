@@ -50,13 +50,14 @@ public class UsersService implements IUserService<UUID, User> {
     }
 
     @Override
-    public  String loginConfirmation(String username, String password) throws Exception{
+    public  Boolean loginConfirmation(String username, String password) throws Exception{
         if (usersRepository.existsByUserName(username)) {
             String UsersPassword =usersRepository.findUserByUserName(username).getPassword();
             if (UsersPassword.equals(password))
-                return "Equals";
-            return "Not equals";
+                return true;
+            return false;
         }
-        throw new Exception("UserName doesnt Exists");
+        //return "User not found";
+        throw new Exception("UserName doesn't Exists");
     }
 }
