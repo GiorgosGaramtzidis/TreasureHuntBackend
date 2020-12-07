@@ -27,4 +27,5 @@ public class User {
     private String userName;
     private int score;
     private String password;
+    private int userLives;
 }
