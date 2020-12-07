@@ -10,5 +10,5 @@ public interface IUserService<ID, USER> {
 
     void deleteUser(USER user) throws Exception;
 
-    String loginConfirmation(String username, String password) throws  Exception;
+    Boolean loginConfirmation(String username, String password) throws  Exception;
 }

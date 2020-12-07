@@ -55,9 +55,8 @@ public class UsersController {
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
-    @PostMapping("/loginUser")
+    @GetMapping(path = "/loginUser")
     public ResponseEntity loginUser(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception{
-        String str = usersService.loginConfirmation(username,password);
-        return new ResponseEntity(str,HttpStatus.OK);
+        return new ResponseEntity<>(usersService.loginConfirmation(username,password),HttpStatus.OK);
     }
 }
