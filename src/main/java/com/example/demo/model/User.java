@@ -28,4 +28,12 @@ public class User {
     private int score;
     private String password;
     private int userLives;
+
+    public User(String userName , String passWord)
+    {
+        this.userName = userName;
+        this.password = passWord;
+        this.score = 0;
+        this.userLives = 0;
+    }
 }

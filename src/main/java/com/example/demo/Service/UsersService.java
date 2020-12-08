@@ -18,15 +18,6 @@ public class UsersService implements IUserService<UUID, User> {
     private UsersRepository usersRepository;
 
     @Override
-    public Boolean registerUser(User user) throws Exception {
-        if (usersRepository.existsByUserName(user.getUserName())) {
-            throw new Exception("User with this username : "+user.getUserName()+" already exists");
-        }
-        usersRepository.save(user);
-        return true;
-    }
-
-    @Override
     public Optional<User> getUser(String userId) throws Exception {
         return usersRepository.findById(userId);
     }
