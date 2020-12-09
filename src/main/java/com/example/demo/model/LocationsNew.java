@@ -36,6 +36,14 @@ public class LocationsNew {
     @NotNull
     private String nextLocation;
 
+    public LocationsNew(String title , String nextLocation) {
+        this.title = title;
+        this.nextLocation = nextLocation;
+    }
+
+
+
+
     @Override
     public String toString() {
         return "LocationsNew{" +
