@@ -69,4 +69,9 @@ public class UsersController {
         return new ResponseEntity<>(usersService.loginConfirmation(username,password),HttpStatus.OK);
     }
 
+    @PatchMapping("/restart")
+    public ResponseEntity restartScoreAndLives() throws Exception {
+        usersService.restartScoreAndLives();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

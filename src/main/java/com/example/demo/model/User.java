@@ -14,7 +14,7 @@ import javax.persistence.GeneratedValue;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "Users")
+@Document(collection = "DemoState")
 public class User {
 
     @Id
