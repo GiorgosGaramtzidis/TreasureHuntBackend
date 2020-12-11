@@ -14,7 +14,7 @@ import javax.persistence.GeneratedValue;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "Users")
+@Document(collection = "DemoState")
 public class User {
 
     @Id
@@ -28,4 +28,5 @@ public class User {
     private int score;
     private String password;
     private int userLives;
+    private UserState userState = UserState.PLAYING;
 }
