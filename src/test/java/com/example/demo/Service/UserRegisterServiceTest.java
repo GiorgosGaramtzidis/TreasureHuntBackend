@@ -1,6 +1,7 @@
 package com.example.demo.Service;
 
 import com.example.demo.dao.UsersRepository;
+import com.example.demo.model.RegistrationAnswer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -24,32 +25,31 @@ public class UserRegisterServiceTest {
     @Test
     public void testWhenUserNameAlreadyExists(){
         Mockito.when(usersRepository.existsByUserName("George")).thenReturn(true);
-        String str =userRegisterService.registerUser("George","123456@4Fk");
-        assertEquals("User with this userName already exists",str);
+        RegistrationAnswer registrationAnswer  =userRegisterService.registerUser("George","123456@4Fk");
+        assertEquals("User with this userName already exists",registrationAnswer.getAnswer());
     }
-
     @Test
     public void testWhenPassWordDoesntFollowTheRules() {
         Mockito.when(usersRepository.existsByUserName("George")).thenReturn(false);
-        String str =userRegisterService.registerUser("George123","12345");
-        assertEquals("Invalid inputs",str);
+        RegistrationAnswer registrationAnswer =userRegisterService.registerUser("George123","12345");
+        assertEquals("Invalid inputs",registrationAnswer.getAnswer());
     }
     @Test
     public void testWhenUserNameDoesntFollowTheRules() {
         Mockito.when(usersRepository.existsByUserName("George")).thenReturn(false);
-        String str =userRegisterService.registerUser("George","12345Gf1@");
-        assertEquals("Invalid inputs",str);
+        RegistrationAnswer registrationAnswer =userRegisterService.registerUser("George","12345Gf1@");
+        assertEquals("Invalid inputs",registrationAnswer.getAnswer());
     }
     @Test
     public  void testWhenUserNameAndPassWordFollowTheRules() {
         Mockito.when(usersRepository.existsByUserName("George")).thenReturn(false);
-        String str =userRegisterService.registerUser("George123FK","12345Gf1@");
-        assertEquals("User register successfully",str);
+        RegistrationAnswer registrationAnswer=userRegisterService.registerUser("George123FK","12345Gf1@");
+        assertEquals("User register successfully",registrationAnswer.getAnswer());
     }
     @Test(expected = Exception.class)
     public void testWhenUserNameIsNull(){
-        String str =userRegisterService.registerUser(null,"12345Gf1@");
-        assertEquals("User with this userName already exists",str);
+        RegistrationAnswer registrationAnswer =userRegisterService.registerUser(null,"12345Gf1@");
+        assertEquals("User with this userName already exists",registrationAnswer.getAnswer());
     }
 
 

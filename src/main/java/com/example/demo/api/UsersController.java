@@ -55,5 +55,4 @@ public class UsersController {
     public ResponseEntity loginUser(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception{
         return new ResponseEntity<>(usersService.loginConfirmation(username,password),HttpStatus.OK);
     }
-
 }

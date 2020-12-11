@@ -1,7 +1,9 @@
 package com.example.demo.Registration;
 
+import com.example.demo.model.RegistrationAnswer;
+
 public interface IUserRegisterService
 {
-   String registerUser(String userName , String passWord);
+   RegistrationAnswer registerUser(String userName , String passWord);
 
 }
