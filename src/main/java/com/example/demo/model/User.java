@@ -28,5 +28,6 @@ public class User {
     private int score;
     private String password;
     private int userLives;
-    private UserState userState;// = UserState.PLAYING;
+    private UserState userState = UserState.PLAYING;
+
 }

@@ -3,6 +3,7 @@ package com.example.demo.Service;
 import com.example.demo.Registration.IUserService;
 import com.example.demo.dao.UsersRepository;
 import com.example.demo.model.User;
+import com.example.demo.model.UserState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +67,33 @@ public class UsersService implements IUserService<UUID, User> {
         throw new Exception("User does not exist");
     }
 
+    @Override
+    public Boolean setUserState(String userName) throws Exception {
+        if (usersRepository.existsByUserName(userName)) {
+            List<User> user = usersRepository.findAll().stream()
+                    .filter(user1 -> user1.getUserName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
+            if ((user.get(0).getScore()) >= 5) {
+                user.get(0).setUserState(UserState.WIN);
+                usersRepository.save(user.get(0));
+            }
+            return true;
+        }
+        throw new Exception("User does not exist");
+    }
+
+    @Override
+    public String checkUserState() {
+        List<User> user = usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserState()
+                        .equals(UserState.WIN))
+                .collect(Collectors.toList());
+        if ((user.size())==0)
+            return UserState.PLAYING.toString();
+        else
+            return user.get(0).getUserName();
+    }
     @Override
     public int getUserScore(String userName) throws Exception{
         if(usersRepository.existsByUserName(userName)) {

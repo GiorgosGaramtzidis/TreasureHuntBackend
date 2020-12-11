@@ -1,4 +1,6 @@
 package com.example.demo.Registration;
+import com.example.demo.model.User;
+
 import java.util.Optional;
 public interface IUserService<ID, USER> {
 
@@ -16,4 +18,7 @@ public interface IUserService<ID, USER> {
 
     Boolean loginConfirmation(String username, String password) throws  Exception;
 
+    Boolean setUserState(String userName) throws  Exception;
+
+    String checkUserState();
 }

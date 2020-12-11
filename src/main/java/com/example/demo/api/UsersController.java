@@ -55,8 +55,18 @@ public class UsersController {
     }
 
     @PatchMapping("/addScore")
-    public ResponseEntity addScore(@RequestParam String userName,@RequestParam("score") int score) throws Exception {
+    public ResponseEntity addScore(@RequestParam ("userName") String  userName,@RequestParam("score") int score) throws Exception {
         return new ResponseEntity<>(usersService.addScore(userName,score),HttpStatus.OK);
+    }
+
+    @PatchMapping("/setUserState")
+    public ResponseEntity setUserState(@RequestParam ("userName") String userName) throws Exception {
+        return new ResponseEntity<>(usersService.setUserState(userName),HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/checkUserState")
+    public ResponseEntity checkUserState() throws Exception{
+        return new ResponseEntity<>(usersService.checkUserState(),HttpStatus.OK);
     }
 
     @GetMapping("/getUserScore")

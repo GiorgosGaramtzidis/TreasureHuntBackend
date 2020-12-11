@@ -15,9 +15,6 @@ public class AnswerCheckController {
 
     @GetMapping("/AnswerCheck")
     ResponseEntity AnswerCheck(@RequestParam ("usersAnswer")String usersAnswer ,@RequestParam("locationTitle") String locationTitle) throws Exception{
-        //String userAnswer = answerString.getUserAnswer();
-     //   String question = answerString.getQuestion();
-
         return new ResponseEntity<>(answerCheckService.AnswerCheck(usersAnswer,locationTitle), HttpStatus.OK);
     }
 }
