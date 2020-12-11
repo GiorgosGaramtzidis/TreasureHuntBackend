@@ -79,13 +79,14 @@ public class UsersService implements IUserService<UUID, User> {
     }
 
     @Override
-    public void restartScoreAndLives() throws Exception{
+    public Boolean restartScoreAndLives() throws Exception{
         List<User> userList = usersRepository.findAll();
         for(int i=0;i<userList.size();i++){
             userList.get(i).setScore(0);
             userList.get(i).setUserLives(5);
             usersRepository.save(userList.get(i));
         }
+        return true;
     }
 
     @Override
