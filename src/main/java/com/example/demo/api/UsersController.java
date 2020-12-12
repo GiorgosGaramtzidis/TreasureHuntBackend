@@ -80,7 +80,7 @@ public class UsersController {
     }
 
     @PatchMapping("/restart")
-    public ResponseEntity restartScoreAndLives() throws Exception {
-        return new ResponseEntity<>(usersService.restartScoreAndLives(),HttpStatus.OK);
+    public ResponseEntity restartScoreAndLives(@RequestParam("userName") String userName) throws Exception {
+        return new ResponseEntity<>(usersService.restartScoreAndLives(userName),HttpStatus.OK);
     }
 }

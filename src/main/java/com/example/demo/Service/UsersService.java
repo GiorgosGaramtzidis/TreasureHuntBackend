@@ -107,14 +107,18 @@ public class UsersService implements IUserService<UUID, User> {
     }
 
     @Override
-    public Boolean restartScoreAndLives() throws Exception{
-        List<User> userList = usersRepository.findAll();
-        for(int i=0;i<userList.size();i++){
-            userList.get(i).setScore(0);
-            userList.get(i).setUserLives(5);
-            usersRepository.save(userList.get(i));
+    public Boolean restartScoreAndLives(String userName) throws Exception{
+        if(usersRepository.existsByUserName(userName)) {
+            List<User> user = usersRepository.findAll().stream()
+                    .filter(user1 -> user1.getUserName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
+            user.get(0).setScore(0);
+            user.get(0).setUserLives(5);
+            usersRepository.save(user.get(0));
+            return true;
         }
-        return true;
+        throw new Exception("User does not exist");
     }
 
     @Override
