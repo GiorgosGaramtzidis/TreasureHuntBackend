@@ -115,6 +115,7 @@ public class UsersService implements IUserService<UUID, User> {
                     .collect(Collectors.toList());
             user.get(0).setScore(0);
             user.get(0).setUserLives(5);
+            user.get(0).setUserState(UserState.PLAYING);
             usersRepository.save(user.get(0));
             return true;
         }
