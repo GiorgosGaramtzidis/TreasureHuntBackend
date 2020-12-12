@@ -1,6 +1,7 @@
 package com.example.demo.Service;
 
 import com.example.demo.dao.UsersRepository;
+import com.example.demo.model.Status;
 import com.example.demo.model.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,8 +39,22 @@ public class UserLoginServiceTest {
         String password = "1234@1fK";
 
         Mockito.when(usersRepository.existsByUserName(username)).thenReturn(true);
-        Mockito.when(usersRepository.findUserByUserName(username)).thenReturn(new User("Konto4","123456@"));
+        Mockito.when(usersRepository.findUserByUserName(username)).thenReturn(new User("Konto3","123456@"));
 
         userLoginService.confirmLogin(username,password);
+    }
+    @Test
+    public void testWhenUserLogIn() throws Exception {
+        String username = "Konto3";
+        String password = "123";
+
+        Mockito.when(usersRepository.existsByUserName(username)).thenReturn(true);
+        Mockito.when(usersRepository.findUserByUserName(username)).thenReturn(new User("Konto3", "123"));
+
+
+        User user = userLoginService.confirmLogin(username, password);
+
+        assertEquals(user.getStatus(), Status.Connected);
+
     }
 }

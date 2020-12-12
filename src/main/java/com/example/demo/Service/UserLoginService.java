@@ -6,8 +6,6 @@ import com.example.demo.model.Status;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 
 @Service
@@ -21,7 +19,7 @@ public class UserLoginService implements ILoginService
     {
         if (usersRepository.existsByUserName(username))
         {
-            if (password.equals(usersRepository.findUserByUserName(username).getPassword())) {
+            if (password.equals(usersRepository.findUserByUserName(username).getPassword())){
                 updateUserStatus(username,Status.Connected);
                 return usersRepository.findUserByUserName(username);
             }
@@ -30,8 +28,9 @@ public class UserLoginService implements ILoginService
         throw new Exception("Username doesn't exists");
     }
 
+
     @Override
-    public void LogOutUser(@RequestParam("username") String username)
+    public void LogOutUser(String username)
     {
         updateUserStatus(username,Status.Away);
         usersRepository.findUserByUserName(username).setStatus(Status.Away);
