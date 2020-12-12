@@ -68,13 +68,13 @@ public class UsersService implements IUserService<UUID, User> {
     }
 
     @Override
-    public Boolean setUserState(String userName) throws Exception {
+    public Boolean setUserState(String userName,String locationTitle) throws Exception {
         if (usersRepository.existsByUserName(userName)) {
             List<User> user = usersRepository.findAll().stream()
                     .filter(user1 -> user1.getUserName()
                             .equals(userName))
                     .collect(Collectors.toList());
-            if ((user.get(0).getScore()) >= 5) {
+            if (locationTitle.equals("end")) {
                 user.get(0).setUserState(UserState.WIN);
                 usersRepository.save(user.get(0));
             }

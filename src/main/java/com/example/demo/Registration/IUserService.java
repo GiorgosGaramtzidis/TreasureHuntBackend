@@ -20,7 +20,7 @@ public interface IUserService<ID, USER> {
 
     Boolean loginConfirmation(String username, String password) throws  Exception;
 
-    Boolean setUserState(String userName) throws  Exception;
+    Boolean setUserState(String userName,String locationTitle) throws  Exception;
 
     String checkUserState();
 }

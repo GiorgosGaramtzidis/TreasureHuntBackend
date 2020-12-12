@@ -60,8 +60,8 @@ public class UsersController {
     }
 
     @PatchMapping("/setUserState")
-    public ResponseEntity setUserState(@RequestParam ("userName") String userName) throws Exception {
-        return new ResponseEntity<>(usersService.setUserState(userName),HttpStatus.OK);
+    public ResponseEntity setUserState(@RequestParam ("userName") String userName,@RequestParam ("locationTitle") String locationTitle) throws Exception {
+        return new ResponseEntity<>(usersService.setUserState(userName,locationTitle),HttpStatus.OK);
     }
 
     @GetMapping(path = "/checkUserState")
