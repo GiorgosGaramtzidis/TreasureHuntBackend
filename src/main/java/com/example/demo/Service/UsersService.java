@@ -77,8 +77,9 @@ public class UsersService implements IUserService<UUID, User> {
             if (locationTitle.equals("end")) {
                 user.get(0).setUserState(UserState.WIN);
                 usersRepository.save(user.get(0));
+                return true;
             }
-            return true;
+            return false;
         }
         throw new Exception("User does not exist");
     }
@@ -130,7 +131,6 @@ public class UsersService implements IUserService<UUID, User> {
                 return true;
             return false;
         }
-        //return "User not found";
         throw new Exception("UserName doesn't Exists");
     }
 
