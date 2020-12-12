@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,8 +12,12 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class LeaderBoard {
+@Document(collection = "LeaderBoard")
+public class LeaderBoardUser {
 
-     private List<Users> leaderBoardList;
+   @Id
+   private String id;
+   private String leaderBoardName;
+   private int games;
 
 }

@@ -1,12 +1,12 @@
 package com.example.demo.Service;
 
 
+import com.example.demo.Registration.LeaderBoardRegistration;
+import com.example.demo.dao.LeaderBoardRepository;
 import com.example.demo.dao.UsersRepository;
-import com.example.demo.model.LeaderBoard;
-import com.example.demo.model.Locations;
-import com.example.demo.model.Users;
+import com.example.demo.model.LeaderBoardUser;
+import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -16,22 +16,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class LeaderBoardServices {
+public class LeaderBoardServices implements LeaderBoardRegistration<String,LeaderBoardUser> {
 
     LeaderBoardServices services;
 
     @Autowired
-    UsersRepository usersRepository;
-
+    LeaderBoardRepository leaderBoardRepository;
+/*
 @GetMapping
-public List<Users> getTopTenUsers() throws Exception {
+public List<User> getTopTenUsers() throws Exception {
     if (usersRepository.findAll().isEmpty()) {
         throw new Exception("Collection is Empty");
     } else {
-        List<Users> usersList = usersRepository.findAll();
-        List<Users> shortedUsers = usersList.stream().sorted(Comparator.comparing(Users::getScore).reversed()).collect(Collectors.toList());
+        List<User> usersList = usersRepository.findAll();
+        List<User> shortedUsers = usersList.stream().sorted(Comparator.comparing(User::getScore).reversed()).collect(Collectors.toList());
 
-        List<Users> shortedTenUsers = new ArrayList<>();
+        List<User> shortedTenUsers = new ArrayList<>();
         if (shortedUsers.size() < 10) {
             return shortedUsers;
         } else {
@@ -45,23 +45,41 @@ public List<Users> getTopTenUsers() throws Exception {
 
     }
 
+ */
+
     public void  LeaderBoard(LeaderBoardServices services)
     {
         this.services = services;
     }
 
 
-  @GetMapping
-    public List<Users> getLeaderBoard() throws Exception {
-        if (usersRepository.findAll().isEmpty()) {
+    @Override
+    public LeaderBoardUser addLeaderBoardUser(LeaderBoardUser leaderBoardUser) throws Exception {
+        if (leaderBoardRepository.existsById(leaderBoardUser.getLeaderBoardName())) {
+            throw new Exception("name dosen't exist" + leaderBoardUser.getId());
+        }else {
+            return leaderBoardRepository.save(leaderBoardUser);
+        }
+    }
+
+    @Override
+    public List<LeaderBoardUser> getLeaderBoard() throws Exception {
+        if (leaderBoardRepository.findAll().isEmpty()) {
             throw new Exception("Collection is Empty");
         } else {
-            List<Users> usersList = usersRepository.findAll();
-            List<Users> shortedUsers = usersList.stream().sorted(Comparator.comparing(Users::getScore).reversed()).collect(Collectors.toList());
-            return shortedUsers;
+           return leaderBoardRepository.findAll();
         }
 
 
+    }
+
+    @Override
+    public LeaderBoardUser updateLeaderBoardUser(String leaderBoardName, LeaderBoardUser leaderBoardUser) throws Exception {
+        if (leaderBoardRepository.existsById(leaderBoardUser.getLeaderBoardName())) {
+            throw new Exception("Name dosen't exist" + leaderBoardUser.getId());
+        }else {
+            return leaderBoardRepository.save(leaderBoardUser);
+        }
     }
 
 
