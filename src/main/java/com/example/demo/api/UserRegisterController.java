@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UserRegisterController
 {
-
     @Autowired
     private UserRegisterService userRegisterService;
 

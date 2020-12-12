@@ -28,6 +28,7 @@ public class User {
     private int score;
     private String password;
     private int userLives;
+    private Status status;
 
     public User(String userName , String passWord)
     {
@@ -35,5 +36,6 @@ public class User {
         this.password = passWord;
         this.score = 0;
         this.userLives = 0;
+        status = Status.Away;
     }
 }
