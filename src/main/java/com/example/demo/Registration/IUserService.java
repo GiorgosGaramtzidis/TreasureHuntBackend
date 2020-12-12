@@ -8,7 +8,12 @@ public interface IUserService<ID, USER> {
 
     USER updateUser(USER user) throws Exception;
 
-    void deleteUser(USER user) throws Exception;
+    void deleteUser(String userName) throws Exception;
+
+    int addScore(String userName,int score) throws Exception;
+
+    int getUserScore(String userName) throws Exception;
 
     Boolean loginConfirmation(String username, String password) throws  Exception;
+
 }

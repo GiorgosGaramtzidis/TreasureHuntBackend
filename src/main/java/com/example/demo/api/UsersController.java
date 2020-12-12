@@ -28,15 +28,14 @@ public class UsersController {
         resp.put("user", user);
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
-
-    @GetMapping(path="/getUser" )
-    public ResponseEntity getUser(@RequestParam("userName") String userName) throws Exception {
-        Optional<User> user = usersService.getUser(userName);
+    @GetMapping("/getUser" )
+    public ResponseEntity getUser(@RequestParam("id") String id) throws Exception {
+        Optional<User> user = usersService.getUser(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-    @GetMapping(path="/getAllUsers" )
-    public ResponseEntity getAllUsers() throws Exception {
-        List<User> users = usersService.getAllUsers();
+    @GetMapping("/getAllUser" )
+    public ResponseEntity getAllUser() throws Exception {
+        List<User> users = usersService.getAllUser();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
     @PutMapping(path = "/updateUser")
@@ -47,16 +46,27 @@ public class UsersController {
         resp.put("user", user);
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
-    @DeleteMapping(value = "/deleteUser")
-    public ResponseEntity deleteUser(@RequestBody User user) throws Exception {
+    @DeleteMapping("/deleteUser")
+    public ResponseEntity deleteUser(@RequestParam("id") String id) throws Exception {
+        usersService.deleteUser(id);
         HashMap<String,String> resp = new HashMap<>();
-        usersService.deleteUser(user);
-        resp.put("Message","User succesfully deleted");
+        resp.put("message", "User is successfully deleted");
         return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
+    @PatchMapping("/addScore")
+    public ResponseEntity addScore(@RequestParam String userName,@RequestParam("score") int score) throws Exception {
+        return new ResponseEntity<>(usersService.addScore(userName,score),HttpStatus.OK);
+    }
+
+    @GetMapping("/getUserScore")
+    public ResponseEntity getUserScore(@RequestParam ("userName") String userName) throws Exception {
+        return new ResponseEntity<>(usersService.getUserScore(userName),HttpStatus.OK);
     }
 
     @GetMapping(path = "/loginUser")
     public ResponseEntity loginUser(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception{
         return new ResponseEntity<>(usersService.loginConfirmation(username,password),HttpStatus.OK);
     }
+
 }
