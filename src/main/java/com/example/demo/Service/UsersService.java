@@ -29,6 +29,8 @@ public class UsersService implements IUserService<UUID, User> {
 
     @Override
     public Optional<User> getUser(String userId) throws Exception {
+        if(!usersRepository.existsById(userId))
+            throw new Exception("User Does not exists");
         return usersRepository.findById(userId);
     }
 
@@ -45,11 +47,11 @@ public class UsersService implements IUserService<UUID, User> {
 
     @Override
     public void deleteUser(String userId) throws Exception {
-        if (userId == null) {
-            throw new Exception("user id is null");
-        } else {
+        if (usersRepository.existsById(userId)) {
             usersRepository.deleteById(userId);
+            return;
         }
+        throw new Exception("user id is null");
     }
 
 

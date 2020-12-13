@@ -12,7 +12,7 @@ import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
 
-@AllArgsConstructor
+//@AllArgsConstructor
 @Getter
 @Setter
 
