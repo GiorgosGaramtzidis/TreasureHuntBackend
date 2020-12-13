@@ -88,4 +88,65 @@ public class UsersServiceTest {
         Boolean actualResult = usersService.restartScoreAndLives("blah");
         assertEquals(true,actualResult);
     }
+    @Test
+    public void setUserStateWhenLocationTitleIsEND() throws Exception {
+
+        List<User> users = new ArrayList<>();
+        User user = new User();
+        user.setUserName("Marko1996");
+        users.add(user);
+
+        when(usersRepository.existsByUserName("Marko1996")).thenReturn(true);
+        when(usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserName().equals(user.getUserName()))
+                .collect(Collectors.toList())).thenReturn(users);
+        Boolean actualResult = usersService.setUserState("Marko1996", "end");
+        assertEquals(true,actualResult);
+    }
+
+    @Test
+    public void setUserStateWhenLocationTitleIsNotEND() throws Exception {
+
+        List<User> users = new ArrayList<>();
+        User user = new User();
+        user.setUserName("Marko1996");
+        users.add(user);
+
+        when(usersRepository.existsByUserName("Marko1996")).thenReturn(true);
+        when(usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserName().equals(user.getUserName()))
+                .collect(Collectors.toList())).thenReturn(users);
+        Boolean actualResult = usersService.setUserState("Marko1996", "Gate");
+        assertEquals(false,actualResult);
+    }
+
+    @Test
+    public void checkUserStateIfSomeonesStateIsWINShouldReturnUserThatHasStateWIN() throws Exception {
+
+        List<User> users = new ArrayList<>();
+        User user = new User();
+        user.setUserName("Marko1996");
+        user.setUserState(UserState.WIN);
+        users.add(user);
+
+        when(usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserState()
+                        .equals(UserState.WIN))
+                .collect(Collectors.toList())).thenReturn(users);
+        String actualResult = usersService.checkUserState();
+        assertEquals("Marko1996",actualResult);
+    }
+
+    @Test
+    public void checkUserStateIfNonesStateIsWINShouldReturnPLAYING() throws Exception {
+
+        List<User> users = new ArrayList<>();
+
+        when(usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserState()
+                        .equals(UserState.WIN))
+                .collect(Collectors.toList())).thenReturn(users);
+        String actualResult = usersService.checkUserState();
+        assertEquals("PLAYING",actualResult);
+    }
 }
