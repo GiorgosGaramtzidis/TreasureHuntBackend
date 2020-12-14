@@ -1,7 +1,6 @@
 package com.example.demo.api;
 
 import com.example.demo.Service.UserLoginService;
-import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

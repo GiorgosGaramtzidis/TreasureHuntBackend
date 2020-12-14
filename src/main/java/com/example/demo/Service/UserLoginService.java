@@ -27,15 +27,12 @@ public class UserLoginService implements ILoginService
         }
         throw new Exception("Username doesn't exists");
     }
-
-
     @Override
     public void LogOutUser(String username)
     {
         updateUserStatus(username,Status.Away);
         usersRepository.findUserByUserName(username).setStatus(Status.Away);
     }
-
     @Override
     public void updateUserStatus(String username,Status stattus)
     {

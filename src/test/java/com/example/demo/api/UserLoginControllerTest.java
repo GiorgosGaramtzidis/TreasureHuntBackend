@@ -28,15 +28,15 @@ public class UserLoginControllerTest {
     @MockBean
     UsersRepository usersRepository;
 
-    String url ="/UserLogin/login";
-
     @Test
     public void TestWhenABadLoginRequestArrives() throws Exception {
+        String url = "/UserLogin/login";
         mockMvc.perform(get(url)).andExpect(status().isBadRequest()).andReturn();
     }
     @Test
     public void TestWhenARequestComesWithWrongPath()throws Exception
     {
+        String url = "/UserLogin1/login";
         mockMvc.perform(get(url)).andExpect(status().is(404));
     }
     @Test
@@ -44,6 +44,7 @@ public class UserLoginControllerTest {
         Mockito.when(userLoginService.confirmLogin("George1", "12345FK@")).thenReturn(new User("George1","12345FK@"));
         Mockito.when(usersRepository.findUserByUserName("George1")).thenReturn(new User("George1","12345FK@"));
         Mockito.when(usersRepository.existsByUserName("George1")).thenReturn(true);
+        String url = "/UserLogin/login";
         mockMvc.perform((get(url).param("username","George1")).param("password","12345FK@")).andExpect(status().isOk());
     }
     @Test(expected = Exception.class)
@@ -51,6 +52,7 @@ public class UserLoginControllerTest {
         Mockito.when(userLoginService.confirmLogin("George1","12345FK@")).thenThrow(new Exception());
         Mockito.when(usersRepository.findUserByUserName("George1")).thenReturn(new User("George1","123"));
         Mockito.when(usersRepository.existsByUserName("George1")).thenReturn(false);
+        String url = "/UserLogin/login";
         mockMvc.perform((get(url).param("username","George1")).param("password","12345FK@")).andExpect(status().is(500));
     }
 
