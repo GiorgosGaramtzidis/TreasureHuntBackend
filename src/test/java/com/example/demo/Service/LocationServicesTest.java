@@ -26,10 +26,10 @@ public class LocationServicesTest {
 
     @Test(expected = Exception.class)
      public void WhenStartLocationDoesNotExistShouldCreateExceptioon() throws Exception {
-        when((locationsRepositoryNew.getStartLocation().getTitle()) == "Start")
-                .thenReturn(true);
-        locationServices.getStartLocation().getTitle();
-        fail("this should take Start ");
+        LocationsNew locationsNew = new LocationsNew();
+        locationsNew.setTitle(null);
+        when(locationsRepositoryNew.getStartLocation().getTitle()).thenReturn(locationsNew.getTitle());
+        assertEquals(null,locationsNew.getTitle());
     }
 
     @Test
@@ -45,9 +45,12 @@ public class LocationServicesTest {
     @Test(expected = Exception.class)
     public void WhenITakeLocationTitleAndNextLocationIsNull() throws Exception{
 
-        when(locationsRepositoryNew.getStartLocation().getTitle() == "Start").thenReturn(true);
-        when(locationsRepositoryNew.getNextLocation(null)).thenReturn(null);
-        assertEquals(null,locationServices.getNextLocation(null));
+        LocationsNew locationsNew = new LocationsNew();
+        locationsNew.setTitle("Start");
+        locationsNew.setNextLocation(null);
+        when(locationsRepositoryNew.getStartLocation().getTitle()).thenReturn(locationsNew.getTitle());
+        when(locationsRepositoryNew.getNextLocation(locationsNew.getTitle())).thenReturn(locationsNew);
+        assertEquals(null,locationsNew.getNextLocation());
 
     }
 
