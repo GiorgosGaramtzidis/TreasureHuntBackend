@@ -29,6 +29,7 @@ public class User {
     private String password;
     private int userLives;
     private Status status;
+    private UserState userState = UserState.PLAYING;
 
     public User(String userName , String passWord)
     {
@@ -38,6 +39,6 @@ public class User {
         this.userLives = 0;
         status = Status.Away;
     }
-    private UserState userState = UserState.PLAYING;
+
 
 }
