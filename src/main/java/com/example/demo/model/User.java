@@ -29,15 +29,16 @@ public class User {
     private String password;
     private int userLives;
     private Status status;
-    private UserState userState = UserState.PLAYING;
+    private UserState userState;
 
     public User(String userName , String passWord)
     {
         this.userName = userName;
         this.password = passWord;
         this.score = 0;
-        this.userLives = 0;
-        status = Status.Away;
+        this.userLives = 5;
+        this.status = Status.Away;
+        this.userState = UserState.PLAYING;
     }
 
 
