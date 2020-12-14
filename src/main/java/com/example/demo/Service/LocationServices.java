@@ -17,39 +17,37 @@ public class LocationServices implements LocationsRegistration<ObjectId,Location
 
     @Override
     public LocationsNew registerNewLocation(LocationsNew locationsNew) throws Exception {
-        if (locationsRepositoryNew.existsById(locationsNew.getId())) {
-            throw new Exception("Id dosen't exist" + locationsNew.getId());
-        }else {
-            return locationsRepositoryNew.save(locationsNew);
-        }
+        if (locationsRepositoryNew.existsById(locationsNew.getId()))
+            throw new Exception("Its Not Available" + locationsNew.getId());
+        locationsRepositoryNew.save(locationsNew);
+        return locationsNew;
     }
 
 
     @Override
     public List<LocationsNew> getAllLocations() throws Exception {
-        if (locationsRepositoryNew.findAll().isEmpty()){
+        if (locationsRepositoryNew.findAll().isEmpty())
             throw new Exception("Locations collection is empty");
-        } else {
-            return locationsRepositoryNew.findAll();
-        }
+        return locationsRepositoryNew.findAll();
+
     }
 
     @Override
     public LocationsNew updateLocation(ObjectId id ,LocationsNew location) throws Exception {
-        if (locationsRepositoryNew.existsById(location.getId())) {
-            throw new Exception("Id dosen't exist" + location.getId());
-        }else {
-            return locationsRepositoryNew.save(location);
-        }
+        if (locationsRepositoryNew.existsById(location.getId()))
+            throw new Exception("Id doesn't exist" + location.getId());
+        locationsRepositoryNew.save(location);
+        return location;
     }
 
     @Override
     public void deleteLocation(ObjectId LocationId) throws Exception {
-        if (LocationId == null) {
-            throw new Exception("location id is null");
-        } else {
+        if (locationsRepositoryNew.existsById(LocationId)) {
             locationsRepositoryNew.deleteById(LocationId);
+            return;
         }
+        throw new Exception("location id is wrong");
+
 
     }
 
