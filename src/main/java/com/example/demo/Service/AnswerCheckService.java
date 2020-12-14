@@ -35,4 +35,3 @@ public class AnswerCheckService implements AnswerCheck<String> {
 
 
 }
-
