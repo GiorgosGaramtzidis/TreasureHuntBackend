@@ -1,21 +1,17 @@
 package com.example.demo.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Getter
 @Setter
-
+@NoArgsConstructor
 
 @Document(collection = "DemoLocations")
 public class LocationsNew {
@@ -35,12 +31,12 @@ public class LocationsNew {
 
     @NotNull
     private String nextLocation;
-
+/*
     public LocationsNew(String title , String nextLocation) {
         this.title = title;
         this.nextLocation = nextLocation;
     }
-
+*/
 
 
 

@@ -59,6 +59,16 @@ public class UsersController {
         return new ResponseEntity<>(usersService.addScore(userName,score),HttpStatus.OK);
     }
 
+    @PatchMapping("/changeName")
+    public ResponseEntity changeName(@RequestParam ("userName") String userName ,@RequestParam ("newName") String newName) throws Exception {
+        return new ResponseEntity<>(usersService.changeName(userName,newName),HttpStatus.OK);
+    }
+
+    @PatchMapping("/changePassword")
+    public ResponseEntity changePassword(@RequestParam ("userName") String userName ,@RequestParam ("newPass") String newPass) throws Exception {
+        return new ResponseEntity<>(usersService.changePassword(userName,newPass),HttpStatus.OK);
+    }
+
     @GetMapping("/getUserScore")
     public ResponseEntity getUserScore(@RequestParam ("userName") String userName) throws Exception {
         return new ResponseEntity<>(usersService.getUserScore(userName),HttpStatus.OK);

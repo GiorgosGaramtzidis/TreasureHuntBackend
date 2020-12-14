@@ -65,6 +65,46 @@ public class UsersService implements IUserService<UUID, User> {
         }
         throw new Exception("User does not exist");
     }
+    @Override
+    public String changeName(String userName , String newName) throws Exception {
+        if(usersRepository.existsByUserName(userName))
+        {
+            if (usersRepository.existsByUserName(newName))
+            {
+                throw new Exception("User exist with this userName");
+            }
+        User user = usersRepository.findUserByUserName(userName);
+        user.setUserName(newName);
+        usersRepository.save(user);
+        return newName;
+        }
+        throw new Exception("User does not exist");
+
+    }
+
+    @Override
+    public String changePassword(String userName , String newPass) throws Exception{
+        if(usersRepository.existsByUserName(userName)){
+            User user = usersRepository.findUserByUserName(userName);
+            user.setPassword(newPass);
+            usersRepository.save(user);
+            return newPass;
+        }
+        throw new Exception("User does not exist");
+
+    }
+        /*
+        if(usersRepository.existsByUserName(userName)){
+            List<User> user = usersRepository.findAll().stream()
+                    .filter(user1 -> user1.getUserName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
+            user.get(0).setPassword(newPass);
+            usersRepository.save(user.get(0));
+            return newPass;
+        }
+        throw new Exception("UserName does not exist");
+    }*/
 
     @Override
     public int getUserScore(String userName) throws Exception{

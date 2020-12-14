@@ -32,32 +32,22 @@ public class LocationServicesTest {
         fail("this should take Start ");
     }
 
-
-    @Test(expected = Exception.class)
-    public void Test1()throws Exception {
-
-        when(locationsRepositoryNew.getStartLocation()).thenReturn(null);
-        locationServices.getStartLocation();
-    }
-
-    @Test
-    public void test2() throws Exception{
-        when(locationsRepositoryNew.getStartLocation()).thenReturn(new LocationsNew("Start","idk"));
-        String location = locationServices.getStartLocation().getTitle();
-        assertEquals("Start",location);
-    }
-
     @Test
     public void WhenITakeLocationTitleIWantToSeeWhereIsNextLocation()throws Exception{
 
-        when(locationsRepositoryNew.getNextLocation("Kafeteria")).thenReturn(new LocationsNew("Kafeteria","Grammatia"));
+        LocationsNew locationsNew = new LocationsNew();
+        locationsNew.setTitle("Kafeteria");
+        locationsNew.setNextLocation("Grammatia");
+        when(locationsRepositoryNew.getNextLocation("Kafeteria")).thenReturn(locationsNew);
         String location = locationServices.getNextLocation("Kafeteria").getNextLocation();
         assertEquals("Grammatia", location);
     }
     @Test(expected = Exception.class)
-    public void WhenNextLocationIsNullThrowException() throws Exception{
+    public void WhenITakeLocationTitleAndNextLocationIsNull() throws Exception{
+
+        when(locationsRepositoryNew.getStartLocation().getTitle() == "Start").thenReturn(true);
         when(locationsRepositoryNew.getNextLocation(null)).thenReturn(null);
-        locationServices.getNextLocation(null);
+        assertEquals(null,locationServices.getNextLocation(null));
 
     }
 
@@ -67,8 +57,7 @@ public class LocationServicesTest {
         locationServices.getNextLocation(" ");
     }
 
-    @Test
-    public void oka() throws Exception{
-      //  String ok = locationsRepositoryNew.getStartLocation().
-    }
+
+
+
 }
