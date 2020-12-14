@@ -38,4 +38,6 @@ public class User {
         this.userLives = 0;
         status = Status.Away;
     }
+    private UserState userState = UserState.PLAYING;
+
 }

@@ -3,6 +3,7 @@ package com.example.demo.Service;
 import com.example.demo.Registration.IUserService;
 import com.example.demo.dao.UsersRepository;
 import com.example.demo.model.User;
+import com.example.demo.model.UserState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,18 @@ public class UsersService implements IUserService<UUID, User> {
     private UsersRepository usersRepository;
 
     @Override
+    public Boolean registerUser(User user) throws Exception {
+        if (usersRepository.existsByUserName(user.getUserName())) {
+            throw new Exception("User with this username : "+user.getUserName()+" already exists");
+        }
+        usersRepository.save(user);
+        return true;
+    }
+
+    @Override
     public Optional<User> getUser(String userId) throws Exception {
+        if(!usersRepository.existsById(userId))
+            throw new Exception("User Does not exists");
         return usersRepository.findById(userId);
     }
 
@@ -35,11 +47,11 @@ public class UsersService implements IUserService<UUID, User> {
 
     @Override
     public void deleteUser(String userId) throws Exception {
-        if (userId == null) {
-            throw new Exception("user id is null");
-        } else {
+        if (usersRepository.existsById(userId)) {
             usersRepository.deleteById(userId);
+            return;
         }
+        throw new Exception("user id is null");
     }
 
 
@@ -58,6 +70,34 @@ public class UsersService implements IUserService<UUID, User> {
     }
 
     @Override
+    public Boolean setUserState(String userName,String locationTitle) throws Exception {
+        if (usersRepository.existsByUserName(userName)) {
+            List<User> user = usersRepository.findAll().stream()
+                    .filter(user1 -> user1.getUserName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
+            if (locationTitle.equals("end")) {
+                user.get(0).setUserState(UserState.WIN);
+                usersRepository.save(user.get(0));
+                return true;
+            }
+            return false;
+        }
+        throw new Exception("User does not exist");
+    }
+
+    @Override
+    public String checkUserState() {
+        List<User> user = usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserState()
+                        .equals(UserState.WIN))
+                .collect(Collectors.toList());
+        if ((user.size())==0)
+            return UserState.PLAYING.toString();
+        else
+            return user.get(0).getUserName();
+    }
+    @Override
     public int getUserScore(String userName) throws Exception{
         if(usersRepository.existsByUserName(userName)) {
               List<User> user = usersRepository.findAll().stream()
@@ -68,4 +108,32 @@ public class UsersService implements IUserService<UUID, User> {
         }
         throw new Exception("User does not exist");
     }
+
+    @Override
+    public Boolean restartScoreAndLives(String userName) throws Exception{
+        if(usersRepository.existsByUserName(userName)) {
+            List<User> user = usersRepository.findAll().stream()
+                    .filter(user1 -> user1.getUserName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
+            user.get(0).setScore(0);
+            user.get(0).setUserLives(5);
+            user.get(0).setUserState(UserState.PLAYING);
+            usersRepository.save(user.get(0));
+            return true;
+        }
+        throw new Exception("User does not exist");
+    }
+
+    @Override
+    public  Boolean loginConfirmation(String username, String password) throws Exception{
+        if (usersRepository.existsByUserName(username)) {
+            String UsersPassword =usersRepository.findUserByUserName(username).getPassword();
+            if (UsersPassword.equals(password))
+                return true;
+            return false;
+        }
+        throw new Exception("UserName doesn't Exists");
+    }
+
 }
