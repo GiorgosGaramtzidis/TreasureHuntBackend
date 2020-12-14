@@ -56,7 +56,7 @@ public List<User> getTopTenUsers() throws Exception {
     @Override
     public LeaderBoardUser addLeaderBoardUser(LeaderBoardUser leaderBoardUser) throws Exception {
         if (leaderBoardRepository.existsById(leaderBoardUser.getLeaderBoardName())) {
-            throw new Exception("name dosen't exist" + leaderBoardUser.getId());
+            throw new Exception("name exist" + leaderBoardUser.getId());
         }else {
             return leaderBoardRepository.save(leaderBoardUser);
         }
@@ -67,18 +67,20 @@ public List<User> getTopTenUsers() throws Exception {
         if (leaderBoardRepository.findAll().isEmpty()) {
             throw new Exception("Collection is Empty");
         } else {
-           return leaderBoardRepository.findAll();
+           // List<LeaderBoardUser> leaderBoardUsers = getLeaderBoard();
+           List<LeaderBoardUser> leaderBoardUsers = leaderBoardRepository.findAll().stream().sorted(Comparator.comparing(LeaderBoardUser::getGames).reversed()).collect(Collectors.toList());
+
+            return  leaderBoardUsers;
+           //return leaderBoardRepository.findAll();
         }
-
-
     }
 
     @Override
     public LeaderBoardUser updateLeaderBoardUser(String leaderBoardName, LeaderBoardUser leaderBoardUser) throws Exception {
         if (leaderBoardRepository.existsById(leaderBoardUser.getLeaderBoardName())) {
-            throw new Exception("Name dosen't exist" + leaderBoardUser.getId());
-        }else {
             return leaderBoardRepository.save(leaderBoardUser);
+        }else {
+            throw new Exception("Name dosen't exist" + leaderBoardUser.getId());
         }
     }
 
