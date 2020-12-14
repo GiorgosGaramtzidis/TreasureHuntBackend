@@ -2,6 +2,7 @@ package com.example.demo.Service;
 import static org.junit.Assert.*;
 import com.example.demo.dao.LocationsRepositoryNew;
 import com.example.demo.model.LocationsNew;
+import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,31 +15,18 @@ import javax.validation.constraints.NotNull;
 import static com.jayway.jsonpath.internal.path.PathCompiler.fail;
 import static org.mockito.Mockito.when;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @SpringBootTest
-import com.example.demo.dao.LocationsRepositoryNew;
-import com.example.demo.model.LocationsNew;
-import org.bson.types.ObjectId;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
-
 public class LocationServicesTest {
     @MockBean
     LocationsRepositoryNew locationsRepositoryNew;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
+
 
     @Autowired
     LocationServices locationServices;
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class LocationServicesTest {
-    @MockBean
-    LocationsRepositoryNew locationsRepositoryNew;
+
 
     @Test(expected = Exception.class)
      public void WhenStartLocationDoesNotExistShouldCreateExceptioon() throws Exception {
@@ -47,8 +35,7 @@ public class LocationServicesTest {
         when(locationsRepositoryNew.getStartLocation().getTitle()).thenReturn(locationsNew.getTitle());
         assertEquals(null,locationsNew.getTitle());
     }
-    @Autowired
-    LocationServices locationServices;
+
 
     @Test
     public void WhenITakeLocationTitleIWantToSeeWhereIsNextLocation()throws Exception{
@@ -61,14 +48,15 @@ public class LocationServicesTest {
         assertEquals("Grammatia", location);
     }
     @Test(expected = Exception.class)
-    public void WhenITakeLocationTitleAndNextLocationIsNull() throws Exception{
+    public void WhenITakeLocationTitleAndNextLocationIsNull() throws Exception {
 
         LocationsNew locationsNew = new LocationsNew();
         locationsNew.setTitle("Start");
         locationsNew.setNextLocation(null);
         when(locationsRepositoryNew.getStartLocation().getTitle()).thenReturn(locationsNew.getTitle());
         when(locationsRepositoryNew.getNextLocation(locationsNew.getTitle())).thenReturn(locationsNew);
-        assertEquals(null,locationsNew.getNextLocation());
+        assertEquals(null, locationsNew.getNextLocation());
+    }
 
     @org.junit.Test
     public void registerNewLocationIfLocationIdIsAvailableShouldSaveTheLocation() throws Exception {
@@ -121,9 +109,10 @@ public class LocationServicesTest {
     }
 
     @Test(expected = Exception.class)
-    public void WhenIGetNextLocationWithSpacesThrowException() throws Exception{
+    public void WhenIGetNextLocationWithSpacesThrowException() throws Exception {
         when(locationsRepositoryNew.getNextLocation(" ")).thenReturn(null);
         locationServices.getNextLocation(" ");
+    }
     @org.junit.Test(expected = Exception.class)
     public void updateNewLocationIfLocationIdDoesNotExistsShouldCreateException() throws Exception {
         LocationsNew locationsNew = new LocationsNew();

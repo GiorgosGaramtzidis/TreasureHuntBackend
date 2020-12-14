@@ -8,11 +8,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 
-//@AllArgsConstructor
+
 @Getter
 @Setter
-@NoArgsConstructor
-
+//@NoArgsConstructor
 @NoArgsConstructor
 @Document(collection = "DemoLocations")
 public class LocationsNew {
@@ -32,12 +31,7 @@ public class LocationsNew {
 
     @NotNull
     private String nextLocation;
-/*
-    public LocationsNew(String title , String nextLocation) {
-        this.title = title;
-        this.nextLocation = nextLocation;
-    }
-*/
+
 
 
 
