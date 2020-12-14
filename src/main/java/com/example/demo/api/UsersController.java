@@ -55,7 +55,7 @@ public class UsersController {
     }
 
     @PatchMapping("/addScore")
-    public ResponseEntity addScore(@RequestParam String userName,@RequestParam("score") int score) throws Exception {
+    public ResponseEntity addScore(@RequestParam ("userName") String  userName,@RequestParam("score") int score) throws Exception {
         return new ResponseEntity<>(usersService.addScore(userName,score),HttpStatus.OK);
     }
 
@@ -69,6 +69,16 @@ public class UsersController {
         return new ResponseEntity<>(usersService.changePassword(userName,newPass),HttpStatus.OK);
     }
 
+    @PatchMapping("/setUserState")
+    public ResponseEntity setUserState(@RequestParam ("userName") String userName,@RequestParam ("locationTitle") String locationTitle) throws Exception {
+        return new ResponseEntity<>(usersService.setUserState(userName,locationTitle),HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/checkUserState")
+    public ResponseEntity checkUserState() throws Exception{
+        return new ResponseEntity<>(usersService.checkUserState(),HttpStatus.OK);
+    }
+
     @GetMapping("/getUserScore")
     public ResponseEntity getUserScore(@RequestParam ("userName") String userName) throws Exception {
         return new ResponseEntity<>(usersService.getUserScore(userName),HttpStatus.OK);
@@ -79,4 +89,8 @@ public class UsersController {
         return new ResponseEntity<>(usersService.loginConfirmation(username,password),HttpStatus.OK);
     }
 
+    @PatchMapping("/restart")
+    public ResponseEntity restartScoreAndLives(@RequestParam("userName") String userName) throws Exception {
+        return new ResponseEntity<>(usersService.restartScoreAndLives(userName),HttpStatus.OK);
+    }
 }

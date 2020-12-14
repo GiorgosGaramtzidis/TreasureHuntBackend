@@ -28,6 +28,18 @@ public class User {
     private int score;
     private String password;
     private int userLives;
+    private Status status;
+    private UserState userState;
+
+    public User(String userName , String passWord)
+    {
+        this.userName = userName;
+        this.password = passWord;
+        this.score = 0;
+        this.userLives = 5;
+        this.status = Status.Away;
+        this.userState = UserState.PLAYING;
+    }
 
 
 }

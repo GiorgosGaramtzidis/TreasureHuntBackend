@@ -8,11 +8,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 
-@AllArgsConstructor
+//@AllArgsConstructor
 @Getter
 @Setter
 @NoArgsConstructor
 
+@NoArgsConstructor
 @Document(collection = "DemoLocations")
 public class LocationsNew {
 
