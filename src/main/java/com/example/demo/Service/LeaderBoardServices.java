@@ -69,26 +69,25 @@ public List<User> getTopTenUsers() throws Exception {
     }
 
 
-    @Override
-    public Integer updateLeaderBoard(String userName,int score) throws Exception {
+@Override
+public Integer updateLeaderBoard(String leaderBoardName,int score) throws Exception {
+    if(leaderBoardRepository.existsByLeaderBoardName(leaderBoardName)){
+    List<LeaderBoardUser> leaderBoardUsers = leaderBoardRepository.findAll().stream()
+            .filter(leaderBoardUser -> leaderBoardUser.getLeaderBoardName()
+                    .equals(leaderBoardName))
+            .collect(Collectors.toList());
 
-            List<LeaderBoardUser> leaderBoardUsers = leaderBoardRepository.findAll().stream()
-                    .filter(leaderBoardUser -> leaderBoardUser.getLeaderBoardName()
-                            .equals(userName))
-                    .collect(Collectors.toList());
-            if(!leaderBoardUsers.isEmpty()){
-                leaderBoardUsers.get(0).setScore(leaderBoardUsers.get(0).getScore()+score);
-                leaderBoardRepository.save(leaderBoardUsers.get(0));
-                return leaderBoardUsers.get(0).getScore();
+    leaderBoardUsers.get(0).setScore(leaderBoardUsers.get(0).getScore() + score);
+    leaderBoardRepository.save(leaderBoardUsers.get(0));
+    return leaderBoardUsers.get(0).getScore();
 
-        }
-        else {
-            throw new Exception("Wrong Name");
-        }
-
-
+}
+    else {
+        throw new Exception("Wrong Name");
     }
 
+
+}
 
 
 

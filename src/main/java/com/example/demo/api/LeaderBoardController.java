@@ -31,10 +31,10 @@ ResponseEntity addLeaderBoardUser(@RequestBody LeaderBoardUser leaderBoardUser) 
 
 
     @PatchMapping(path = "/updateLeaderBoard")
-    public ResponseEntity update(@RequestParam String userName,@RequestParam int score)
+    public ResponseEntity update(@RequestParam String leaderBoardName,@RequestParam int score)
             throws Exception {
 
-        return new ResponseEntity<>(leaderBoardServices.update(userName,score),HttpStatus.OK);}
+        return new ResponseEntity<>(leaderBoardServices.updateLeaderBoard(leaderBoardName,score),HttpStatus.OK);}
 
 
 

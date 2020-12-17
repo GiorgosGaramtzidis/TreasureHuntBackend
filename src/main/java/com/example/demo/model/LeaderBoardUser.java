@@ -26,9 +26,9 @@ public class LeaderBoardUser {
    private int score;
 
 
-   public LeaderBoardUser(String userName,String iD) {
+   public LeaderBoardUser(String leaderBoardName,String iD) {
       this.id=iD;
-      this.leaderBoardName=userName;
+      this.leaderBoardName=leaderBoardName;
       this.score =0;
    }
 }

@@ -50,7 +50,7 @@ public class LeaderBoardUserServicesTest {
         leaderBoardUser.setLeaderBoardName("NIKOS");
 
         when(leaderBoardRepository.existsById("NIKOS")).thenReturn(false);
-        leaderBoardServices.updateLeaderBoardUser(leaderBoardUser.getLeaderBoardName(), leaderBoardUser);
+        leaderBoardServices.updateLeaderBoard(leaderBoardUser.getLeaderBoardName(), 500);
 
     }
 
@@ -58,9 +58,11 @@ public class LeaderBoardUserServicesTest {
     public void IfLeaderBoardUserExistForUpDate()throws  Exception{
         LeaderBoardUser leaderBoardUser = new LeaderBoardUser();
         leaderBoardUser.setLeaderBoardName("NIKOS");
+        leaderBoardUser.setScore(0);
 
-        when(leaderBoardRepository.existsById("NIKOS")).thenReturn(true);
-        leaderBoardServices.updateLeaderBoardUser(leaderBoardUser.getLeaderBoardName(), leaderBoardUser);
+        when(leaderBoardRepository.findAll().isEmpty()).thenReturn(false);
+       // when(leaderBoardRepository.existsById("NIKOS")).thenReturn(true);
+        leaderBoardServices.updateLeaderBoard(leaderBoardUser.getLeaderBoardName(), 500);
 
     }
 
