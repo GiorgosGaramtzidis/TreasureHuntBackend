@@ -12,7 +12,7 @@ public interface LeaderBoardRegistration<NAME,LEADERBOARD> {
 
     List<LeaderBoardUser> getLeaderBoard() throws Exception;
 
-    LEADERBOARD updateLeaderBoardUser(NAME name,LEADERBOARD leaderboard) throws Exception;
+    Integer updateLeaderBoard (String userName,int score) throws Exception;
 
 
 }

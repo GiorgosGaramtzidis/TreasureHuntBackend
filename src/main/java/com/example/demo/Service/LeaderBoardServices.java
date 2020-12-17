@@ -3,14 +3,10 @@ package com.example.demo.Service;
 
 import com.example.demo.Registration.LeaderBoardRegistration;
 import com.example.demo.dao.LeaderBoardRepository;
-import com.example.demo.dao.UsersRepository;
 import com.example.demo.model.LeaderBoardUser;
-import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +14,7 @@ import java.util.stream.Collectors;
 @Service
 public class LeaderBoardServices implements LeaderBoardRegistration<String,LeaderBoardUser> {
 
-    LeaderBoardServices services;
+
 
     @Autowired
     LeaderBoardRepository leaderBoardRepository;
@@ -47,10 +43,7 @@ public List<User> getTopTenUsers() throws Exception {
 
  */
 
-    public void  LeaderBoard(LeaderBoardServices services)
-    {
-        this.services = services;
-    }
+
 
 
     @Override
@@ -68,21 +61,37 @@ public List<User> getTopTenUsers() throws Exception {
             throw new Exception("Collection is Empty");
         } else {
            // List<LeaderBoardUser> leaderBoardUsers = getLeaderBoard();
-           List<LeaderBoardUser> leaderBoardUsers = leaderBoardRepository.findAll().stream().sorted(Comparator.comparing(LeaderBoardUser::getGames).reversed()).collect(Collectors.toList());
+           List<LeaderBoardUser> leaderBoardUsers = leaderBoardRepository.findAll().stream().sorted(Comparator.comparing(LeaderBoardUser::getScore).reversed()).collect(Collectors.toList());
 
             return  leaderBoardUsers;
            //return leaderBoardRepository.findAll();
         }
     }
 
+
     @Override
-    public LeaderBoardUser updateLeaderBoardUser(String leaderBoardName, LeaderBoardUser leaderBoardUser) throws Exception {
-        if (leaderBoardRepository.existsById(leaderBoardUser.getLeaderBoardName())) {
-            return leaderBoardRepository.save(leaderBoardUser);
-        }else {
-            throw new Exception("Name dosen't exist" + leaderBoardUser.getId());
+    public Integer updateLeaderBoard(String userName,int score) throws Exception {
+
+            List<LeaderBoardUser> leaderBoardUsers = leaderBoardRepository.findAll().stream()
+                    .filter(leaderBoardUser -> leaderBoardUser.getLeaderBoardName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
+            if(!leaderBoardUsers.isEmpty()){
+                leaderBoardUsers.get(0).setScore(leaderBoardUsers.get(0).getScore()+score);
+                leaderBoardRepository.save(leaderBoardUsers.get(0));
+                return leaderBoardUsers.get(0).getScore();
+
         }
+        else {
+            throw new Exception("Wrong Name");
+        }
+
+
     }
+
+
+
+
 
 
 }
