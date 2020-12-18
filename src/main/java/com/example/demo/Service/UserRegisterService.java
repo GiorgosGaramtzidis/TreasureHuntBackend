@@ -24,8 +24,8 @@ public class UserRegisterService implements IUserRegisterService {
         if (passWordValidator(passWord) && userNameValidator(userName))
             {
                 usersRepository.save(new User(userName,passWord));
-                 registrationAnswer.setAnswer("User register successfully");
-                 return registrationAnswer;
+                registrationAnswer.setAnswer("User user register successfully");
+                return registrationAnswer;
             }
         registrationAnswer.setAnswer("Invalid inputs");
         return registrationAnswer;

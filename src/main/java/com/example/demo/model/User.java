@@ -1,5 +1,4 @@
 package com.example.demo.model;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +29,9 @@ public class User {
     private int userLives;
     private Status status;
     private UserState userState;
+    private Role role;
 
+    //Users which register is players
     public User(String userName , String passWord)
     {
         this.userName = userName;
@@ -39,7 +40,7 @@ public class User {
         this.userLives = 5;
         this.status = Status.Away;
         this.userState = UserState.PLAYING;
+        this.role = Role.PLAYER;
     }
-
 
 }

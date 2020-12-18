@@ -9,17 +9,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.UUID;
 
-
 @AllArgsConstructor
 @Getter
 @Setter
 public class Question {
 
-
     public String question;
     public String answer;
     public int points;
-
 
     @Override
     public String toString() {
