@@ -22,14 +22,18 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
     private UsersRepository usersRepository;
 
     @Override
-    public Boolean createGame(List<LocationsNew> locationsNew){
+    public Boolean createGame(String id,String gameName,String gameLocation){
         TreasureHuntGame treasureHuntGame = new TreasureHuntGame();
         List<User> userList = new ArrayList<>();
         List<UserPosition> userPositionList = new ArrayList<>();
+        List<LocationsNew> locationsNewList = new ArrayList<>();
+        treasureHuntGame.setId(id);
+        treasureHuntGame.setGameName(gameName);
+        treasureHuntGame.setGameLocation(gameLocation);
         treasureHuntGame.setUserList(userList);
         treasureHuntGame.setUserPositionList(userPositionList);
         treasureHuntGame.setState(GameState.DidNotStart);
-        treasureHuntGame.setLocationsNewList(locationsNew);
+        treasureHuntGame.setLocationsNewList(locationsNewList);
         treasureHuntGame.setWinner(null);
         treasureHuntGameRepository.save(treasureHuntGame);
         return true;

@@ -24,8 +24,8 @@ public class TreasureHuntGameController {
 
 
     @PostMapping(path = "/createGame")
-     public ResponseEntity createGame(@RequestBody List<LocationsNew> locationsNewList) throws Exception {
-        return new ResponseEntity<> (treasureHuntGameService.createGame(locationsNewList),HttpStatus.OK);
+     public ResponseEntity createGame(@RequestParam("id")String id,@RequestParam("gameName")String gameName,@RequestParam("gameLocation")String gameLocation) throws Exception {
+        return new ResponseEntity<> (treasureHuntGameService.createGame(id,gameName,gameLocation),HttpStatus.OK);
     }
 
     @GetMapping("/getGame" )

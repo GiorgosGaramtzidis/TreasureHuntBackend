@@ -18,12 +18,9 @@ import java.util.List;
 public class TreasureHuntGame {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
     private String id;
+    private String gameName;
+    private String gameLocation;
     private List<User> userList;
     private List<LocationsNew> locationsNewList;
     private List<UserPosition> userPositionList;
