@@ -6,7 +6,7 @@ variables:
 before_script:
   - git remote set-url origin https://$GIT_USER:$GIT_PASSWORD@gitlab.com/$CI_PROJECT_PATH.git
   - git config --global user.email 'msn4l2@hotmail.com'
-  - git config --global user.name 'marko_gi'
+  - git config --global user.name 'Marko Gila'
 
 stages:
   - build
