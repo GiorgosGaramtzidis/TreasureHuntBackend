@@ -4,7 +4,9 @@ import com.example.demo.Registration.AnswerCheck;
 import com.example.demo.api.AnswerCheckController;
 import com.example.demo.dao.LocationsRepositoryNew;
 
+import com.example.demo.dao.QuestionsRepository;
 import com.example.demo.model.LocationsNew;
+import com.example.demo.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +15,17 @@ import java.util.stream.Collectors;
 
 @Service
 public class AnswerCheckService implements AnswerCheck<String> {
-    @Autowired
-    private LocationsRepositoryNew locationsRepositoryNew;
-    @Override
-    public Boolean AnswerCheck(String usersAnswer,String locationTitle) throws Exception {
 
-        if(locationsRepositoryNew.existsByTitle(locationTitle)) {
-            List<LocationsNew> locationsNews = locationsRepositoryNew.findAll().stream().filter(locationsNew -> locationsNew.getTitle().equals(locationTitle))
+    @Autowired
+    private QuestionsRepository questionsRepository;
+
+    @Override
+    public Boolean AnswerCheck(String usersAnswer,String question) throws Exception {
+
+        if(questionsRepository.existsByQuestion(question)) {
+            List<Question> questionList = questionsRepository.findAll().stream().filter(question1 -> question1.getQuestion().equals(question))
                     .collect(Collectors.toList());
-            if (usersAnswer.equals(locationsNews.get(0).getQuestions().getAnswer())) {
+            if (usersAnswer.equals(questionList.get(0).getAnswer())) {
                 System.out.println("correct title correct answer yikes");
                 return true;
             } else {

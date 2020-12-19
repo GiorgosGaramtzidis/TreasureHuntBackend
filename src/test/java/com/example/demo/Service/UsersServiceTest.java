@@ -2,8 +2,6 @@ package com.example.demo.Service;
 
 import com.example.demo.dao.LocationsRepositoryNew;
 import com.example.demo.dao.UsersRepository;
-import com.example.demo.model.LocationsNew;
-import com.example.demo.model.Question;
 import com.example.demo.model.User;
 import com.example.demo.model.UserState;
 import org.junit.Test;
@@ -244,6 +242,54 @@ public class UsersServiceTest {
         when(usersRepository.existsByUserName(null)).thenReturn(false);
         usersService.addScore(null,5);
         fail("User Doesnt Exists");
+    }
+
+    @Test
+    public void buyLifeWhenUserExistsByUserNameAndUserLivesAreEqualToOneAndUserPointsAreTwentyOrMoreShouldReturnTrue() throws Exception{
+        List<User> users = new ArrayList<>();
+        User user = new User();
+        user.setUserName("Konto41");
+        user.setUserLives(1);
+        user.setScore(25);
+        users.add(user);
+        when(usersRepository.existsByUserName("Konto41")).thenReturn(true);
+        when(usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserName()
+                        .equals(user.getUserName()))
+                .collect(Collectors.toList())).thenReturn(users);
+        Boolean actualResult = usersService.buyLife(user.getUserName());
+        assertEquals(true,actualResult);
+    }
+
+    @Test
+    public void buyLifeWhenUserExistsByUserNameAndUserLivesAreMoreOrLessThanOneAndUserPointsAreLessThanTwentyShouldReturnFalse() throws Exception{
+        List<User> users = new ArrayList<>();
+        User user = new User();
+        user.setUserName("Konto41");
+        user.setUserLives(3);
+        user.setScore(10);
+        users.add(user);
+        when(usersRepository.existsByUserName("Konto41")).thenReturn(true);
+        when(usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserName()
+                        .equals(user.getUserName()))
+                .collect(Collectors.toList())).thenReturn(users);
+        Boolean actualResult = usersService.buyLife(user.getUserName());
+        assertEquals(false,actualResult);
+    }
+    @Test(expected = Exception.class)
+    public void buyLifeIfUserDoesNotExistsByUserNameShouldReturnException() throws Exception{
+
+        when(usersRepository.existsByUserName("foo")).thenReturn(false);
+        usersService.buyLife("foo");
+        fail("This should return wrong id");
+    }
+    @Test(expected = Exception.class)
+    public void buyLifeIfUserIsNullShouldReturnException() throws Exception{
+
+        when(usersRepository.existsByUserName(null)).thenReturn(false);
+        usersService.buyLife(null);
+        fail("This should return wrong id");
     }
 
     @Test(expected = Exception.class)

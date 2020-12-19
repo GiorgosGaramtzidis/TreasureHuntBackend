@@ -1,9 +1,7 @@
 package com.example.demo.Service;
 
 import com.example.demo.Registration.IUserService;
-import com.example.demo.dao.LocationsRepositoryNew;
 import com.example.demo.dao.UsersRepository;
-import com.example.demo.model.LocationsNew;
 import com.example.demo.model.User;
 import com.example.demo.model.UserState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,6 +160,25 @@ public class UsersService implements IUserService<UUID, User> {
         }
         throw new Exception("User does not exist");
     }
+    @Override
+    public Boolean buyLife(String userName) throws Exception {
+        if(usersRepository.existsByUserName(userName)){
+            List<User> user = usersRepository.findAll().stream()
+                    .filter(user1 -> user1.getUserName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
+
+            if(user.get(0).getUserLives()==1 && user.get(0).getScore()>=20){
+                user.get(0).setUserLives(user.get(0).getUserLives()+1);
+                user.get(0).setScore(user.get(0).getScore()-10);
+                usersRepository.save(user.get(0));
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else
+            throw new Exception("Wrong id");
+    }
 }
-
-
