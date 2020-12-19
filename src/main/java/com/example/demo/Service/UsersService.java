@@ -1,9 +1,9 @@
 package com.example.demo.Service;
 
 import com.example.demo.Registration.IUserService;
-import com.example.demo.dao.LocationsRepositoryNew;
+import com.example.demo.dao.QuestionsRepository;
 import com.example.demo.dao.UsersRepository;
-import com.example.demo.model.LocationsNew;
+import com.example.demo.model.Question;
 import com.example.demo.model.User;
 import com.example.demo.model.UserState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class UsersService implements IUserService<UUID, User> {
     private UsersRepository usersRepository;
 
     @Autowired
-    private LocationsRepositoryNew locationsRepository;
+    private QuestionsRepository questionsRepository;
 
     @Override
     public Boolean registerUser(User user) throws Exception {
@@ -143,7 +143,7 @@ public class UsersService implements IUserService<UUID, User> {
     }
 
     @Override
-    public String boughtAnswer(String userName, String locationTitle) throws Exception {
+    public String boughtAnswer(String userName, String question) throws Exception {
         if (usersRepository.existsByUserName(userName)) {
             List<User> user = usersRepository.findAll().stream()
                     .filter(user1 -> user1.getUserName()
@@ -153,12 +153,12 @@ public class UsersService implements IUserService<UUID, User> {
 
             usersRepository.save(user.get(0));
 
-            List<LocationsNew> locationsNews = locationsRepository.findAll().stream()
-                    .filter(locationsNew -> locationsNew.getTitle()
-                            .equals(locationTitle))
+            List<Question> questions = questionsRepository.findAll().stream()
+                    .filter(question1 -> question1.getQuestion()
+                            .equals(question))
                     .collect(Collectors.toList());
 
-            return locationsNews.get(0).getQuestions().getAnswer();
+            return questions.get(0).getAnswer();
         }
         throw new Exception("User does not exist");
     }

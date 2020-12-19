@@ -85,7 +85,7 @@ public class UsersController {
     }
 
     @GetMapping(path = "/boughtAnswer")
-    public ResponseEntity boughtAnswer(@RequestParam("userName") String userName, @RequestParam("locationTitle") String locationTitle) throws Exception{
-        return new ResponseEntity<>(usersService.boughtAnswer(userName,locationTitle),HttpStatus.OK);
+    public ResponseEntity boughtAnswer(@RequestParam("userName") String userName, @RequestParam("question") String question) throws Exception{
+        return new ResponseEntity<>(usersService.boughtAnswer(userName,question),HttpStatus.OK);
     }
 }
