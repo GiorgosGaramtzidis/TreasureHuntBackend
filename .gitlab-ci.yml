@@ -13,7 +13,7 @@ stages:
   - release
 
 maven-build:
-  image: maven:3-jdk-15
+  image: maven:3-jdk-15.0.1
   stage: build
   only:
     - master
