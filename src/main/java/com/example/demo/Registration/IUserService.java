@@ -23,4 +23,6 @@ public interface IUserService<ID, USER> {
     Boolean setUserState(String userName,String locationTitle) throws  Exception;
 
     String checkUserState();
+
+    Boolean buyLife(String userName) throws Exception;
 }
