@@ -4,9 +4,9 @@ variables:
   PROJECT_VERSION: 0.0.1
 
 before_script:
-  - git remote set-url origin https://$GIT_USER:$GIT_PASSWORD@gitlab.com/9gang/treasurehunt_back_end.git
+  - git remote set-url origin https://$GIT_USER:$GIT_PASSWORD@gitlab.com/$CI_PROJECT_PATH.git
   - git config --global user.email 'msn4l2@hotmail.com'
-  - git config --global user.name 'Marko Gila'
+  - git config --global user.name 'marko_gi'
 
 stages:
   - build
