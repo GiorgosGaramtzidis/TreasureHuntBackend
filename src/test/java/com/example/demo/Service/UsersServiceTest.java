@@ -1,9 +1,11 @@
 package com.example.demo.Service;
 
+import com.example.demo.dao.LocationsRepositoryNew;
 import com.example.demo.dao.UsersRepository;
+import com.example.demo.model.LocationsNew;
+import com.example.demo.model.Question;
 import com.example.demo.model.User;
 import com.example.demo.model.UserState;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class UsersServiceTest {
 
     @Autowired
     UsersService usersService;
+
+    @MockBean
+    LocationsRepositoryNew locationsRepository;
 
     @Test(expected = Exception.class)
     public void loginConfirmationWhenUserDoesNotExistShouldCreateException() throws Exception {
@@ -239,5 +244,38 @@ public class UsersServiceTest {
         when(usersRepository.existsByUserName(null)).thenReturn(false);
         usersService.addScore(null,5);
         fail("User Doesnt Exists");
+    }
+
+    @Test(expected = Exception.class)
+    public void boughtAnswerWithWrongName() throws Exception {
+        when(usersRepository.existsByUserName("noo")).thenReturn(false);
+        usersService.boughtAnswer("noo","bibliothiki");
+        fail("This should return User does not exist");
+    }
+
+    @Test
+    public void boughtAnswerWithRightName() throws Exception {
+        List<User> usersList = new ArrayList<>();
+        User user = new User();
+        user.setUserName("Thalia");
+        usersList.add(user);
+        List<LocationsNew> locationsList = new ArrayList<>();
+        Question question = new Question("What","That",5);
+        LocationsNew location = new LocationsNew();
+        location.setTitle("Start");
+        location.setQuestions(question);
+        when(usersRepository.existsByUserName(user.getUserName())).thenReturn(true);
+
+        when(usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserName()
+                        .equals(user.getUserName()))
+                .collect(Collectors.toList())).thenReturn(usersList);
+
+        when(locationsRepository.findAll().stream()
+                .filter(locationsNew -> locationsNew.getTitle()
+                        .equals(location.getTitle()))
+                .collect(Collectors.toList())).thenReturn(locationsList);
+        String actualResult = usersService.boughtAnswer("Thalia","Start");
+        assertEquals("What",actualResult);
     }
 }
