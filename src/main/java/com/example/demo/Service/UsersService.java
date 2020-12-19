@@ -136,4 +136,25 @@ public class UsersService implements IUserService<UUID, User> {
         throw new Exception("UserName doesn't Exists");
     }
 
+    @Override
+    public Boolean buyLife(String userName) throws Exception {
+        if(usersRepository.existsByUserName(userName)){
+            List<User> user = usersRepository.findAll().stream()
+                    .filter(user1 -> user1.getUserName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
+
+            if(user.get(0).getUserLives()==1 && user.get(0).getScore()>=20){
+                user.get(0).setUserLives(user.get(0).getUserLives()+1);
+                user.get(0).setScore(user.get(0).getScore()-10);
+                usersRepository.save(user.get(0));
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else
+            throw new Exception("Wrong id");
+    }
 }
