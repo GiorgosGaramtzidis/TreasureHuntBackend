@@ -1,6 +1,7 @@
 package com.example.demo.Service;
 import static org.junit.Assert.*;
 import com.example.demo.dao.LocationsRepositoryNew;
+import com.example.demo.dao.UsersRepository;
 import com.example.demo.model.LocationsNew;
 import org.bson.types.ObjectId;
 import org.junit.Test;
@@ -11,6 +12,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.constraints.NotNull;
+
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.jayway.jsonpath.internal.path.PathCompiler.fail;
 import static org.mockito.Mockito.when;
@@ -23,18 +28,9 @@ public class LocationServicesTest {
     @MockBean
     LocationsRepositoryNew locationsRepositoryNew;
 
-
     @Autowired
     LocationServices locationServices;
 
-
-    @Test(expected = Exception.class)
-     public void WhenStartLocationDoesNotExistShouldCreateExceptioon() throws Exception {
-        LocationsNew locationsNew = new LocationsNew();
-        locationsNew.setTitle(null);
-        when(locationsRepositoryNew.getStartLocation().getTitle()).thenReturn(locationsNew.getTitle());
-        assertEquals(null,locationsNew.getTitle());
-    }
 
 
     @Test
@@ -43,8 +39,8 @@ public class LocationServicesTest {
         LocationsNew locationsNew = new LocationsNew();
         locationsNew.setTitle("Kafeteria");
         locationsNew.setNextLocation("Grammatia");
-        when(locationsRepositoryNew.getNextLocation("Kafeteria")).thenReturn(locationsNew);
-        String location = locationServices.getNextLocation("Kafeteria").getNextLocation();
+        when(locationsRepositoryNew.getNextLocation(locationsNew.getTitle())).thenReturn(locationsNew);
+        String location = locationServices.getNextLocation(locationsNew.getTitle()).getNextLocation();
         assertEquals("Grammatia", location);
     }
     @Test(expected = Exception.class)
@@ -144,6 +140,43 @@ public class LocationServicesTest {
     }
 
 
+    @Test(expected = Exception.class)
+    public void GetAllLocationThrowExceptionIfNotExist() throws Exception{
+        List<LocationsNew> locationsNewList = new ArrayList<LocationsNew>();
+        when(locationsRepositoryNew.existsById(new ObjectId("5fba658ea01cf8e17f34255c"))).thenReturn(true);
+        assertEquals(locationsNewList.isEmpty(),locationServices.getAllLocations());
+    }
 
+    @Test
+    public void GetAllLocationIfExist() throws Exception{
+        List<LocationsNew> locationsNewList = new ArrayList<LocationsNew>();
+        LocationsNew locationsNew = new LocationsNew();
+        locationsNew.setTitle("Sokra");
+        locationsNew.setNextLocation("Kafeteria");
+        locationsNew.setV(1234);
+        locationsNew.setV1(1234);
+        locationsNewList.add(locationsNew);
+        when(locationsRepositoryNew.findAll()).thenReturn(locationsNewList);
+        assertEquals(locationsNewList,locationServices.getAllLocations());
+    }
+
+    @Test
+    public void WhenStartLocationExistThenReturnThisLocation() throws Exception {
+        LocationsNew locationsNew = new LocationsNew();
+        locationsNew.setTitle("Start");
+        when(locationsRepositoryNew.getStartLocation()).thenReturn(locationsNew);
+        assertEquals(locationsNew.getTitle(),locationServices.getStartLocation().getTitle());
+    }
+
+    @Test(expected = Exception.class)
+    public void WhenStartLocationNotExistThenThrowException() throws Exception{
+        LocationsNew locationsNew = new LocationsNew();
+        locationsNew.setId(new ObjectId("5fba658ea01cf8e17f34255c"));
+        locationsNew.setV(42.44);
+        locationsNew.setV1(32.65);
+        locationsNew.setNextLocation("Start");
+        when(locationsRepositoryNew.existsById(new ObjectId("5fba658ea01cf8e17f34255c"))).thenReturn(true);
+        assertEquals(locationsNew.getTitle(),locationServices.getStartLocation().getTitle());
+    }
 
 }
