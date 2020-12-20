@@ -18,32 +18,6 @@ public class LeaderBoardServices implements LeaderBoardRegistration<String,Leade
 
     @Autowired
     LeaderBoardRepository leaderBoardRepository;
-/*
-@GetMapping
-public List<User> getTopTenUsers() throws Exception {
-    if (usersRepository.findAll().isEmpty()) {
-        throw new Exception("Collection is Empty");
-    } else {
-        List<User> usersList = usersRepository.findAll();
-        List<User> shortedUsers = usersList.stream().sorted(Comparator.comparing(User::getScore).reversed()).collect(Collectors.toList());
-
-        List<User> shortedTenUsers = new ArrayList<>();
-        if (shortedUsers.size() < 10) {
-            return shortedUsers;
-        } else {
-
-            for (int i = 0; i < 10; i++) {
-                shortedTenUsers.add(i, shortedUsers.get(i));
-            }
-            return shortedTenUsers;
-        }
-    }
-
-    }
-
- */
-
-
 
 
     @Override
@@ -60,11 +34,11 @@ public List<User> getTopTenUsers() throws Exception {
         if (leaderBoardRepository.findAll().isEmpty()) {
             throw new Exception("Collection is Empty");
         } else {
-           // List<LeaderBoardUser> leaderBoardUsers = getLeaderBoard();
+
            List<LeaderBoardUser> leaderBoardUsers = leaderBoardRepository.findAll().stream().sorted(Comparator.comparing(LeaderBoardUser::getScore).reversed()).collect(Collectors.toList());
 
             return  leaderBoardUsers;
-           //return leaderBoardRepository.findAll();
+
         }
     }
 
@@ -86,12 +60,7 @@ public Integer updateLeaderBoard(String leaderBoardName,int score) throws Except
         throw new Exception("Wrong Name");
     }
 
-
 }
-
-
-
-
 
 }
 

@@ -17,26 +17,16 @@ public class LeaderBoardController {
     @Autowired
     private LeaderBoardServices leaderBoardServices;
 
-/*
-    @GetMapping("/topTen")
-    ResponseEntity getTopTenLeaderBoard() throws Exception{
-        return new ResponseEntity<>(leaderBoardServices.getTopTenUsers(), HttpStatus.OK);
-    }
-
- */
 @PostMapping("/addLeaderBoardUser")
 ResponseEntity addLeaderBoardUser(@RequestBody LeaderBoardUser leaderBoardUser) throws Exception {
     return new ResponseEntity<>(leaderBoardServices.addLeaderBoardUser(leaderBoardUser),HttpStatus.OK);
 }
-
 
     @PatchMapping(path = "/updateLeaderBoard")
     public ResponseEntity update(@RequestParam String leaderBoardName,@RequestParam int score)
             throws Exception {
 
         return new ResponseEntity<>(leaderBoardServices.updateLeaderBoard(leaderBoardName,score),HttpStatus.OK);}
-
-
 
 
     @GetMapping("/all")

@@ -86,7 +86,6 @@ public class LeaderBoardUserServicesTest {
         List<LeaderBoardUser> leaderBoardUserList = new ArrayList<>();
          leaderBoardUserList.add(leaderBoardUser);
        when(leaderBoardRepository.findAll()).thenReturn(leaderBoardUserList);
-        //leaderBoardRepository.save(leaderBoardUser);
         leaderBoardServices.getLeaderBoard();
 
 }
