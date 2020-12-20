@@ -88,4 +88,8 @@ public class UsersController {
     public ResponseEntity boughtAnswer(@RequestParam("userName") String userName, @RequestParam("question") String question) throws Exception{
         return new ResponseEntity<>(usersService.boughtAnswer(userName,question),HttpStatus.OK);
     }
+    @PatchMapping(path = "/buyLife")
+    public ResponseEntity buyLife(@RequestParam String  userName) throws Exception {
+        return new ResponseEntity<>(usersService.buyLife(userName),HttpStatus.OK);
+    }
 }
