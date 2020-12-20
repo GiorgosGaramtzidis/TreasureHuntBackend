@@ -48,20 +48,28 @@ public class LeaderBoardUserServicesTest {
     public void IfLeaderBoardUserDoesNotExistForUpDate()throws  Exception{
         LeaderBoardUser leaderBoardUser = new LeaderBoardUser();
         leaderBoardUser.setLeaderBoardName("NIKOS");
+        leaderBoardUser.setScore(5);
+        List<LeaderBoardUser> leaderBoardUserList = new ArrayList<>();
+        leaderBoardUserList.add(leaderBoardUser);
 
-        when(leaderBoardRepository.existsById("NIKOS")).thenReturn(false);
+        when(leaderBoardRepository.findAll()).thenReturn(leaderBoardUserList);
+
+        when(leaderBoardRepository.existsByLeaderBoardName("ANNA")).thenReturn(false);
         leaderBoardServices.updateLeaderBoard(leaderBoardUser.getLeaderBoardName(), 500);
 
     }
 
     @Test
-    public void IfLeaderBoardUserExistForUpDate()throws  Exception{
+    public void IfLeaderBoardUserExistForUpDate() throws  Exception{
         LeaderBoardUser leaderBoardUser = new LeaderBoardUser();
         leaderBoardUser.setLeaderBoardName("NIKOS");
-        leaderBoardUser.setScore(0);
+        leaderBoardUser.setScore(5);
+        List<LeaderBoardUser> leaderBoardUserList = new ArrayList<>();
+        leaderBoardUserList.add(leaderBoardUser);
 
-        when(leaderBoardRepository.findAll().isEmpty()).thenReturn(false);
-       // when(leaderBoardRepository.existsById("NIKOS")).thenReturn(true);
+        when(leaderBoardRepository.findAll()).thenReturn(leaderBoardUserList);
+
+        when(leaderBoardRepository.existsByLeaderBoardName("NIKOS")).thenReturn(true);
         leaderBoardServices.updateLeaderBoard(leaderBoardUser.getLeaderBoardName(), 500);
 
     }
