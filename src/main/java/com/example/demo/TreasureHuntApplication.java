@@ -9,6 +9,7 @@ public class TreasureHuntApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(TreasureHuntApplication.class, args);
+
 	}
 
 }

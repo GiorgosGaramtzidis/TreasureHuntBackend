@@ -1,0 +1,46 @@
+image: jangrewe/gitlab-ci-android
+
+variables:
+  PROJECT_VERSION: 0.0.1
+
+before_script:
+  - git remote set-url origin https://$GIT_USER:$GIT_PASSWORD@gitlab.com/$CI_PROJECT_PATH.git
+  - git config --global user.email 'msn4l2@hotmail.com'
+  - git config --global user.name 'Marko Gila'
+
+stages:
+  - build
+  - release
+
+maven-build:
+  image: maven:3-jdk-11
+  stage: build
+  only:
+    - master
+  script:
+    - sed -i 's/CI_PIPELINE_ID/${CI_PIPELINE_ID}/g' pom.xml
+    - sed -i 's/PROJECT_VERSION/${PROJECT_VERSION}/g' pom.xml
+    - mvn clean package
+  artifacts:
+    paths:
+      - target/*.jar
+
+assembleRelease:
+  stage: release
+  only:
+    - master
+  script:
+    - git log --pretty=format:"%cd %s" > changelog.txt
+    - git tag demo-${PROJECT_VERSION}-${CI_PIPELINE_ID} -F changelog.txt
+    - git push origin demo-${PROJECT_VERSION}-${CI_PIPELINE_ID}
+    - |
+      curl --fail --output "/dev/null" --silent --show-error --write-out "HTTP response: ${http_code}\n\n" \
+        --data "{\"tag_name\": \"demo-${PROJECT_VERSION}-${CI_PIPELINE_ID}\", \"name\": \"${CI_PROJECT_NAME} demo-${PROJECT_VERSION}-${CI_PIPELINE_ID}\",  \"assets\": { \"links\": [{ \"name\": \"release\", \"url\": \"https://https://gitlab.com/9gang/treasurehunt_back_end/-/jobs/${CI_JOB_ID}/artifacts/download\" }] }, \"description\": \"No release notes.\"}" \
+        --header "Content-Type: application/json" \
+        --header "Private-Token: ${TOKEN}" \
+        --request POST \
+        "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/releases"
+  artifacts:
+    paths:
+      - target/*.jar
+      - changelog.txt

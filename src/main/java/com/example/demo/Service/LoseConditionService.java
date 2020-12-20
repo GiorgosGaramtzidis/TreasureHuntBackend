@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class LoseConditionService implements LoseConditionRegistration<User> {
-
+    private Boolean hasLost;
     @Autowired
     UsersRepository usersRepository;
     @Override
-    public Integer loseCondition(String userName) throws Exception {
+    public Boolean loseCondition(String userName) throws Exception {
         if(usersRepository.existsByUserName(userName))
         {
             List<User> user = usersRepository.findAll().stream()
@@ -28,11 +28,17 @@ public class LoseConditionService implements LoseConditionRegistration<User> {
                     .collect(Collectors.toList());
 
                 if(user.get(0).getUserLives()<=1){
-                     throw new Exception("Out of lives");
+                    hasLost = true;
+                    System.out.println("+++++");
+                    return true;
+
                 } else{
                      user.get(0).setUserLives(user.get(0).getUserLives()-1);
                      usersRepository.save(user.get(0));
-                     return user.get(0).getUserLives();
+                     user.get(0).getUserLives();
+                     hasLost = false;
+                    System.out.println("------");
+                     return false;
                 }
         }else {
             throw new Exception("Wrong id");
