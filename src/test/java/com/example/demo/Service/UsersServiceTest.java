@@ -1,5 +1,6 @@
 package com.example.demo.Service;
 
+import com.example.demo.dao.LocationsRepositoryNew;
 import com.example.demo.dao.UsersRepository;
 import com.example.demo.model.User;
 import com.example.demo.model.UserState;
