@@ -193,12 +193,14 @@ public class UsersService implements IUserService<UUID, User> {
 
             usersRepository.save(user.get(0));
 
-            List<Question> questions = questionsRepository.findAll().stream()
-                    .filter(question1 -> question1.getQuestion()
-                            .equals(question))
-                    .collect(Collectors.toList());
-
-            return questions.get(0).getAnswer();
+            if(questionsRepository.existsByQuestion(question)){
+                List<Question> questions = questionsRepository.findAll().stream()
+                        .filter(question1 -> question1.getQuestion()
+                                .equals(question))
+                        .collect(Collectors.toList());
+                return questions.get(0).getAnswer();
+            }
+            throw new Exception("Question does not exist");
         }
         throw new Exception("User does not exist");
     }
