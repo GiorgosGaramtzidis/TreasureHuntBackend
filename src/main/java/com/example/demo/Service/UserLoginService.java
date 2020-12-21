@@ -34,10 +34,10 @@ public class UserLoginService implements ILoginService
         usersRepository.findUserByUserName(username).setStatus(Status.Away);
     }
     @Override
-    public void updateUserStatus(String username,Status stattus)
+    public void updateUserStatus(String username,Status status)
     {
         User user =usersRepository.findUserByUserName(username);
-        user.setStatus(stattus);
+        user.setStatus(status);
         usersRepository.save(user);
     }
 }

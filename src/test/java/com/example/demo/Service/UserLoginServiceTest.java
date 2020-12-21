@@ -11,16 +11,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static com.example.demo.model.Status.Away;
+import static com.example.demo.model.Status.Connected;
 import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserLoginServiceTest {
 
     @Autowired
-    private UserLoginService userLoginService;
+     UserLoginService userLoginService;
 
     @MockBean
-    private UsersRepository usersRepository;
+     UsersRepository usersRepository;
 
     @Test(expected = Exception.class)
     public void testWhenUserTriesToLogInWithAWrongUserName() throws Exception
@@ -54,7 +56,17 @@ public class UserLoginServiceTest {
 
         User user = userLoginService.confirmLogin(username, password);
 
-        assertEquals(user.getStatus(), Status.Connected);
+        assertEquals(user.getStatus(), Connected);
 
     }
+   @Test
+    public void UpdateUserStatusWhenPersonIsConnected() {
+        User user = new User();
+        user.setUserName("Sokra123");
+        user.setStatus(Connected);
+
+        Mockito.when(usersRepository.findUserByUserName(user.getUserName())).thenReturn(user);
+        userLoginService.LogOutUser(user.getUserName());
+        assertEquals(Away,user.getStatus());
+   }
 }
