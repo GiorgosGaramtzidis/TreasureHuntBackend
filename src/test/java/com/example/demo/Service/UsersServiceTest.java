@@ -31,14 +31,16 @@ public class UsersServiceTest {
     @Autowired
     UsersService usersService;
 
+    @MockBean
+    LocationsRepositoryNew locationsRepository;
+
     @Test(expected = Exception.class)
     public void loginConfirmationWhenUserDoesNotExistShouldCreateException() throws Exception {
 
         when(usersRepository.existsByUserName("Konto4")).thenReturn(false);
-        usersService.loginConfirmation("Konto4", "3");
+        usersService.loginConfirmation("Konto4","3");
         fail("This should return User does not exist");
     }
-
     @Test
     public void loginConfirmationWhenUserDoesExistButPasswordIsWrongShouldReturnFalse() throws Exception {
 
@@ -50,7 +52,7 @@ public class UsersServiceTest {
         when(usersRepository.findUserByUserName("blah")).thenReturn(user);
 
         Boolean actualResult = usersService.loginConfirmation("blah", "foo3");
-        assertEquals(false, actualResult);
+        assertEquals(false,actualResult);
     }
 
     @Test
@@ -64,7 +66,7 @@ public class UsersServiceTest {
         when(usersRepository.findUserByUserName("blah")).thenReturn(user);
 
         Boolean actualResult = usersService.loginConfirmation("blah", "foo");
-        assertEquals(true, actualResult);
+        assertEquals(true,actualResult);
     }
 
     @Test(expected = Exception.class)
@@ -168,9 +170,8 @@ public class UsersServiceTest {
 
 
         Boolean actualResult = usersService.restartScoreAndLives("blah");
-        assertEquals(true, actualResult);
+        assertEquals(true,actualResult);
     }
-
     @Test
     public void setUserStateWhenLocationTitleIsEND() throws Exception {
 
@@ -184,7 +185,7 @@ public class UsersServiceTest {
                 .filter(user1 -> user1.getUserName().equals(user.getUserName()))
                 .collect(Collectors.toList())).thenReturn(users);
         Boolean actualResult = usersService.setUserState("Marko1996", "end");
-        assertEquals(true, actualResult);
+        assertEquals(true,actualResult);
     }
 
     @Test
@@ -200,7 +201,7 @@ public class UsersServiceTest {
                 .filter(user1 -> user1.getUserName().equals(user.getUserName()))
                 .collect(Collectors.toList())).thenReturn(users);
         Boolean actualResult = usersService.setUserState("Marko1996", "Gate");
-        assertEquals(false, actualResult);
+        assertEquals(false,actualResult);
     }
 
     @Test
@@ -217,7 +218,7 @@ public class UsersServiceTest {
                         .equals(UserState.WIN))
                 .collect(Collectors.toList())).thenReturn(users);
         String actualResult = usersService.checkUserState();
-        assertEquals("Marko1996", actualResult);
+        assertEquals("Marko1996",actualResult);
     }
 
     @Test
@@ -230,18 +231,16 @@ public class UsersServiceTest {
                         .equals(UserState.WIN))
                 .collect(Collectors.toList())).thenReturn(users);
         String actualResult = usersService.checkUserState();
-        assertEquals("PLAYING", actualResult);
+        assertEquals("PLAYING",actualResult);
     }
-
     @Test(expected = Exception.class)
-    public void getUserScoreWhileUserDoesntExistsShouldCreateException() throws Exception {
+    public void getUserScoreWhileUserDoesntExistsShouldCreateException() throws Exception{
         when(usersRepository.existsByUserName("Giwrgos")).thenReturn(false);
         usersService.getUserScore("Giwrgos");
         fail("User Doesnt Exists");
     }
-
     @Test
-    public void getUserScoreWhileUserDoesExistsShouldReturnScore() throws Exception {
+    public void getUserScoreWhileUserDoesExistsShouldReturnScore() throws Exception{
 
         List<User> users = new ArrayList<>();
         User user = new User();
@@ -252,34 +251,32 @@ public class UsersServiceTest {
         when(usersRepository.findAll().stream().filter(user1 -> user1.getUserName().equals(user.getUserName()))
                 .collect(Collectors.toList())).thenReturn(users);
         int actualResult = usersService.getUserScore(user.getUserName());
-        assertEquals(50, actualResult);
+        assertEquals(50,actualResult);
     }
 
     @Test(expected = Exception.class)
-    public void getUserScoreWhileUserIsNullShouldCreateException() throws Exception {
+    public void getUserScoreWhileUserIsNullShouldCreateException() throws Exception{
         when(usersRepository.existsByUserName(null)).thenReturn(false);
         usersService.getUserScore(null);
         fail("User Doesnt Exists");
     }
 
     @Test(expected = Exception.class)
-    public void deleteUserWhenIdDoesntExistsShouldReturnException() throws Exception {
+    public void deleteUserWhenIdDoesntExistsShouldReturnException() throws Exception{
         when(usersRepository.existsById("fdsgfdasgasd")).thenReturn(false);
         usersService.deleteUser("fdsgfdasgasd");
         fail("User DoesntExists");
     }
-
     @Test
-    public void deleteUserWhenIdDoesExistsShouldDeleteTheUser() throws Exception {
+    public void deleteUserWhenIdDoesExistsShouldDeleteTheUser() throws Exception{
         User user = new User();
         user.setId("foo");
         user.setUserName("Giorgos");
         when(usersRepository.existsById("foo")).thenReturn(true);
         usersService.deleteUser("foo");
     }
-
     @Test
-    public void updateUserShouldUpdateTheUser() throws Exception {
+    public void updateUserShouldUpdateTheUser() throws Exception{
         User user = new User();
         user.setId("foo");
         user.setUserName("Giorgos");
@@ -287,14 +284,14 @@ public class UsersServiceTest {
     }
 
     @Test(expected = Exception.class)
-    public void getUserWhenIdDoesntExistsShouldReturnException() throws Exception {
+    public void getUserWhenIdDoesntExistsShouldReturnException() throws Exception{
         when(usersRepository.existsByUserName("noo")).thenReturn(false);
         usersService.getUser("noo");
         fail("This should return User does not exist");
     }
 
     @Test
-    public void getUserWhenIdDoesExistsShouldReturnUser() throws Exception {
+    public void getUserWhenIdDoesExistsShouldReturnUser() throws Exception{
         User user = new User();
         user.setId("foo");
         when(usersRepository.existsById("foo")).thenReturn(true);
@@ -302,7 +299,7 @@ public class UsersServiceTest {
     }
 
     @Test
-    public void addUserScoreWhenUserExistsByUserNameShouldAddUsersScore() throws Exception {
+    public void addUserScoreWhenUserExistsByUserNameShouldAddUsersScore() throws Exception{
         List<User> users = new ArrayList<>();
         User user = new User();
         user.setUserName("Athina");
@@ -311,21 +308,20 @@ public class UsersServiceTest {
         when(usersRepository.existsByUserName("Athina")).thenReturn(true);
         when(usersRepository.findAll().stream().filter(user1 -> user1.getUserName().equals(user.getUserName()))
                 .collect(Collectors.toList())).thenReturn(users);
-        int actualResult = usersService.addScore(user.getUserName(), 10);
-        assertEquals(1, actualResult);
+        int actualResult = usersService.addScore(user.getUserName(),10);
+        assertEquals(1,actualResult);
     }
 
     @Test(expected = Exception.class)
-    public void addUserScoreWhenIdDoesntExistsShouldReturnException() throws Exception {
+    public void addUserScoreWhenIdDoesntExistsShouldReturnException() throws Exception{
         when(usersRepository.existsByUserName("noo")).thenReturn(false);
-        usersService.addScore("noo", 5);
+        usersService.addScore("noo",5);
         fail("This should return User does not exist");
     }
-
     @Test(expected = Exception.class)
-    public void addUserScoreWhileUserIsNullShouldCreateException() throws Exception {
+    public void addUserScoreWhileUserIsNullShouldCreateException() throws Exception{
         when(usersRepository.existsByUserName(null)).thenReturn(false);
-        usersService.addScore(null, 5);
+        usersService.addScore(null,5);
         fail("User Doesnt Exists");
     }
 
@@ -357,6 +353,55 @@ public class UsersServiceTest {
 
         when(usersRepository.existsByUserName("Sokra")).thenReturn(false);
         assertEquals(true,usersService.registerUser(user));
+    }
+
+
+    @Test
+    public void buyLifeWhenUserExistsByUserNameAndUserLivesAreEqualToOneAndUserPointsAreTwentyOrMoreShouldReturnTrue() throws Exception{
+        List<User> users = new ArrayList<>();
+        User user = new User();
+        user.setUserName("Konto41");
+        user.setUserLives(1);
+        user.setScore(25);
+        users.add(user);
+        when(usersRepository.existsByUserName("Konto41")).thenReturn(true);
+        when(usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserName()
+                        .equals(user.getUserName()))
+                .collect(Collectors.toList())).thenReturn(users);
+        Boolean actualResult = usersService.buyLife(user.getUserName());
+        assertEquals(true,actualResult);
+    }
+
+    @Test
+    public void buyLifeWhenUserExistsByUserNameAndUserLivesAreMoreOrLessThanOneAndUserPointsAreLessThanTwentyShouldReturnFalse() throws Exception{
+        List<User> users = new ArrayList<>();
+        User user = new User();
+        user.setUserName("Konto41");
+        user.setUserLives(3);
+        user.setScore(10);
+        users.add(user);
+        when(usersRepository.existsByUserName("Konto41")).thenReturn(true);
+        when(usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserName()
+                        .equals(user.getUserName()))
+                .collect(Collectors.toList())).thenReturn(users);
+        Boolean actualResult = usersService.buyLife(user.getUserName());
+        assertEquals(false,actualResult);
+    }
+    @Test(expected = Exception.class)
+    public void buyLifeIfUserDoesNotExistsByUserNameShouldReturnException() throws Exception{
+
+        when(usersRepository.existsByUserName("foo")).thenReturn(false);
+        usersService.buyLife("foo");
+        fail("This should return wrong id");
+    }
+    @Test(expected = Exception.class)
+    public void buyLifeIfUserIsNullShouldReturnException() throws Exception{
+
+        when(usersRepository.existsByUserName(null)).thenReturn(false);
+        usersService.buyLife(null);
+        fail("This should return wrong id");
     }
 
 }

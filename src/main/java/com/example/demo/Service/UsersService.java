@@ -1,7 +1,9 @@
 package com.example.demo.Service;
 
 import com.example.demo.Registration.IUserService;
+import com.example.demo.dao.QuestionsRepository;
 import com.example.demo.dao.UsersRepository;
+import com.example.demo.model.Question;
 import com.example.demo.model.User;
 import com.example.demo.model.UserState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,13 @@ public class UsersService implements IUserService<UUID, User> {
     @Autowired
     private UsersRepository usersRepository;
 
+    @Autowired
+    private QuestionsRepository questionsRepository;
+
     @Override
     public Boolean registerUser(User user) throws Exception {
         if (usersRepository.existsByUserName(user.getUserName())) {
-            throw new Exception("User with this username : "+user.getUserName()+" already exists");
+            throw new Exception("User with this username : " + user.getUserName() + " already exists");
         }
         usersRepository.save(user);
         return true;
@@ -29,7 +34,7 @@ public class UsersService implements IUserService<UUID, User> {
 
     @Override
     public Optional<User> getUser(String userId) throws Exception {
-        if(!usersRepository.existsById(userId))
+        if (!usersRepository.existsById(userId))
             throw new Exception("User Does not exists");
         return usersRepository.findById(userId);
     }
@@ -56,13 +61,13 @@ public class UsersService implements IUserService<UUID, User> {
 
 
     @Override
-    public int addScore(String userName,int score) throws Exception{
-        if(usersRepository.existsByUserName(userName)) {
+    public int addScore(String userName, int score) throws Exception {
+        if (usersRepository.existsByUserName(userName)) {
             List<User> user = usersRepository.findAll().stream()
                     .filter(user1 -> user1.getUserName()
                             .equals(userName))
                     .collect(Collectors.toList());
-            user.get(0).setScore(user.get(0).getScore()+score);
+            user.get(0).setScore(user.get(0).getScore() + score);
             usersRepository.save(user.get(0));
             return 1;
         }
@@ -110,7 +115,7 @@ public class UsersService implements IUserService<UUID, User> {
     }*/
 
     @Override
-    public Boolean setUserState(String userName,String locationTitle) throws Exception {
+    public Boolean setUserState(String userName, String locationTitle) throws Exception {
         if (usersRepository.existsByUserName(userName)) {
             List<User> user = usersRepository.findAll().stream()
                     .filter(user1 -> user1.getUserName()
@@ -132,26 +137,27 @@ public class UsersService implements IUserService<UUID, User> {
                 .filter(user1 -> user1.getUserState()
                         .equals(UserState.WIN))
                 .collect(Collectors.toList());
-        if ((user.size())==0)
+        if ((user.size()) == 0)
             return UserState.PLAYING.toString();
         else
             return user.get(0).getUserName();
     }
+
     @Override
-    public int getUserScore(String userName) throws Exception{
-        if(usersRepository.existsByUserName(userName)) {
-              List<User> user = usersRepository.findAll().stream()
-                      .filter(user1 -> user1.getUserName()
-                              .equals(userName))
-                      .collect(Collectors.toList());
+    public int getUserScore(String userName) throws Exception {
+        if (usersRepository.existsByUserName(userName)) {
+            List<User> user = usersRepository.findAll().stream()
+                    .filter(user1 -> user1.getUserName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
             return user.get(0).getScore();
         }
         throw new Exception("User does not exist");
     }
 
     @Override
-    public Boolean restartScoreAndLives(String userName) throws Exception{
-        if(usersRepository.existsByUserName(userName)) {
+    public Boolean restartScoreAndLives(String userName) throws Exception {
+        if (usersRepository.existsByUserName(userName)) {
             List<User> user = usersRepository.findAll().stream()
                     .filter(user1 -> user1.getUserName()
                             .equals(userName))
@@ -166,9 +172,9 @@ public class UsersService implements IUserService<UUID, User> {
     }
 
     @Override
-    public  Boolean loginConfirmation(String username, String password) throws Exception{
+    public Boolean loginConfirmation(String username, String password) throws Exception {
         if (usersRepository.existsByUserName(username)) {
-            String UsersPassword =usersRepository.findUserByUserName(username).getPassword();
+            String UsersPassword = usersRepository.findUserByUserName(username).getPassword();
             if (UsersPassword.equals(password))
                 return true;
             return false;
@@ -176,4 +182,45 @@ public class UsersService implements IUserService<UUID, User> {
         throw new Exception("UserName doesn't Exists");
     }
 
+    @Override
+    public String boughtAnswer(String userName, String question) throws Exception {
+        if (usersRepository.existsByUserName(userName)) {
+            List<User> user = usersRepository.findAll().stream()
+                    .filter(user1 -> user1.getUserName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
+            user.get(0).setScore(user.get(0).getScore() - 10);
+
+            usersRepository.save(user.get(0));
+
+            List<Question> questions = questionsRepository.findAll().stream()
+                    .filter(question1 -> question1.getQuestion()
+                            .equals(question))
+                    .collect(Collectors.toList());
+
+            return questions.get(0).getAnswer();
+        }
+        throw new Exception("User does not exist");
+    }
+    @Override
+    public Boolean buyLife(String userName) throws Exception {
+        if(usersRepository.existsByUserName(userName)){
+            List<User> user = usersRepository.findAll().stream()
+                    .filter(user1 -> user1.getUserName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
+
+            if(user.get(0).getUserLives()==1 && user.get(0).getScore()>=20){
+                user.get(0).setUserLives(user.get(0).getUserLives()+1);
+                user.get(0).setScore(user.get(0).getScore()-10);
+                usersRepository.save(user.get(0));
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else
+            throw new Exception("Wrong id");
+    }
 }

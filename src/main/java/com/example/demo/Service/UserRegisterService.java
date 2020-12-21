@@ -1,7 +1,9 @@
 package com.example.demo.Service;
 
 import com.example.demo.Registration.IUserRegisterService;
+import com.example.demo.dao.LeaderBoardRepository;
 import com.example.demo.dao.UsersRepository;
+import com.example.demo.model.LeaderBoardUser;
 import com.example.demo.model.RegistrationAnswer;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ public class UserRegisterService implements IUserRegisterService {
 
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private LeaderBoardRepository leaderBoardRepository;
 
     @Override
     public RegistrationAnswer registerUser(String userName , String passWord)
@@ -23,7 +27,9 @@ public class UserRegisterService implements IUserRegisterService {
         }
         if (passWordValidator(passWord) && userNameValidator(userName))
             {
-                usersRepository.save(new User(userName,passWord));
+                User user = new User(userName,passWord);
+                usersRepository.save(user);
+                leaderBoardRepository.save(new LeaderBoardUser(userName,user.getId()));
                  registrationAnswer.setAnswer("User register successfully");
                  return registrationAnswer;
             }
