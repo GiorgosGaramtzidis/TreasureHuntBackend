@@ -1,7 +1,10 @@
 package com.example.demo.Service;
 
 import com.example.demo.dao.LocationsRepositoryNew;
+import com.example.demo.dao.QuestionsRepository;
 import com.example.demo.dao.UsersRepository;
+import com.example.demo.model.Question;
+import com.example.demo.model.Status;
 import com.example.demo.model.User;
 import com.example.demo.model.UserState;
 import org.junit.Before;
@@ -33,7 +36,7 @@ public class UsersServiceTest {
     UsersService usersService;
 
     @MockBean
-    LocationsRepositoryNew locationsRepository;
+    QuestionsRepository questionsRepository;
 
     @Test(expected = Exception.class)
     public void loginConfirmationWhenUserDoesNotExistShouldCreateException() throws Exception {
@@ -405,4 +408,41 @@ public class UsersServiceTest {
         fail("This should return wrong id");
     }
 
+    @Test(expected = Exception.class)
+    public void boughtAnswerWithWrongUserNameShouldThrowException() throws Exception {
+        when(usersRepository.existsByUserName("foo")).thenReturn(false);
+        usersService.boughtAnswer("foo","what colour is the sky?");
+        fail("User does not exist");
+    }
+
+    @Test(expected = Exception.class)
+    public void boughtAnswerWithWrongQuestionShouldThrowException() throws Exception {
+        when(usersRepository.existsByUserName("foo")).thenReturn(true);
+        when(questionsRepository.existsByQuestion("what colour is the sky?")).thenReturn(false);
+        usersService.boughtAnswer("foo","what colour is the sky?");
+        fail("Question does not exist");
+    }
+
+    @Test
+    public void boughtAnswerWithRightUserNameAndRightQuestionShouldReturnTheAnswer() throws Exception {
+        User user = new User("1","foo",0,"123",3, Status.Away,UserState.PLAYING);
+        List<User> userList = new ArrayList<>();
+        userList.add(user);
+        Question question = new Question("1","what colour is the sky?","blue",5);
+        List<Question> questList = new ArrayList<>();
+        questList.add(question);
+        when(usersRepository.existsByUserName("foo")).thenReturn(true);
+        when(usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserName()
+                        .equals("foo"))
+                .collect(Collectors.toList())).thenReturn(userList);
+        when(questionsRepository.existsByQuestion("what colour is the sky?")).thenReturn(true);
+        when( questionsRepository.findAll().stream()
+                .filter(question1 -> question1.getQuestion()
+                        .equals("what colour is the sky?"))
+                .collect(Collectors.toList())).thenReturn(questList);
+        String actualResult = usersService.boughtAnswer("foo","what colour is the sky?");
+
+        assertEquals("blue",actualResult);
+    }
 }
