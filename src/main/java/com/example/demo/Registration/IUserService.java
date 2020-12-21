@@ -14,6 +14,10 @@ public interface IUserService<ID, USER> {
 
     int getUserScore(String userName) throws Exception;
 
+    String changeName(String userName , String newName) throws Exception;
+
+    String changePassword(String userName , String newPass) throws Exception;
+
     Boolean restartScoreAndLives(String userName) throws Exception;
 
     Boolean loginConfirmation(String username, String password) throws  Exception;

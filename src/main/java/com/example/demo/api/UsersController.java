@@ -59,6 +59,16 @@ public class UsersController {
         return new ResponseEntity<>(usersService.addScore(userName,score),HttpStatus.OK);
     }
 
+    @PatchMapping("/changeName")
+    public ResponseEntity changeName(@RequestParam ("userName") String userName ,@RequestParam ("newName") String newName) throws Exception {
+        return new ResponseEntity<>(usersService.changeName(userName,newName),HttpStatus.OK);
+    }
+
+    @PatchMapping("/changePassword")
+    public ResponseEntity changePassword(@RequestParam ("userName") String userName ,@RequestParam ("newPass") String newPass) throws Exception {
+        return new ResponseEntity<>(usersService.changePassword(userName,newPass),HttpStatus.OK);
+    }
+
     @PatchMapping("/setUserState")
     public ResponseEntity setUserState(@RequestParam ("userName") String userName,@RequestParam ("locationTitle") String locationTitle) throws Exception {
         return new ResponseEntity<>(usersService.setUserState(userName,locationTitle),HttpStatus.OK);
