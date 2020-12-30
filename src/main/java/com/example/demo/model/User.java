@@ -16,7 +16,6 @@ import javax.persistence.GeneratedValue;
 @NoArgsConstructor
 @Document(collection = "Users")
 public class User {
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -30,7 +29,9 @@ public class User {
     private int userLives;
     private Status status;
     private UserState userState;
+    private UserRole userRole ;
 
+    //Player Creation
     public User(String userName , String passWord)
     {
         this.userName = userName;
@@ -39,7 +40,6 @@ public class User {
         this.userLives = 5;
         this.status = Status.Away;
         this.userState = UserState.PLAYING;
+        this.userRole = UserRole.Player;
     }
-
-
 }

@@ -30,8 +30,8 @@ public class UserRegisterService implements IUserRegisterService {
                 User user = new User(userName,passWord);
                 usersRepository.save(user);
                 leaderBoardRepository.save(new LeaderBoardUser(userName,user.getId()));
-                 registrationAnswer.setAnswer("User register successfully");
-                 return registrationAnswer;
+                registrationAnswer.setAnswer("User register successfully");
+                return registrationAnswer;
             }
         registrationAnswer.setAnswer("Invalid inputs");
         return registrationAnswer;

@@ -1,6 +1,7 @@
 package com.example.demo.api;
 
 import com.example.demo.Service.UserLoginService;
+import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,9 @@ public class UserLoginController
     private UserLoginService userLoginService;
 
     @GetMapping(path = "/login")
-    public ResponseEntity loginUser(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception{
-        return new ResponseEntity<>(userLoginService.confirmLogin(username,password), HttpStatus.OK);
+    public ResponseEntity loginUser(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception {
+        User user = userLoginService.confirmLogin(username, password);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PatchMapping(path = "/logout")

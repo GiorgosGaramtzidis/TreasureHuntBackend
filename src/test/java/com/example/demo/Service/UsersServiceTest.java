@@ -3,10 +3,7 @@ package com.example.demo.Service;
 import com.example.demo.dao.LocationsRepositoryNew;
 import com.example.demo.dao.QuestionsRepository;
 import com.example.demo.dao.UsersRepository;
-import com.example.demo.model.Question;
-import com.example.demo.model.Status;
-import com.example.demo.model.User;
-import com.example.demo.model.UserState;
+import com.example.demo.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -425,7 +422,7 @@ public class UsersServiceTest {
 
     @Test
     public void boughtAnswerWithRightUserNameAndRightQuestionShouldReturnTheAnswer() throws Exception {
-        User user = new User("1","foo",0,"123",3, Status.Away,UserState.PLAYING);
+        User user = new User("1","foo",0,"123",3, Status.Away,UserState.PLAYING, UserRole.Player);
         List<User> userList = new ArrayList<>();
         userList.add(user);
         Question question = new Question("1","what colour is the sky?","blue",5);
