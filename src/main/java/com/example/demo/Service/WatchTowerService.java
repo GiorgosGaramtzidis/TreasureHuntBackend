@@ -22,18 +22,16 @@ public class WatchTowerService implements WatchTowerRegistration<String> {
     }
 
     @Override
-    public WatchTower updateWatchTower(String userName, String locationTitle) throws Exception {
+    public void deleteFromWatchTower(String userName) throws Exception {
         if(watchTowerRepository.existsByUserName(userName)) {
-            List<WatchTower> watchTowerList = watchTowerRepository.findAll().stream().filter(watchTower -> watchTower.getUserName().equals(userName))
-                    .collect(Collectors.toList());
-            watchTowerList.get(0).setLocationTitle(locationTitle);
-            return watchTowerRepository.save(watchTowerList.get(0));
+            watchTowerRepository.deleteByUserName(userName);
+            return;
         }
         throw new Exception("Wrong User Name");
     }
 
     @Override
-    public WatchTower addWatchTower(String userName, String locationTitle) throws Exception {
+    public WatchTower addInWatchTower(String userName, String locationTitle) throws Exception {
         WatchTower watchTower = new WatchTower();
         watchTower.setUserName(userName);
         watchTower.setLocationTitle(locationTitle);
@@ -41,4 +39,12 @@ public class WatchTowerService implements WatchTowerRegistration<String> {
                 throw new Exception("User Name Already Exists"+userName);
         return watchTowerRepository.save(watchTower);
     }
+
+    @Override
+    public void deleteAllFromWatchTower() throws Exception {
+        if(watchTowerRepository.findAll().isEmpty())
+            throw new Exception("Watch Tower is Empty");
+        watchTowerRepository.deleteAll();
+    }
+
 }

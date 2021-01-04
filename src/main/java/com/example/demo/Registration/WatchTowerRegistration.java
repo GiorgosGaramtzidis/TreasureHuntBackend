@@ -8,7 +8,9 @@ public interface WatchTowerRegistration<STRING> {
 
     List<WatchTower> getWatchTowerList() throws Exception;
 
-    WatchTower updateWatchTower(STRING userName,STRING locationTitle) throws Exception;
+    void deleteFromWatchTower(STRING userName) throws Exception;
 
-    WatchTower addWatchTower(STRING userName,STRING locationTitle) throws Exception;
+    WatchTower addInWatchTower(STRING userName,STRING locationTitle) throws Exception;
+
+    void deleteAllFromWatchTower() throws Exception;
 }
