@@ -18,8 +18,8 @@ public class CasinoService implements CasinoRegistration<String> {
     UsersRepository usersRepository;
 
     public int rollDice() {
-        Random randomGenerator = new Random();
-        return randomGenerator.nextInt(1) + 1;
+        Random rand = new Random();
+        return rand.nextInt(2);
     }
 
     @Override
@@ -31,20 +31,15 @@ public class CasinoService implements CasinoRegistration<String> {
                             .equals(userName))
                     .collect(Collectors.toList());
 
-
             if(rollDice()==0){
                 user.get(0).setScore(user.get(0).getScore()-user.get(0).getScore());
                 usersRepository.save(user.get(0));
                 user.get(0).getScore();
-                hasWonRisk = false;
                 return false;
-
             } else{
                 user.get(0).setScore(user.get(0).getScore()+user.get(0).getScore());
                 usersRepository.save(user.get(0));
                 user.get(0).getScore();
-                hasWonRisk = true;
-                System.out.println("------");
                 return true;
             }
         }else {

@@ -15,7 +15,6 @@ public interface LocationsRepositoryNew  extends MongoRepository<LocationsNew, O
     @Query("{ 'title' : 'Casino' }")
     LocationsNew getCasinoLocation();
 
-
     @Query("{ 'title' : ?0 }")
     LocationsNew getNextLocation(String title);
 
