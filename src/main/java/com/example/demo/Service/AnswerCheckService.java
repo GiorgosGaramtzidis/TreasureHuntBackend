@@ -26,14 +26,11 @@ public class AnswerCheckService implements AnswerCheck<String> {
             List<Question> questionList = questionsRepository.findAll().stream().filter(question1 -> question1.getQuestion().equals(question))
                     .collect(Collectors.toList());
             if (usersAnswer.equals(questionList.get(0).getAnswer())) {
-                System.out.println("correct title correct answer yikes");
                 return true;
             } else {
-                System.out.println("wrong answer correct title");
                 return false;
             }
         }
-        System.out.println("failed wrong Location title");
         throw new Exception("Location Does Not Exist");
     }
 
