@@ -29,6 +29,21 @@ public class WatchTowerService implements WatchTowerRegistration<String> {
         }
         throw new Exception("Wrong User Name");
     }
+    /*@Override
+    public WatchTower updateUserFromWatchTower(String userName,String locationTitle) throws Exception {
+
+        if(watchTowerRepository.existsByUserName(userName)) {
+            List<WatchTower> watchTowers = watchTowerRepository.findAll().stream()
+                    .filter(watchTower1 ->  watchTower1.getUserName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
+            watchTowers.get(0).setLocationTitle(locationTitle);
+            watchTowerRepository.save(watchTowers.get(0));
+        }
+        throw new Exception("Wrong User Name");
+    }
+
+     */
 
     @Override
     public WatchTower addInWatchTower(String userName, String locationTitle) throws Exception {

@@ -10,6 +10,8 @@ public interface WatchTowerRegistration<STRING> {
 
     void deleteFromWatchTower(STRING userName) throws Exception;
 
+   // WatchTower updateUserFromWatchTower(STRING userName,STRING locationTitle) throws Exception;
+
     WatchTower addInWatchTower(STRING userName,STRING locationTitle) throws Exception;
 
     void deleteAllFromWatchTower() throws Exception;
