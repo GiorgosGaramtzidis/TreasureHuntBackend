@@ -58,6 +58,12 @@ public class LocationServices implements LocationsRegistration<ObjectId,Location
         return locationsRepositoryNew.getStartLocation();
     }
 
+    public LocationsNew getCasinoLocation() throws Exception{
+        if (locationsRepositoryNew.getCasinoLocation()==null){
+            throw new Exception("Casino Location doesn't exist");
+        }
+        return locationsRepositoryNew.getCasinoLocation();
+    }
 
     public LocationsNew getNextLocation(String nextLocation) throws Exception{
 

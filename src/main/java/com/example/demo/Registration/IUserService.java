@@ -1,6 +1,4 @@
 package com.example.demo.Registration;
-import com.example.demo.model.User;
-
 import java.util.Optional;
 public interface IUserService<ID, USER> {
 
@@ -16,6 +14,10 @@ public interface IUserService<ID, USER> {
 
     int getUserScore(String userName) throws Exception;
 
+    String changeName(String userName , String newName) throws Exception;
+
+    String changePassword(String userName , String newPass) throws Exception;
+
     Boolean restartScoreAndLives(String userName) throws Exception;
 
     Boolean loginConfirmation(String username, String password) throws  Exception;
@@ -23,4 +25,8 @@ public interface IUserService<ID, USER> {
     Boolean setUserState(String userName,String locationTitle) throws  Exception;
 
     String checkUserState();
+
+    String boughtAnswer(String userName, String question) throws Exception;
+
+    Boolean buyLife(String userName) throws Exception;
 }

@@ -1,14 +1,18 @@
 package com.example.demo.Service;
 
+import com.example.demo.dao.LocationsRepositoryNew;
+import com.example.demo.dao.QuestionsRepository;
 import com.example.demo.dao.UsersRepository;
-import com.example.demo.model.User;
-import com.example.demo.model.UserState;
+import com.example.demo.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -27,6 +31,9 @@ public class UsersServiceTest {
 
     @Autowired
     UsersService usersService;
+
+    @MockBean
+    QuestionsRepository questionsRepository;
 
     @Test(expected = Exception.class)
     public void loginConfirmationWhenUserDoesNotExistShouldCreateException() throws Exception {
@@ -64,6 +71,84 @@ public class UsersServiceTest {
     }
 
     @Test(expected = Exception.class)
+    public void IfUserNameExistAndNewUserNameUsed() throws Exception {
+        User user = new User();
+
+        user.setPassword("password");
+        user.setUserName("Fragkos");
+        when(usersRepository.existsByUserName("Sokra")).thenReturn(true);
+        when(usersRepository.findUserByUserName("Fragkos")).thenReturn(user);
+
+        usersService.changeName("Sokra", "Fragkos");
+    }
+
+    @Test(expected = Exception.class)
+    public void IfUserNameNotExistAndNewUserNameUsed() throws Exception {
+        User user = new User();
+
+        user.setPassword("pass");
+        user.setUserName("Sokra1212");
+        when(usersRepository.existsByUserName("Sokra")).thenReturn(false);
+
+        usersService.changeName("Sokra1212", " Sokra");
+    }
+
+    @Test
+    public void IfUserNameExistAndNewUserNameNotExist() throws Exception {
+        User user = new User();
+
+        user.setPassword("pass");
+        user.setUserName("Sokra1212");
+        when(usersRepository.existsByUserName("Sokra1212")).thenReturn(true);
+        when(usersRepository.existsByUserName("Konto12")).thenReturn(false);
+        when(usersRepository.findUserByUserName("Sokra1212")).thenReturn(user);
+
+        usersService.changeName("Sokra1212", "Konto12");
+        assertEquals("Konto12", user.getUserName());
+    }
+
+    @Test(expected = Exception.class)
+    public void IfUserNameExistButNewUserNameExistToo() throws Exception {
+        User user = new User();
+        User user1 = new User();
+
+        user1.setUserName("Marko19");
+        user1.setPassword("pass1");
+
+        user.setPassword("pass");
+        user.setUserName("Sokra1919");
+        when(usersRepository.existsByUserName("Sokra1919")).thenReturn(true);
+        when(usersRepository.existsByUserName("Marko19")).thenReturn(true);
+        when(usersRepository.findUserByUserName("Sokra1919")).thenReturn(user);
+
+        usersService.changeName("Sokra1919", "Marko19");
+        assertEquals("Marko19", user.getUserName());
+    }
+
+    @Test(expected = Exception.class)
+    public void IfUserNameNotExistInPasswordChange() throws Exception {
+        User user = new User();
+
+        user.setPassword("password");
+        user.setUserName("Sokratis");
+        when(usersRepository.existsByUserName("Sokra")).thenReturn(false);
+
+        usersService.changePassword("Sokra", "Fragkos");
+    }
+
+    @Test
+    public void IfUserNameExistGoChangePassword() throws Exception {
+        User user = new User();
+        user.setPassword("Nothing");
+        user.setUserName("Sokra");
+
+        when(usersRepository.existsByUserName("Sokra")).thenReturn(true);
+        when(usersRepository.findUserByUserName("Sokra")).thenReturn(user);
+
+        usersService.changePassword("Sokra", "newPassword");
+        assertEquals("newPassword", user.getPassword());
+    }
+
     public void restartScoreAndLivesWhenUserDoesNotExistShouldCreateException() throws Exception {
 
         when(usersRepository.existsByUserName("Konto4")).thenReturn(false);
@@ -239,5 +324,122 @@ public class UsersServiceTest {
         when(usersRepository.existsByUserName(null)).thenReturn(false);
         usersService.addScore(null,5);
         fail("User Doesnt Exists");
+    }
+
+    @Test
+    public void IWantToReturnAllUsers() throws Exception {
+        List<User> users = new ArrayList<>() ;
+        User user = new User();
+        user.setUserName("Sokra");
+        user.setPassword("Fragkos");
+        users.add(user);
+
+        when(usersRepository.findAll()).thenReturn(users);
+        assertEquals(users.get(0),usersService.getAllUser().get(0));
+    }
+
+    @Test(expected = Exception.class)
+    public void RegisterUserThrowExceptionIfUserNameExist() throws Exception {
+        User user = new User();
+        user.setUserName("Example");
+
+        when(usersRepository.existsByUserName(user.getUserName())).thenReturn(true);
+        assertEquals(true,usersService.registerUser(user));
+    }
+
+    @Test
+    public void RegisterUserWhenUserNameDoesNotExistThenSaveAndReturn() throws Exception {
+        User user = new User();
+        user.setUserName("Example");
+
+        when(usersRepository.existsByUserName("Sokra")).thenReturn(false);
+        assertEquals(true,usersService.registerUser(user));
+    }
+
+
+    @Test
+    public void buyLifeWhenUserExistsByUserNameAndUserLivesAreEqualToOneAndUserPointsAreTwentyOrMoreShouldReturnTrue() throws Exception{
+        List<User> users = new ArrayList<>();
+        User user = new User();
+        user.setUserName("Konto41");
+        user.setUserLives(1);
+        user.setScore(25);
+        users.add(user);
+        when(usersRepository.existsByUserName("Konto41")).thenReturn(true);
+        when(usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserName()
+                        .equals(user.getUserName()))
+                .collect(Collectors.toList())).thenReturn(users);
+        Boolean actualResult = usersService.buyLife(user.getUserName());
+        assertEquals(true,actualResult);
+    }
+
+    @Test
+    public void buyLifeWhenUserExistsByUserNameAndUserLivesAreMoreOrLessThanOneAndUserPointsAreLessThanTwentyShouldReturnFalse() throws Exception{
+        List<User> users = new ArrayList<>();
+        User user = new User();
+        user.setUserName("Konto41");
+        user.setUserLives(3);
+        user.setScore(10);
+        users.add(user);
+        when(usersRepository.existsByUserName("Konto41")).thenReturn(true);
+        when(usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserName()
+                        .equals(user.getUserName()))
+                .collect(Collectors.toList())).thenReturn(users);
+        Boolean actualResult = usersService.buyLife(user.getUserName());
+        assertEquals(false,actualResult);
+    }
+    @Test(expected = Exception.class)
+    public void buyLifeIfUserDoesNotExistsByUserNameShouldReturnException() throws Exception{
+
+        when(usersRepository.existsByUserName("foo")).thenReturn(false);
+        usersService.buyLife("foo");
+        fail("This should return wrong id");
+    }
+    @Test(expected = Exception.class)
+    public void buyLifeIfUserIsNullShouldReturnException() throws Exception{
+
+        when(usersRepository.existsByUserName(null)).thenReturn(false);
+        usersService.buyLife(null);
+        fail("This should return wrong id");
+    }
+
+    @Test(expected = Exception.class)
+    public void boughtAnswerWithWrongUserNameShouldThrowException() throws Exception {
+        when(usersRepository.existsByUserName("foo")).thenReturn(false);
+        usersService.boughtAnswer("foo","what colour is the sky?");
+        fail("User does not exist");
+    }
+
+    @Test(expected = Exception.class)
+    public void boughtAnswerWithWrongQuestionShouldThrowException() throws Exception {
+        when(usersRepository.existsByUserName("foo")).thenReturn(true);
+        when(questionsRepository.existsByQuestion("what colour is the sky?")).thenReturn(false);
+        usersService.boughtAnswer("foo","what colour is the sky?");
+        fail("Question does not exist");
+    }
+
+    @Test
+    public void boughtAnswerWithRightUserNameAndRightQuestionShouldReturnTheAnswer() throws Exception {
+        User user = new User("1","foo",0,"123",3, Status.Away,UserState.PLAYING, UserRole.Player);
+        List<User> userList = new ArrayList<>();
+        userList.add(user);
+        Question question = new Question("1","what colour is the sky?","blue",5);
+        List<Question> questList = new ArrayList<>();
+        questList.add(question);
+        when(usersRepository.existsByUserName("foo")).thenReturn(true);
+        when(usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserName()
+                        .equals("foo"))
+                .collect(Collectors.toList())).thenReturn(userList);
+        when(questionsRepository.existsByQuestion("what colour is the sky?")).thenReturn(true);
+        when( questionsRepository.findAll().stream()
+                .filter(question1 -> question1.getQuestion()
+                        .equals("what colour is the sky?"))
+                .collect(Collectors.toList())).thenReturn(questList);
+        String actualResult = usersService.boughtAnswer("foo","what colour is the sky?");
+
+        assertEquals("blue",actualResult);
     }
 }

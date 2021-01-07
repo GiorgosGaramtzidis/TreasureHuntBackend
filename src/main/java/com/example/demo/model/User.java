@@ -1,4 +1,5 @@
 package com.example.demo.model;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,6 @@ import javax.persistence.GeneratedValue;
 @NoArgsConstructor
 @Document(collection = "Users")
 public class User {
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -29,9 +29,9 @@ public class User {
     private int userLives;
     private Status status;
     private UserState userState;
-    private Role role;
+    private UserRole userRole ;
 
-    //Users which register is players
+    //Player Creation
     public User(String userName , String passWord)
     {
         this.userName = userName;
@@ -40,7 +40,6 @@ public class User {
         this.userLives = 5;
         this.status = Status.Away;
         this.userState = UserState.PLAYING;
-        this.role = Role.PLAYER;
+        this.userRole = UserRole.Player;
     }
-
 }

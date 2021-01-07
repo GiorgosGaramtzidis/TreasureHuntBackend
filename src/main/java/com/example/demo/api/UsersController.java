@@ -59,6 +59,16 @@ public class UsersController {
         return new ResponseEntity<>(usersService.addScore(userName,score),HttpStatus.OK);
     }
 
+    @PatchMapping("/changeName")
+    public ResponseEntity changeName(@RequestParam ("userName") String userName ,@RequestParam ("newName") String newName) throws Exception {
+        return new ResponseEntity<>(usersService.changeName(userName,newName),HttpStatus.OK);
+    }
+
+    @PatchMapping("/changePassword")
+    public ResponseEntity changePassword(@RequestParam ("userName") String userName ,@RequestParam ("newPass") String newPass) throws Exception {
+        return new ResponseEntity<>(usersService.changePassword(userName,newPass),HttpStatus.OK);
+    }
+
     @PatchMapping("/setUserState")
     public ResponseEntity setUserState(@RequestParam ("userName") String userName,@RequestParam ("locationTitle") String locationTitle) throws Exception {
         return new ResponseEntity<>(usersService.setUserState(userName,locationTitle),HttpStatus.OK);
@@ -82,5 +92,14 @@ public class UsersController {
     @PatchMapping("/restart")
     public ResponseEntity restartScoreAndLives(@RequestParam("userName") String userName) throws Exception {
         return new ResponseEntity<>(usersService.restartScoreAndLives(userName),HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/boughtAnswer")
+    public ResponseEntity boughtAnswer(@RequestParam("userName") String userName, @RequestParam("question") String question) throws Exception{
+        return new ResponseEntity<>(usersService.boughtAnswer(userName,question),HttpStatus.OK);
+    }
+    @PatchMapping(path = "/buyLife")
+    public ResponseEntity buyLife(@RequestParam String  userName) throws Exception {
+        return new ResponseEntity<>(usersService.buyLife(userName),HttpStatus.OK);
     }
 }
