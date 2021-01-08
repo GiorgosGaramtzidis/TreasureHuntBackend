@@ -44,6 +44,12 @@ public class LocationsControllerNew {
         return new ResponseEntity<>(locationServices.getStartLocation(),HttpStatus.OK);
     }
 
+    @GetMapping("/Casino")
+    ResponseEntity CasinoLocation() throws Exception {
+        return new ResponseEntity<>(locationServices.getCasinoLocation(),HttpStatus.OK);
+    }
+
+
     @PostMapping("/Next")
     ResponseEntity nextLocation(@RequestParam("nextLocation") String nextLocation) throws Exception {
         return new ResponseEntity<>(locationServices.getNextLocation(nextLocation),HttpStatus.OK);
