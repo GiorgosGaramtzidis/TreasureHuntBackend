@@ -50,17 +50,18 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
 
     @Override
     public Boolean addUser(String userName,String id) throws Exception{
-        if(usersRepository.existsByUserName(userName)) {
+
             List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream()
                     .filter(treasureHuntGame -> treasureHuntGame.getId()
                             .equals(id))
                     .collect(Collectors.toList());
             treasureHuntGames.get(0).getUserList().add(usersRepository.findUserByUserName(userName));
+            if(treasureHuntGames.get(0)==null){
+                throw new Exception("GAME Does not exist");
+            }
             treasureHuntGameRepository.save(treasureHuntGames.get(0));
             return true;
 
-        }
-        throw new Exception("User does not exist");
     }
 
 }
