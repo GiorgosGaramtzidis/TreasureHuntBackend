@@ -68,9 +68,9 @@ public class TreasureHuntGameServiceTest {
         List<TreasureHuntGame> treasureHuntGames = new ArrayList<>();
         List<User> users = new ArrayList<>();
         users.add(user);
-        List<LocationsNew> locations = new ArrayList<>();
+        List<GameLocation> gameLocations = new ArrayList<>();
         List<UserPosition> userpositions = new ArrayList<>();
-        TreasureHuntGame treasureHuntGame = new TreasureHuntGame("1234","serres","makedonia",users,locations,userpositions,GameState.DidNotStart,user);
+        TreasureHuntGame treasureHuntGame = new TreasureHuntGame("1234","serres","makedonia",users,gameLocations,userpositions,GameState.DidNotStart,user);
         treasureHuntGames.add(treasureHuntGame);
         when(treasureHuntGameRepository.findAll()).thenReturn(treasureHuntGames);
         when(usersRepository.findUserByUserName("Nikos123")).thenReturn(user);

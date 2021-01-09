@@ -26,14 +26,14 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
         TreasureHuntGame treasureHuntGame = new TreasureHuntGame();
         List<User> userList = new ArrayList<>();
         List<UserPosition> userPositionList = new ArrayList<>();
-        List<LocationsNew> locationsNewList = new ArrayList<>();
+        List<GameLocation> gameLocations = new ArrayList<>();
         treasureHuntGame.setId(id);
         treasureHuntGame.setGameName(gameName);
         treasureHuntGame.setGameLocation(gameLocation);
         treasureHuntGame.setUserList(userList);
         treasureHuntGame.setUserPositionList(userPositionList);
         treasureHuntGame.setState(GameState.DidNotStart);
-        treasureHuntGame.setLocationsNewList(locationsNewList);
+        treasureHuntGame.setGameLocations(gameLocations);
         treasureHuntGame.setWinner(null);
         treasureHuntGameRepository.save(treasureHuntGame);
         return true;
@@ -63,5 +63,23 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
             return true;
 
     }
+
+    @Override
+    public Boolean addLocation(GameLocation gameLocation, String id) throws Exception {
+
+        List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream()
+                .filter(treasureHuntGame -> treasureHuntGame.getId()
+                        .equals(id))
+                .collect(Collectors.toList());
+        if(treasureHuntGames.get(0)==null){
+            throw new Exception("GAME Does not exist");
+        }
+        treasureHuntGames.get(0).getGameLocations().add(gameLocation);
+
+        treasureHuntGameRepository.save(treasureHuntGames.get(0));
+
+        return true;
+    }
+
 
 }
