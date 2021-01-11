@@ -2,10 +2,13 @@ package com.example.demo.Service;
 
 import com.example.demo.Registration.WatchTowerRegistration;
 import com.example.demo.dao.WatchTowerRepository;
+import com.example.demo.model.User;
+import com.example.demo.model.UserState;
 import com.example.demo.model.WatchTower;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Null;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,49 +20,29 @@ public class WatchTowerService implements WatchTowerRegistration<String> {
     @Override
     public List<WatchTower> getWatchTowerList() throws Exception {
         if (watchTowerRepository.findAll().isEmpty())
-                throw new Exception("Collection is empty");
-       return watchTowerRepository.findAll();
+            throw new Exception("Collection is empty");
+        return watchTowerRepository.findAll();
     }
-
-    @Override
-    public void deleteFromWatchTower(String userName) throws Exception {
-        if(watchTowerRepository.existsByUserName(userName)) {
-            watchTowerRepository.deleteByUserName(userName);
-            return;
-        }
-        throw new Exception("Wrong User Name");
-    }
-    /*@Override
-    public WatchTower updateUserFromWatchTower(String userName,String locationTitle) throws Exception {
-
-        if(watchTowerRepository.existsByUserName(userName)) {
-            List<WatchTower> watchTowers = watchTowerRepository.findAll().stream()
-                    .filter(watchTower1 ->  watchTower1.getUserName()
-                            .equals(userName))
-                    .collect(Collectors.toList());
-            watchTowers.get(0).setLocationTitle(locationTitle);
-            watchTowerRepository.save(watchTowers.get(0));
-        }
-        throw new Exception("Wrong User Name");
-    }
-
-     */
 
     @Override
     public WatchTower addInWatchTower(String userName, String locationTitle) throws Exception {
         WatchTower watchTower = new WatchTower();
         watchTower.setUserName(userName);
         watchTower.setLocationTitle(locationTitle);
-        if(watchTowerRepository.existsByUserName(userName))
-                throw new Exception("User Name Already Exists"+userName);
-        return watchTowerRepository.save(watchTower);
+        if (watchTowerRepository.existsByUserName(userName)) {
+            watchTowerRepository.deleteByUserName(userName);
+            return watchTowerRepository.save(watchTower);
+        } else if (watchTowerRepository.existsByUserName(userName)==false && userName!=null) {
+            return watchTowerRepository.save(watchTower);
+        }
+        throw new Exception("User  Name is Null");
     }
 
     @Override
-    public void deleteAllFromWatchTower() throws Exception {
-        if(watchTowerRepository.findAll().isEmpty())
-            throw new Exception("Watch Tower is Empty");
+    public Boolean resetWatchTower() throws Exception {
+        if (watchTowerRepository.findAll().isEmpty())
+            throw new Exception("Watch Tower is already empty");
         watchTowerRepository.deleteAll();
+        return true;
     }
-
 }
