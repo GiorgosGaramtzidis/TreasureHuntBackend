@@ -14,8 +14,8 @@ public class UserRegisterController {
     private UserRegisterService userRegisterService;
 
     @PostMapping(path = "/registerUser")
-    public ResponseEntity userRegistration(@RequestParam("username") String userName, @RequestParam("password") String passWord
-    ,@RequestParam("Role")String role) {
+    public ResponseEntity userRegistration(@RequestParam("username") String userName, @RequestParam("password")String passWord)
+    {
         RegistrationAnswer registrationMessage = userRegisterService.registerUser(userName, passWord);
         return new ResponseEntity<>(registrationMessage, HttpStatus.OK);
     }
