@@ -14,7 +14,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -54,6 +53,7 @@ public class UserRegisterControllerTest
         MvcResult mvcResult = mockMvc.perform(post(url)
                 .param("username", "George1")
                 .param("password", "12345FK@")
+
         ).andExpect(content().json("{'answer':'Invalid inputs'}")).andReturn();
 
         int result =mvcResult.getResponse().getStatus();
@@ -91,6 +91,7 @@ public class UserRegisterControllerTest
         MvcResult mvcResult = mockMvc.perform(post(url)
                 .param("username", "George1")
                 .param("password", "12345FK@")
+
         ).andExpect(content().json("{'answer':'User with this userName already exists'}")).andReturn();
         int response = mvcResult.getResponse().getStatus();
         assertEquals(200,response);

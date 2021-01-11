@@ -19,14 +19,11 @@ import java.util.UUID;
 @Document(collection = "Questions")
 public class Question {
 
-
     @Id
     private String id;
     private String question;
     private String answer;
     private int points;
-
-
 
     public boolean ifQuestionExist(List<Question> questionList){
 

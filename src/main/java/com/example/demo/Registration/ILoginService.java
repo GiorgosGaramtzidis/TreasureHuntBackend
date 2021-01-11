@@ -2,6 +2,8 @@ package com.example.demo.Registration;
 
 import com.example.demo.model.Status;
 import com.example.demo.model.User;
+import org.springframework.stereotype.Service;
+
 
 public interface ILoginService
 {
@@ -9,5 +11,5 @@ public interface ILoginService
 
     void LogOutUser(String username);
 
-    void updateUserStatus(String username, Status stattus);
+    void updateUserStatus(String username, Status status);
 }
