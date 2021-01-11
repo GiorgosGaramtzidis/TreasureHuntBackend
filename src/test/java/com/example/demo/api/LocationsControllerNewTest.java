@@ -22,9 +22,6 @@ public class LocationsControllerNewTest {
 /*
 
 
-
-
-
     @Autowired
     LocationsControllerNew locationsControllerNew;
     LocationServices locationServices;
