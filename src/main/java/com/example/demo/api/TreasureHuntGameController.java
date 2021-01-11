@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -34,11 +35,18 @@ public class TreasureHuntGameController {
         return new ResponseEntity<>(treasureHuntGame, HttpStatus.OK);
     }
 
+
     @PatchMapping("/addUser")
     public ResponseEntity addUser(@RequestParam ("userName") String  userName,@RequestParam("id") String id) throws Exception {
         return new ResponseEntity<>(treasureHuntGameService.addUser(userName,id),HttpStatus.OK);
     }
 
+    @GetMapping("/getAvailableGames" )
+    public ResponseEntity getAvailableGames() throws Exception {
+        HashMap<String,String> treasureHuntGame =treasureHuntGameService.getAvailableGames();
+       // List treasureHuntGame = treasureHuntGameService.getAvailableGames();
+        return new ResponseEntity<>(treasureHuntGame, HttpStatus.OK);
+    }
 
 
 }

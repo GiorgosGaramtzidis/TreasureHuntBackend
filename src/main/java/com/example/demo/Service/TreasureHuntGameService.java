@@ -8,9 +8,7 @@ import com.example.demo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,6 +60,19 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
             treasureHuntGameRepository.save(treasureHuntGames.get(0));
             return true;
 
+    }
+
+    @Override
+    public HashMap<String, String> getAvailableGames() throws Exception {
+
+        List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream().filter(treasureHuntGame -> treasureHuntGame.getState().equals(GameState.DidNotStart)).collect(Collectors.toList());
+        HashMap<String,String> treasureHuntGame = new HashMap<String,String>();
+        for(int i =0; i<treasureHuntGames.size();i++) {
+           // HashMap<String,String> treasureHuntGame = new HashMap<String,String>();
+             treasureHuntGame.put(treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId());
+            //treasurehuntgame.add(treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId());
+        }
+      return treasureHuntGame;
     }
 
 }

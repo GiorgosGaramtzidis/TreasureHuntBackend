@@ -27,4 +27,5 @@ public class TreasureHuntGame {
     private GameState state;
     private User Winner;
 
+
 }
