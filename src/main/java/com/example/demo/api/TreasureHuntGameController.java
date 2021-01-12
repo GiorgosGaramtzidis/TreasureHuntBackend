@@ -43,8 +43,8 @@ public class TreasureHuntGameController {
 
     @GetMapping("/getAvailableGames" )
     public ResponseEntity getAvailableGames() throws Exception {
-        HashMap<String,String> treasureHuntGame =treasureHuntGameService.getAvailableGames();
-       // List treasureHuntGame = treasureHuntGameService.getAvailableGames();
+        //HashMap<String,String> treasureHuntGame =treasureHuntGameService.getAvailableGames();
+       List treasureHuntGame = treasureHuntGameService.getAvailableGames();
         return new ResponseEntity<>(treasureHuntGame, HttpStatus.OK);
     }
 

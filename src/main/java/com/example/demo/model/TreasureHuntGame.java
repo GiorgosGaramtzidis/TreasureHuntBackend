@@ -28,4 +28,10 @@ public class TreasureHuntGame {
     private User Winner;
 
 
+    public TreasureHuntGame (String gameLocation,String iD){
+        this.gameLocation = gameLocation;
+        this.id = iD;
+
+    }
+
 }

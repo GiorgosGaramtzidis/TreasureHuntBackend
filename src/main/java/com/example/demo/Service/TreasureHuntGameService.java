@@ -4,10 +4,10 @@ import com.example.demo.Registration.TreasureHuntGameRegistration;
 import com.example.demo.dao.TreasureHuntGameRepository;
 import com.example.demo.dao.UsersRepository;
 import com.example.demo.model.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.KeyStore;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -63,16 +63,23 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
     }
 
     @Override
-    public HashMap<String, String> getAvailableGames() throws Exception {
+    public List<AvailableGames> getAvailableGames() throws Exception {
 
         List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream().filter(treasureHuntGame -> treasureHuntGame.getState().equals(GameState.DidNotStart)).collect(Collectors.toList());
-        HashMap<String,String> treasureHuntGame = new HashMap<String,String>();
+       // HashMap<String,String> treasureHuntGame = new HashMap<String,String>();
+       // ArrayList<Map.Entry<String,String >>entryArrayList= new ArrayList<Map.Entry<String, String>>(treasureHuntGame.entrySet());
+List<AvailableGames> availableGames = new ArrayList<>();
         for(int i =0; i<treasureHuntGames.size();i++) {
            // HashMap<String,String> treasureHuntGame = new HashMap<String,String>();
-             treasureHuntGame.put(treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId());
-            //treasurehuntgame.add(treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId());
+            // treasureHuntGame.put(treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId());
+           AvailableGames treasurehunt =  new AvailableGames(treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId());
+            // AvailablaGames x = treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId();
+           // treasurehunt(treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId());
+            availableGames.add(treasurehunt);
+
         }
-      return treasureHuntGame;
+
+      return availableGames;
     }
 
 }
