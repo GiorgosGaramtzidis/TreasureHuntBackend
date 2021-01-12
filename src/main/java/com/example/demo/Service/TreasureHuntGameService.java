@@ -33,7 +33,7 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
         treasureHuntGame.setUserList(userList);
         treasureHuntGame.setUserPositionList(userPositionList);
         treasureHuntGame.setState(GameState.DidNotStart);
-        treasureHuntGame.setGameLocations(gameLocations);
+        treasureHuntGame.setGameLocationsList(gameLocations);
         treasureHuntGame.setWinner(null);
         treasureHuntGameRepository.save(treasureHuntGame);
         return true;
@@ -74,7 +74,7 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
         if(treasureHuntGames.get(0)==null){
             throw new Exception("GAME Does not exist");
         }
-        treasureHuntGames.get(0).getGameLocations().add(gameLocation);
+        treasureHuntGames.get(0).getGameLocationsList().add(gameLocation);
 
         treasureHuntGameRepository.save(treasureHuntGames.get(0));
 
