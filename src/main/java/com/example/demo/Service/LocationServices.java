@@ -65,6 +65,13 @@ public class LocationServices implements LocationsRegistration<ObjectId,Location
         return locationsRepositoryNew.getCasinoLocation();
     }
 
+    public LocationsNew getWatchTowerLocation() throws Exception{
+        if (locationsRepositoryNew.getWatchTowerLocation()==null){
+            throw new Exception("Watch Tower doesn't exist");
+        }
+        return locationsRepositoryNew.getWatchTowerLocation();
+    }
+
     public LocationsNew getNextLocation(String nextLocation) throws Exception{
 
         if (locationsRepositoryNew.getNextLocation(nextLocation) == null){
