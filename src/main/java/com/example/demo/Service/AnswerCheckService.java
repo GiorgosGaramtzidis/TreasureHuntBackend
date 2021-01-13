@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class AnswerCheckService implements AnswerCheck<String> {
 
     @Autowired
-    private QuestionsRepository questionsRepository;
+    QuestionsRepository questionsRepository;
 
     @Override
     public Boolean AnswerCheck(String usersAnswer,String question) throws Exception {

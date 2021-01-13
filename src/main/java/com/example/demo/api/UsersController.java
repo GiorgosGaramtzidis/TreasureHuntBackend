@@ -102,4 +102,9 @@ public class UsersController {
     public ResponseEntity buyLife(@RequestParam String  userName) throws Exception {
         return new ResponseEntity<>(usersService.buyLife(userName),HttpStatus.OK);
     }
+
+    @GetMapping(path ="/getUserLives")
+    public ResponseEntity getUserLives(@RequestParam("userName") String userName) throws Exception {
+        return new ResponseEntity<>(usersService.getUserLives(userName),HttpStatus.OK);
+    }
 }

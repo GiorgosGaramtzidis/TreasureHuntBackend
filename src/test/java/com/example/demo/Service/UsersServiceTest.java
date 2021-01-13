@@ -1,6 +1,6 @@
 package com.example.demo.Service;
 
-import com.example.demo.dao.LocationsRepositoryNew;
+
 import com.example.demo.dao.QuestionsRepository;
 import com.example.demo.dao.UsersRepository;
 import com.example.demo.model.*;
@@ -29,11 +29,13 @@ public class UsersServiceTest {
     @MockBean
     UsersRepository usersRepository;
 
+    @MockBean
+    QuestionsRepository questionsRepository;
+
     @Autowired
     UsersService usersService;
 
-    @MockBean
-    QuestionsRepository questionsRepository;
+
 
     @Test(expected = Exception.class)
     public void loginConfirmationWhenUserDoesNotExistShouldCreateException() throws Exception {
@@ -404,6 +406,21 @@ public class UsersServiceTest {
         usersService.buyLife(null);
         fail("This should return wrong id");
     }
+    @Test(expected = Exception.class)
+    public void RestartScoreAndLivesIfUserDoesNotExistByUserName() throws Exception{
+
+        when(usersRepository.existsByUserName("foo")).thenReturn(false);
+        usersService.restartScoreAndLives("foo");
+        fail("User does not exist");
+    }
+
+    @Test(expected = Exception.class)
+    public void BoughtAnswerIfUserDoesNotExistByUserName() throws Exception{
+
+        when(usersRepository.existsByUserName("foo")).thenReturn(false);
+        usersService.boughtAnswer("foo","Test");
+        fail("User does not exist");
+    }
 
     @Test(expected = Exception.class)
     public void boughtAnswerWithWrongUserNameShouldThrowException() throws Exception {
@@ -414,9 +431,19 @@ public class UsersServiceTest {
 
     @Test(expected = Exception.class)
     public void boughtAnswerWithWrongQuestionShouldThrowException() throws Exception {
+        User user = new User("1","foo",0,"123",3, Status.Away,UserState.PLAYING, UserRole.Player);
+        List<User> userList = new ArrayList<>();
+        userList.add(user);
+        Question question = new Question("1","what colour is the sky?","blue",5);
+        List<Question> questList = new ArrayList<>();
+        questList.add(question);
         when(usersRepository.existsByUserName("foo")).thenReturn(true);
+        when(usersRepository.findAll().stream()
+                .filter(user1 -> user1.getUserName()
+                        .equals("foo"))
+                .collect(Collectors.toList())).thenReturn(userList);
         when(questionsRepository.existsByQuestion("what colour is the sky?")).thenReturn(false);
-        usersService.boughtAnswer("foo","what colour is the sky?");
+        usersService.boughtAnswer("foo","what");
         fail("Question does not exist");
     }
 
@@ -441,5 +468,13 @@ public class UsersServiceTest {
         String actualResult = usersService.boughtAnswer("foo","what colour is the sky?");
 
         assertEquals("blue",actualResult);
+    }
+
+
+    @Test(expected = Exception.class)
+    public void setUserStateIfUserNameDoesNotExistThrowException() throws Exception{
+        when(usersRepository.existsByUserName("foo")).thenReturn(false);
+        usersService.setUserState("foo","sokra");
+        fail("User does not exist");
     }
 }

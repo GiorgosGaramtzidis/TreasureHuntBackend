@@ -101,6 +101,18 @@ public class UsersService implements IUserService<UUID, User> {
         throw new Exception("User does not exist");
 
     }
+        /*
+        if(usersRepository.existsByUserName(userName)){
+            List<User> user = usersRepository.findAll().stream()
+                    .filter(user1 -> user1.getUserName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
+            user.get(0).setPassword(newPass);
+            usersRepository.save(user.get(0));
+            return newPass;
+        }
+        throw new Exception("UserName does not exist");
+    }*/
 
     @Override
     public Boolean setUserState(String userName, String locationTitle) throws Exception {
@@ -212,5 +224,16 @@ public class UsersService implements IUserService<UUID, User> {
         }
         else
             throw new Exception("Wrong id");
+    }
+    @Override
+    public int getUserLives(String userName) throws Exception{
+        if (usersRepository.existsByUserName(userName)) {
+            List<User> user = usersRepository.findAll().stream()
+                    .filter(user1 -> user1.getUserName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
+            return user.get(0).getUserLives();
+        }
+        throw new Exception("User does not exist");
     }
 }

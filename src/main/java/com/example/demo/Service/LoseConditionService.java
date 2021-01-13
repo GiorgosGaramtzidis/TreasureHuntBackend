@@ -18,6 +18,7 @@ public class LoseConditionService implements LoseConditionRegistration<User> {
     private Boolean hasLost;
     @Autowired
     UsersRepository usersRepository;
+
     @Override
     public Boolean loseCondition(String userName) throws Exception {
         if(usersRepository.existsByUserName(userName))
