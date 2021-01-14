@@ -236,4 +236,17 @@ public class UsersService implements IUserService<UUID, User> {
         }
         throw new Exception("User does not exist");
     }
+    @Override
+    public int setUserLives(String userName, int userLives) throws Exception {
+        if (usersRepository.existsByUserName(userName)) {
+            List<User> user = usersRepository.findAll().stream()
+                    .filter(user1 -> user1.getUserName()
+                            .equals(userName))
+                    .collect(Collectors.toList());
+            user.get(0).setUserLives(userLives);
+            usersRepository.save(user.get(0));
+            return 1;
+        }
+        throw new Exception("User does not exist");
+    }
 }

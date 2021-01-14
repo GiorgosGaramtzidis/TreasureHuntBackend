@@ -477,4 +477,45 @@ public class UsersServiceTest {
         usersService.setUserState("foo","sokra");
         fail("User does not exist");
     }
+
+    @Test(expected = Exception.class)
+    public void getUserLivesThrowExceptionIfUserNameDoesNotExist() throws Exception{
+        when(usersRepository.existsByUserName("Boo")).thenReturn(false);
+        usersService.getUserLives("Boo");
+        fail("User does not exist");
+    }
+
+    @Test(expected = Exception.class)
+    public void setUserLivesThrowExceptionIfUserNameDoesNotExist() throws Exception{
+        when(usersRepository.existsByUserName("Foo")).thenReturn(false);
+        usersService.setUserLives("Foo",5);
+        fail("User does not exist");
+    }
+
+    @Test
+    public void getUserLivesIfUserNameExistThenReturnUserLives() throws Exception {
+        List<User> users = new ArrayList<>();
+        User user = new User();
+        user.setUserName("Sokra");
+        user.setUserLives(5);
+        users.add(user);
+        when(usersRepository.existsByUserName("Sokra")).thenReturn(true);
+        when(usersRepository.findAll().stream().filter(user1 -> user1.getUserName().equals(user.getUserName()))
+                .collect(Collectors.toList())).thenReturn(users);
+        int Result = usersService.getUserLives(user.getUserName());
+        assertEquals(5,Result);
+    }
+    @Test
+    public void setUserLivesIfUserNameExistThenReturnUserWithNewLives() throws Exception {
+        List<User> users = new ArrayList<>();
+        User user = new User();
+        user.setUserName("Sokra");
+        user.setUserLives(3);
+        users.add(user);
+        when(usersRepository.existsByUserName("Sokra")).thenReturn(true);
+        when(usersRepository.findAll().stream().filter(user1 -> user1.getUserName().equals(user.getUserName()))
+                .collect(Collectors.toList())).thenReturn(users);
+        usersService.setUserLives(users.get(0).getUserName(),5);
+        assertEquals(5,users.get(0).getUserLives());
+    }
 }

@@ -16,6 +16,8 @@ public interface IUserService<ID, USER> {
 
     int getUserLives(String userName) throws Exception;
 
+    int setUserLives(String userName , int userLives) throws Exception;
+
     String changeName(String userName , String newName) throws Exception;
 
     String changePassword(String userName , String newPass) throws Exception;

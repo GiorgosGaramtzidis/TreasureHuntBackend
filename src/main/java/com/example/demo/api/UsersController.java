@@ -107,4 +107,9 @@ public class UsersController {
     public ResponseEntity getUserLives(@RequestParam("userName") String userName) throws Exception {
         return new ResponseEntity<>(usersService.getUserLives(userName),HttpStatus.OK);
     }
+
+    @PatchMapping("/setUserLives")
+    public ResponseEntity setUserLives(@RequestParam ("userName") String  userName,@RequestParam("userLives") int userLives) throws Exception {
+        return new ResponseEntity<>(usersService.setUserLives(userName,userLives),HttpStatus.OK);
+    }
 }
