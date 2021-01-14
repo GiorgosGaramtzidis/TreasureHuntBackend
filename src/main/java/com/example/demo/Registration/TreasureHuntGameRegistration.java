@@ -2,6 +2,8 @@ package com.example.demo.Registration;
 
 import java.util.HashMap;
 import java.util.List;
+import com.example.demo.model.GameLocation;
+
 import java.util.Optional;
 
 public interface TreasureHuntGameRegistration<LOCATIONS> {
@@ -11,4 +13,5 @@ public interface TreasureHuntGameRegistration<LOCATIONS> {
     Boolean addUser(String userName,String id) throws Exception;
     List getAvailableGames() throws Exception;
 
+    Boolean addLocation(GameLocation gameLocation, String id)throws Exception;
 }

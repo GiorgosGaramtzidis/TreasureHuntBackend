@@ -62,15 +62,15 @@ public class TreasureHuntGameServiceTest {
 
 
     @Test
-    public void IfGameExist() throws Exception{
+    public void IfGameExistToAddUser() throws Exception{
 
         User user = new User("1","Nikos123",0,"Nikos123@",5, Status.Connected, UserState.PLAYING,UserRole.Player);
         List<TreasureHuntGame> treasureHuntGames = new ArrayList<>();
         List<User> users = new ArrayList<>();
         users.add(user);
-        List<LocationsNew> locations = new ArrayList<>();
+        List<GameLocation> gameLocations = new ArrayList<>();
         List<UserPosition> userpositions = new ArrayList<>();
-        TreasureHuntGame treasureHuntGame = new TreasureHuntGame("1234","serres","makedonia",users,locations,userpositions,GameState.DidNotStart,user);
+        TreasureHuntGame treasureHuntGame = new TreasureHuntGame("1234","serres","makedonia",users,gameLocations,userpositions,GameState.DidNotStart,user);
         treasureHuntGames.add(treasureHuntGame);
         when(treasureHuntGameRepository.findAll()).thenReturn(treasureHuntGames);
         when(usersRepository.findUserByUserName("Nikos123")).thenReturn(user);
@@ -79,7 +79,7 @@ public class TreasureHuntGameServiceTest {
 
 
     @Test(expected = Exception.class)
-    public void IfGameDoesNotExist() throws Exception{
+    public void IfGameDoesNotExistToAddUser() throws Exception{
         TreasureHuntGame treasureHuntGame = new TreasureHuntGame();
         treasureHuntGame.setId("2");
         when(treasureHuntGameRepository.existsById("1")).thenReturn(false);
@@ -87,5 +87,35 @@ public class TreasureHuntGameServiceTest {
 
 
     }
+
+    @Test
+    public void IfGameExistToAddLocation() throws Exception{
+
+       User user = new User("1","Nikos123",0,"Nikos123@",5, Status.Connected, UserState.PLAYING,UserRole.Player);
+        List<TreasureHuntGame> treasureHuntGames = new ArrayList<>();
+        List<User> users = new ArrayList<>();
+        users.add(user);
+        List<GameLocation> gameLocations = new ArrayList<>();
+        List<UserPosition> userpositions = new ArrayList<>();
+        TreasureHuntGame treasureHuntGame = new TreasureHuntGame("1234","serres","makedonia",users,gameLocations,userpositions,GameState.DidNotStart,user);
+        treasureHuntGames.add(treasureHuntGame);
+        GameLocation gameLocation = new GameLocation();
+        when(treasureHuntGameRepository.findAll()).thenReturn(treasureHuntGames);
+        when(treasureHuntGameRepository.existsById("1234")).thenReturn(true);
+        treasureHuntGameService.addLocation(gameLocation,"1234");
+
+    }
+
+
+    @Test(expected = Exception.class)
+    public void IfGameDoesNotExistToAddLocation() throws Exception{
+        TreasureHuntGame treasureHuntGame = new TreasureHuntGame();
+        treasureHuntGame.setId("2");
+        GameLocation gameLocation = new GameLocation();
+        when(treasureHuntGameRepository.existsById("1")).thenReturn(false);
+        treasureHuntGameService.addLocation(gameLocation,"1");
+
+    }
+
 
 }

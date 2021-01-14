@@ -2,6 +2,7 @@ package com.example.demo.api;
 
 import com.example.demo.Service.TreasureHuntGameService;
 import com.example.demo.Service.UsersService;
+import com.example.demo.model.GameLocation;
 import com.example.demo.model.LocationsNew;
 import com.example.demo.model.TreasureHuntGame;
 import com.example.demo.model.User;
@@ -48,5 +49,9 @@ public class TreasureHuntGameController {
         return new ResponseEntity<>(treasureHuntGame, HttpStatus.OK);
     }
 
+    @PatchMapping("/addLocation")
+    public ResponseEntity addLocation(@RequestBody GameLocation gameLocation, @RequestParam("id") String id) throws Exception {
+        return new ResponseEntity<>(treasureHuntGameService.addLocation(gameLocation,id),HttpStatus.OK);
+    }
 
 }

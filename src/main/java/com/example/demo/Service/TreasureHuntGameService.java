@@ -4,6 +4,7 @@ import com.example.demo.Registration.TreasureHuntGameRegistration;
 import com.example.demo.dao.TreasureHuntGameRepository;
 import com.example.demo.dao.UsersRepository;
 import com.example.demo.model.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +62,24 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
             return true;
 
     }
+
+    @Override
+    public Boolean addLocation(GameLocation gameLocation, String id) throws Exception {
+
+        List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream()
+                .filter(treasureHuntGame -> treasureHuntGame.getId()
+                        .equals(id))
+                .collect(Collectors.toList());
+        if(treasureHuntGames.get(0)==null){
+            throw new Exception("GAME Does not exist");
+        }
+        treasureHuntGames.get(0).getGameLocationsList().add(gameLocation);
+
+        treasureHuntGameRepository.save(treasureHuntGames.get(0));
+
+        return true;
+    }
+
 
     @Override
     public List<AvailableGames> getAvailableGames() throws Exception {

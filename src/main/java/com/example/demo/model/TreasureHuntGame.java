@@ -22,7 +22,7 @@ public class TreasureHuntGame {
     private String gameName;
     private String gameLocation;
     private List<User> userList;
-    private List<LocationsNew> locationsNewList;
+    private List<GameLocation> gameLocationsList;
     private List<UserPosition> userPositionList;
     private GameState state;
     private User Winner;
