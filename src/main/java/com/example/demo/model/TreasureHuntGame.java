@@ -26,6 +26,4 @@ public class TreasureHuntGame {
     private List<UserPosition> userPositionList;
     private GameState state;
     private User Winner;
-
-
 }

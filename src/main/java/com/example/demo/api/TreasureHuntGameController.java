@@ -2,10 +2,7 @@ package com.example.demo.api;
 
 import com.example.demo.Service.TreasureHuntGameService;
 import com.example.demo.Service.UsersService;
-import com.example.demo.model.GameLocation;
-import com.example.demo.model.LocationsNew;
-import com.example.demo.model.TreasureHuntGame;
-import com.example.demo.model.User;
+import com.example.demo.model.*;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +20,6 @@ public class TreasureHuntGameController {
 
     @Autowired
     private TreasureHuntGameService treasureHuntGameService;
-
 
     @PostMapping(path = "/createGame")
      public ResponseEntity createGame(@RequestParam("id")String id,@RequestParam("gameName")String gameName,@RequestParam("gameLocation")String gameLocation) throws Exception {
@@ -52,6 +48,12 @@ public class TreasureHuntGameController {
     @PatchMapping("/addLocation")
     public ResponseEntity addLocation(@RequestBody GameLocation gameLocation, @RequestParam("id") String id) throws Exception {
         return new ResponseEntity<>(treasureHuntGameService.addLocation(gameLocation,id),HttpStatus.OK);
+    }
+
+    @PatchMapping("/addPlayerLocation")
+    public void addPlayer(@RequestBody UserPosition userPosition, @RequestParam("id")String gameId)
+    {
+        treasureHuntGameService.addPlayersLocationToGame(userPosition,gameId);
     }
 
 }

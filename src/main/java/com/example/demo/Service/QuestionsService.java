@@ -1,6 +1,5 @@
 package com.example.demo.Service;
 
-
 import com.example.demo.Registration.QuestionsRegistration;
 import com.example.demo.dao.QuestionsRepository;
 import com.example.demo.model.Question;
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -31,6 +31,7 @@ public class QuestionsService implements QuestionsRegistration<Question> {
             return questionList.get(randomNum);
         }
     }
+
 
     @Override
     public Boolean addQuestion(Question question) throws Exception {
@@ -67,4 +68,5 @@ public class QuestionsService implements QuestionsRegistration<Question> {
         }
         return sb.toString();
     }
+
 }

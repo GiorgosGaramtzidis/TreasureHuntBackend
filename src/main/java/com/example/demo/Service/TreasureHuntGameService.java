@@ -25,14 +25,14 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
         TreasureHuntGame treasureHuntGame = new TreasureHuntGame();
         List<User> userList = new ArrayList<>();
         List<UserPosition> userPositionList = new ArrayList<>();
-        List<LocationsNew> locationsNewList = new ArrayList<>();
+        List<GameLocation> locationsGame = new ArrayList<>();
         treasureHuntGame.setId(id);
         treasureHuntGame.setGameName(gameName);
         treasureHuntGame.setGameLocation(gameLocation);
         treasureHuntGame.setUserList(userList);
         treasureHuntGame.setUserPositionList(userPositionList);
         treasureHuntGame.setState(GameState.DidNotStart);
-        treasureHuntGame.setLocationsNewList(locationsNewList);
+        treasureHuntGame.setGameLocationsList(locationsGame);
         treasureHuntGame.setWinner(null);
         treasureHuntGameRepository.save(treasureHuntGame);
         return true;
@@ -85,20 +85,38 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
     public List<AvailableGames> getAvailableGames() throws Exception {
 
         List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream().filter(treasureHuntGame -> treasureHuntGame.getState().equals(GameState.DidNotStart)).collect(Collectors.toList());
-       // HashMap<String,String> treasureHuntGame = new HashMap<String,String>();
-       // ArrayList<Map.Entry<String,String >>entryArrayList= new ArrayList<Map.Entry<String, String>>(treasureHuntGame.entrySet());
-List<AvailableGames> availableGames = new ArrayList<>();
+
+        List<AvailableGames> availableGames = new ArrayList<>();
         for(int i =0; i<treasureHuntGames.size();i++) {
-           // HashMap<String,String> treasureHuntGame = new HashMap<String,String>();
-            // treasureHuntGame.put(treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId());
            AvailableGames treasurehunt =  new AvailableGames(treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId());
-            // AvailablaGames x = treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId();
-           // treasurehunt(treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId());
             availableGames.add(treasurehunt);
-
         }
-
       return availableGames;
     }
 
+    public void addPlayersLocationToGame(UserPosition userPosition ,String gameId)
+    {
+        List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository
+                .findAll()
+                .stream()
+                .filter(treasureHuntGame ->
+                        treasureHuntGame.getId().equals(gameId))
+                .collect(Collectors.toList());
+        boolean flag = false;
+        if (treasureHuntGames.get(0).getUserPositionList().size()>0)
+        {
+          for (int i=0;i<treasureHuntGames.get(0).getUserPositionList().size();i++)
+          {
+              if (treasureHuntGames.get(0).getUserPositionList().get(i).getUserName().equals(userPosition.getUserName())) {
+                  treasureHuntGames.get(0).getUserPositionList().set(i, userPosition);
+                  flag =true;
+              }
+              if (flag)
+                  break;
+          }
+        }
+        if (!flag)
+            treasureHuntGames.get(0).getUserPositionList().add(userPosition);
+        treasureHuntGameRepository.save(treasureHuntGames.get(0));
+    }
 }
