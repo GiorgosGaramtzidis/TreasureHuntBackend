@@ -179,4 +179,19 @@ public class LocationServicesTest {
         assertEquals(locationsNew.getTitle(),locationServices.getStartLocation().getTitle());
     }
 
+    @Test(expected = Exception.class)
+    public void IfGetCasiNoLocationIsNullThenThrowException() throws Exception {
+
+        when(locationServices.getCasinoLocation()).thenReturn(null);
+        fail("Casino Location doesn't exist");
+    }
+
+    @Test
+    public void IfGetCasinoLocationNotNullThenReturnCasinoLocation() throws Exception {
+        LocationsNew locationsNew = new LocationsNew();
+        locationsNew.setTitle("Casino");
+        when(locationsRepositoryNew.getCasinoLocation()).thenReturn(locationsNew);
+        assertEquals(locationsNew.getTitle(),locationServices.getCasinoLocation().getTitle());
+    }
+
 }

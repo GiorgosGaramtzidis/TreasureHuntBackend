@@ -29,7 +29,6 @@ public class LocationServices implements LocationsRegistration<ObjectId,Location
         if (locationsRepositoryNew.findAll().isEmpty())
             throw new Exception("Locations collection is empty");
         return locationsRepositoryNew.findAll();
-
     }
 
     @Override
@@ -47,8 +46,6 @@ public class LocationServices implements LocationsRegistration<ObjectId,Location
             return;
         }
         throw new Exception("location id is wrong");
-
-
     }
 
     public LocationsNew getStartLocation() throws Exception {
