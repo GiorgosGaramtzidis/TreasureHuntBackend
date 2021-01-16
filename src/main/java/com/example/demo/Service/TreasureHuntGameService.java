@@ -50,6 +50,11 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
     @Override
     public Boolean addUser(String userName,String id) throws Exception{
 
+       for (int i=0;i<treasureHuntGameRepository.findTreasureHuntGameById(id).getUserList().size();i++)
+       {
+           if (treasureHuntGameRepository.findTreasureHuntGameById(id).getUserList().get(i).getUserName().equals(userName))
+               return true;
+       }
             List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream()
                     .filter(treasureHuntGame -> treasureHuntGame.getId()
                             .equals(id))
@@ -59,6 +64,7 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
                 throw new Exception("GAME Does not exist");
             }
 
+            treasureHuntGames.get(0).setState(GameState.Playing);
             treasureHuntGameRepository.save(treasureHuntGames.get(0));
             return true;
 
@@ -95,38 +101,31 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
             throw new Exception("GAME Does not exist");
         }
         treasureHuntGames.get(0).setWinner(user);
+        treasureHuntGames.get(0).setState(GameState.Over);
         treasureHuntGameRepository.save(treasureHuntGames.get(0));
 
     }
 
     @Override
-    public void updateGameState(String id, String gameState)throws Exception {
-        TreasureHuntGame treasureHuntGame = treasureHuntGameRepository.findTreasureHuntGameById(id);
-        if (gameState.equals("Playing"))
-            treasureHuntGame.setState(GameState.Playing);
-        else if (gameState.equals("Over"))
-            treasureHuntGame.setState(GameState.Over);
-        else
-            throw new Exception();
-        treasureHuntGameRepository.save(treasureHuntGame);
-    }
-
-
-    @Override
     public List<AvailableGames> getAvailableGames() throws Exception {
-
-        List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream().filter(treasureHuntGame -> treasureHuntGame.getState().equals(GameState.DidNotStart)).collect(Collectors.toList());
-
+        List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream().filter(
+                treasureHuntGame ->
+                        treasureHuntGame.getState().equals(GameState.DidNotStart)
+                        || treasureHuntGame.getState().equals(GameState.Playing)).collect(Collectors.toList());
         List<AvailableGames> availableGames = new ArrayList<>();
         for(int i =0; i<treasureHuntGames.size();i++) {
-           AvailableGames treasurehunt =  new AvailableGames(treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId());
-            availableGames.add(treasurehunt);
+            if (treasureHuntGames.get(i).getGameLocationsList().size() >0)
+            {
+                AvailableGames treasurehunt =  new AvailableGames(treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId());
+                availableGames.add(treasurehunt);
+            }
         }
       return availableGames;
     }
 
     public void addPlayersLocationToGame(UserPosition userPosition ,String gameId)
     {
+
         List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository
                 .findAll()
                 .stream()

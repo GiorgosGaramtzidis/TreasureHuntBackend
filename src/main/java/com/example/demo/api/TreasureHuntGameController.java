@@ -63,10 +63,5 @@ public class TreasureHuntGameController {
     {
         treasureHuntGameService.addPlayersLocationToGame(userPosition,gameId);
     }
-    @PatchMapping("/UpdateStatus")
-    public void update(@RequestParam("id")String id,@RequestParam("gameState") String gameState) throws Exception {
-        treasureHuntGameService.updateGameState(id,gameState);
-    }
-
 
 }

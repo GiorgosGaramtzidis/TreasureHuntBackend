@@ -1,6 +1,6 @@
 package com.example.demo.Service;
 
-import com.example.demo.dao.LeaderBoardRepository;
+
 import com.example.demo.dao.TreasureHuntGameRepository;
 import com.example.demo.dao.UsersRepository;
 import com.example.demo.model.*;
@@ -34,8 +34,6 @@ public class TreasureHuntGameServiceTest {
 
 
 
-
-
     @Test
     public void createGame() {
    assertEquals(treasureHuntGameService.createGame("123","Serres","Makedonia"),true);
@@ -63,7 +61,6 @@ public class TreasureHuntGameServiceTest {
 
     @Test
     public void IfGameExistToAddUser() throws Exception{
-
         User user = new User("1","Nikos123",0,"Nikos123@",5, Status.Connected, UserState.PLAYING,UserRole.Player);
         List<TreasureHuntGame> treasureHuntGames = new ArrayList<>();
         List<User> users = new ArrayList<>();
@@ -72,9 +69,11 @@ public class TreasureHuntGameServiceTest {
         List<UserPosition> userpositions = new ArrayList<>();
         TreasureHuntGame treasureHuntGame = new TreasureHuntGame("1234","serres","makedonia",users,gameLocations,userpositions,GameState.DidNotStart,user);
         treasureHuntGames.add(treasureHuntGame);
-        when(treasureHuntGameRepository.findAll()).thenReturn(treasureHuntGames);
         when(usersRepository.findUserByUserName("Nikos123")).thenReturn(user);
+        when(treasureHuntGameRepository.findTreasureHuntGameById("1234")).thenReturn(treasureHuntGame);
+        when(treasureHuntGameRepository.findAll()).thenReturn(treasureHuntGames);
         treasureHuntGameService.addUser("NIKOS","1234");
+
     }
 
 
@@ -84,8 +83,6 @@ public class TreasureHuntGameServiceTest {
         treasureHuntGame.setId("2");
         when(treasureHuntGameRepository.existsById("1")).thenReturn(false);
         treasureHuntGameService.addUser("Giorgos","1");
-
-
     }
 
     @Test
@@ -106,7 +103,6 @@ public class TreasureHuntGameServiceTest {
 
     }
 
-
     @Test(expected = Exception.class)
     public void IfGameDoesNotExistToAddLocation() throws Exception{
         TreasureHuntGame treasureHuntGame = new TreasureHuntGame();
@@ -116,6 +112,46 @@ public class TreasureHuntGameServiceTest {
         treasureHuntGameService.addLocation(gameLocation,"1");
 
     }
-
+    @Test
+    public void addAPlayerLocationToGame()
+    {
+        UserPosition userPosition = new UserPosition("George","19.12345","23.12345");
+        TreasureHuntGame treasureHuntGame = new TreasureHuntGame();
+        treasureHuntGame.setId("1234");
+        treasureHuntGame.setUserPositionList(new ArrayList<>());
+        List<TreasureHuntGame> list = new ArrayList<>();
+        list.add(treasureHuntGame);
+        when(treasureHuntGameRepository.findAll()).thenReturn(list);
+        treasureHuntGameService.addPlayersLocationToGame(userPosition,"1234");
+    }
+    @Test
+    public void addNewLocationOfAPlayerWhoAlreadyPlaysTheGame()
+    {
+        UserPosition userPosition = new UserPosition("George","19.12345","23.12345");
+        TreasureHuntGame treasureHuntGame = new TreasureHuntGame();
+        treasureHuntGame.setId("1234");
+        List<UserPosition> positions = new ArrayList<>();
+        positions.add(userPosition);
+        treasureHuntGame.setUserPositionList(positions);
+        List<TreasureHuntGame> list = new ArrayList<>();
+        list.add(treasureHuntGame);
+        when(treasureHuntGameRepository.findAll()).thenReturn(list);
+        treasureHuntGameService.addPlayersLocationToGame(userPosition,"1234");
+    }
+    @Test
+    public void AddAPlayerLocationForTheFirstTime()
+    {
+        UserPosition userPosition = new UserPosition("George","19.12345","23.12345");
+        UserPosition newUserPossition = new UserPosition("Aggelos","19.12345","23.12345");
+        TreasureHuntGame treasureHuntGame = new TreasureHuntGame();
+        treasureHuntGame.setId("1234");
+        List<UserPosition> positions = new ArrayList<>();
+        positions.add(userPosition);
+        treasureHuntGame.setUserPositionList(positions);
+        List<TreasureHuntGame> list = new ArrayList<>();
+        list.add(treasureHuntGame);
+        when(treasureHuntGameRepository.findAll()).thenReturn(list);
+        treasureHuntGameService.addPlayersLocationToGame(newUserPossition,"1234");
+    }
 
 }

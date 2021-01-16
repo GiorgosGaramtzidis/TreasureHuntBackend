@@ -13,10 +13,6 @@ public interface TreasureHuntGameRegistration<LOCATIONS> {
     Optional getGame(String id) throws Exception;
     Boolean addUser(String userName,String id) throws Exception;
     List getAvailableGames() throws Exception;
-
     Boolean addLocation(GameLocation gameLocation, String id)throws Exception;
     void setWinner(User user,String id)throws Exception;
-
-
-    void updateGameState(String id,String gameState)throws Exception;
 }
