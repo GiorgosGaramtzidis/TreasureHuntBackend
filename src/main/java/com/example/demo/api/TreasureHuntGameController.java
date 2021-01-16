@@ -40,7 +40,6 @@ public class TreasureHuntGameController {
 
     @GetMapping("/getAvailableGames" )
     public ResponseEntity getAvailableGames() throws Exception {
-        //HashMap<String,String> treasureHuntGame =treasureHuntGameService.getAvailableGames();
        List treasureHuntGame = treasureHuntGameService.getAvailableGames();
         return new ResponseEntity<>(treasureHuntGame, HttpStatus.OK);
     }
@@ -55,5 +54,10 @@ public class TreasureHuntGameController {
     {
         treasureHuntGameService.addPlayersLocationToGame(userPosition,gameId);
     }
+    @PatchMapping("/UpdateStatus")
+    public void update(@RequestParam("id")String id,@RequestParam("gameState") String gameState) throws Exception {
+        treasureHuntGameService.updateGameState(id,gameState);
+    }
+
 
 }

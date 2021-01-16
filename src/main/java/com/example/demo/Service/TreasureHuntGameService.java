@@ -66,18 +66,34 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
     @Override
     public Boolean addLocation(GameLocation gameLocation, String id) throws Exception {
 
-        List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream()
-                .filter(treasureHuntGame -> treasureHuntGame.getId()
-                        .equals(id))
-                .collect(Collectors.toList());
-        if(treasureHuntGames.get(0)==null){
+        try{
+            List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream()
+                    .filter(treasureHuntGame -> treasureHuntGame.getId()
+                            .equals(id))
+                    .collect(Collectors.toList());
+            if(treasureHuntGames.get(0)==null) {
+                throw new Exception("GAME Does not exist");
+            }
+                treasureHuntGames.get(0).getGameLocationsList().add(gameLocation);
+                treasureHuntGameRepository.save(treasureHuntGames.get(0));
+
+        }catch(IndexOutOfBoundsException e)
+        {
             throw new Exception("GAME Does not exist");
         }
-        treasureHuntGames.get(0).getGameLocationsList().add(gameLocation);
-
-        treasureHuntGameRepository.save(treasureHuntGames.get(0));
-
         return true;
+    }
+
+    @Override
+    public void updateGameState(String id, String gameState)throws Exception {
+        TreasureHuntGame treasureHuntGame = treasureHuntGameRepository.findTreasureHuntGameById(id);
+        if (gameState.equals("Playing"))
+            treasureHuntGame.setState(GameState.Playing);
+        else if (gameState.equals("Over"))
+            treasureHuntGame.setState(GameState.Over);
+        else
+            throw new Exception();
+        treasureHuntGameRepository.save(treasureHuntGame);
     }
 
 

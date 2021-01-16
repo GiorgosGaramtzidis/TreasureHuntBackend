@@ -3,6 +3,7 @@ package com.example.demo.Registration;
 import java.util.HashMap;
 import java.util.List;
 import com.example.demo.model.GameLocation;
+import com.example.demo.model.GameState;
 
 import java.util.Optional;
 
@@ -14,4 +15,6 @@ public interface TreasureHuntGameRegistration<LOCATIONS> {
     List getAvailableGames() throws Exception;
 
     Boolean addLocation(GameLocation gameLocation, String id)throws Exception;
+
+    void updateGameState(String id,String gameState)throws Exception;
 }
