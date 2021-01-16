@@ -59,6 +59,7 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
             if(treasureHuntGames.get(0)==null){
                 throw new Exception("GAME Does not exist");
             }
+
             treasureHuntGameRepository.save(treasureHuntGames.get(0));
             return true;
 
@@ -79,6 +80,20 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
         treasureHuntGameRepository.save(treasureHuntGames.get(0));
 
         return true;
+    }
+
+    @Override
+    public void setWinner(User user, String id) throws Exception {
+        List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream()
+                .filter(treasureHuntGame -> treasureHuntGame.getId()
+                        .equals(id))
+                .collect(Collectors.toList());
+        if(treasureHuntGames.get(0)==null){
+            throw new Exception("GAME Does not exist");
+        }
+        treasureHuntGames.get(0).setWinner(user);
+        treasureHuntGameRepository.save(treasureHuntGames.get(0));
+
     }
 
 

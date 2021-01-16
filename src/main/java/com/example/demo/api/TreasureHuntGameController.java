@@ -2,10 +2,8 @@ package com.example.demo.api;
 
 import com.example.demo.Service.TreasureHuntGameService;
 import com.example.demo.Service.UsersService;
-import com.example.demo.model.GameLocation;
-import com.example.demo.model.LocationsNew;
-import com.example.demo.model.TreasureHuntGame;
-import com.example.demo.model.User;
+import com.example.demo.model.*;
+import net.bytebuddy.asm.Advice;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,5 +43,11 @@ public class TreasureHuntGameController {
     public ResponseEntity addLocation(@RequestBody GameLocation gameLocation, @RequestParam("id") String id) throws Exception {
         return new ResponseEntity<>(treasureHuntGameService.addLocation(gameLocation,id),HttpStatus.OK);
     }
+
+    @PatchMapping("setWinner")
+    public void setWinner(@RequestBody User user,@RequestParam("id")String id) throws Exception{
+       treasureHuntGameService.setWinner(user,id);
+    }
+
 
 }

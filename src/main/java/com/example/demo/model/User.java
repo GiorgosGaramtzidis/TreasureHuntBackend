@@ -42,4 +42,5 @@ public class User {
         this.userState = UserState.PLAYING;
         this.userRole = UserRole.Player;
     }
+
 }
