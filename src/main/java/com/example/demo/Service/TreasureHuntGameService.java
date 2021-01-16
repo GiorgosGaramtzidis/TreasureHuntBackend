@@ -60,13 +60,13 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
                             .equals(id))
                     .collect(Collectors.toList());
             treasureHuntGames.get(0).getUserList().add(usersRepository.findUserByUserName(userName));
-            if(treasureHuntGames.get(0)==null){
+            try{
+                treasureHuntGames.get(0).setState(GameState.Playing);
+                treasureHuntGameRepository.save(treasureHuntGames.get(0));
+                return true;
+            }catch (IndexOutOfBoundsException e){
                 throw new Exception("GAME Does not exist");
             }
-
-            treasureHuntGames.get(0).setState(GameState.Playing);
-            treasureHuntGameRepository.save(treasureHuntGames.get(0));
-            return true;
 
     }
 
@@ -78,9 +78,6 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
                     .filter(treasureHuntGame -> treasureHuntGame.getId()
                             .equals(id))
                     .collect(Collectors.toList());
-            if(treasureHuntGames.get(0)==null) {
-                throw new Exception("GAME Does not exist");
-            }
                 treasureHuntGames.get(0).getGameLocationsList().add(gameLocation);
                 treasureHuntGameRepository.save(treasureHuntGames.get(0));
 
@@ -93,16 +90,18 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
 
     @Override
     public void setWinner(User user, String id) throws Exception {
+
         List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream()
                 .filter(treasureHuntGame -> treasureHuntGame.getId()
                         .equals(id))
                 .collect(Collectors.toList());
-        if(treasureHuntGames.get(0)==null){
-            throw new Exception("GAME Does not exist");
-        }
-        treasureHuntGames.get(0).setWinner(user);
-        treasureHuntGames.get(0).setState(GameState.Over);
-        treasureHuntGameRepository.save(treasureHuntGames.get(0));
+     try{
+         treasureHuntGames.get(0).setWinner(user);
+         treasureHuntGames.get(0).setState(GameState.Over);
+         treasureHuntGameRepository.save(treasureHuntGames.get(0));
+     }catch (IndexOutOfBoundsException e){
+         throw new Exception("GAME Does not exist");
+     }
 
     }
 
