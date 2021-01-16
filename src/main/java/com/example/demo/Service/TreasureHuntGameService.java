@@ -8,9 +8,8 @@ import com.example.demo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,14 +25,14 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
         TreasureHuntGame treasureHuntGame = new TreasureHuntGame();
         List<User> userList = new ArrayList<>();
         List<UserPosition> userPositionList = new ArrayList<>();
-        List<GameLocation> gameLocations = new ArrayList<>();
+        List<GameLocation> locationsGame = new ArrayList<>();
         treasureHuntGame.setId(id);
         treasureHuntGame.setGameName(gameName);
         treasureHuntGame.setGameLocation(gameLocation);
         treasureHuntGame.setUserList(userList);
         treasureHuntGame.setUserPositionList(userPositionList);
         treasureHuntGame.setState(GameState.DidNotStart);
-        treasureHuntGame.setGameLocationsList(gameLocations);
+        treasureHuntGame.setGameLocationsList(locationsGame);
         treasureHuntGame.setWinner(null);
         treasureHuntGameRepository.save(treasureHuntGame);
         return true;
@@ -68,17 +67,21 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
     @Override
     public Boolean addLocation(GameLocation gameLocation, String id) throws Exception {
 
-        List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream()
-                .filter(treasureHuntGame -> treasureHuntGame.getId()
-                        .equals(id))
-                .collect(Collectors.toList());
-        if(treasureHuntGames.get(0)==null){
+        try{
+            List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream()
+                    .filter(treasureHuntGame -> treasureHuntGame.getId()
+                            .equals(id))
+                    .collect(Collectors.toList());
+            if(treasureHuntGames.get(0)==null) {
+                throw new Exception("GAME Does not exist");
+            }
+                treasureHuntGames.get(0).getGameLocationsList().add(gameLocation);
+                treasureHuntGameRepository.save(treasureHuntGames.get(0));
+
+        }catch(IndexOutOfBoundsException e)
+        {
             throw new Exception("GAME Does not exist");
         }
-        treasureHuntGames.get(0).getGameLocationsList().add(gameLocation);
-
-        treasureHuntGameRepository.save(treasureHuntGames.get(0));
-
         return true;
     }
 
@@ -96,5 +99,55 @@ public class TreasureHuntGameService implements TreasureHuntGameRegistration<Lis
 
     }
 
+    @Override
+    public void updateGameState(String id, String gameState)throws Exception {
+        TreasureHuntGame treasureHuntGame = treasureHuntGameRepository.findTreasureHuntGameById(id);
+        if (gameState.equals("Playing"))
+            treasureHuntGame.setState(GameState.Playing);
+        else if (gameState.equals("Over"))
+            treasureHuntGame.setState(GameState.Over);
+        else
+            throw new Exception();
+        treasureHuntGameRepository.save(treasureHuntGame);
+    }
 
+
+    @Override
+    public List<AvailableGames> getAvailableGames() throws Exception {
+
+        List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository.findAll().stream().filter(treasureHuntGame -> treasureHuntGame.getState().equals(GameState.DidNotStart)).collect(Collectors.toList());
+
+        List<AvailableGames> availableGames = new ArrayList<>();
+        for(int i =0; i<treasureHuntGames.size();i++) {
+           AvailableGames treasurehunt =  new AvailableGames(treasureHuntGames.get(i).getGameLocation(),treasureHuntGames.get(i).getId());
+            availableGames.add(treasurehunt);
+        }
+      return availableGames;
+    }
+
+    public void addPlayersLocationToGame(UserPosition userPosition ,String gameId)
+    {
+        List<TreasureHuntGame> treasureHuntGames = treasureHuntGameRepository
+                .findAll()
+                .stream()
+                .filter(treasureHuntGame ->
+                        treasureHuntGame.getId().equals(gameId))
+                .collect(Collectors.toList());
+        boolean flag = false;
+        if (treasureHuntGames.get(0).getUserPositionList().size()>0)
+        {
+          for (int i=0;i<treasureHuntGames.get(0).getUserPositionList().size();i++)
+          {
+              if (treasureHuntGames.get(0).getUserPositionList().get(i).getUserName().equals(userPosition.getUserName())) {
+                  treasureHuntGames.get(0).getUserPositionList().set(i, userPosition);
+                  flag =true;
+              }
+              if (flag)
+                  break;
+          }
+        }
+        if (!flag)
+            treasureHuntGames.get(0).getUserPositionList().add(userPosition);
+        treasureHuntGameRepository.save(treasureHuntGames.get(0));
+    }
 }

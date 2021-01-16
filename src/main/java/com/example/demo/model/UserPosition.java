@@ -14,12 +14,8 @@ import lombok.Setter;
 
 public class UserPosition {
 
-
-
     private String userName;
     private String locationV1;
     private String locationV2;
-
-
 
 }
