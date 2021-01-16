@@ -46,4 +46,19 @@ public class QuestionsServiceTest {
         assertEquals(question,actualQuestion);
     }
 
+    @Test(expected = Exception.class)
+    public void TestWhenAQuestionAlreadyExists() throws Exception {
+        when(questionsRepository.existsByQuestion("Hello")).thenReturn(true);
+        questionsService.addQuestion(new Question("1234A","Hello","hi",10));
+
+    }
+    @Test
+    public void TestWhenQuestionIdExists()throws Exception
+    {
+        when(questionsRepository.existsByQuestion("Hello")).thenReturn(false);
+        when(questionsRepository.existsById("123")).thenReturn(true);
+        assertEquals(questionsService.addQuestion(new Question("123","Hello","hi",10)),true);
+
+
+    }
 }

@@ -1,11 +1,11 @@
 package com.example.demo.Service;
 
-
 import com.example.demo.Registration.QuestionsRegistration;
 import com.example.demo.dao.QuestionsRepository;
 import com.example.demo.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,21 @@ public class QuestionsService implements QuestionsRegistration<Question> {
         }
     }
 
+
+    @Override
+    public Boolean addQuestion(Question question) throws Exception {
+        if (questionsRepository.existsByQuestion(question.getQuestion()))
+            throw new Exception("Same question exists");
+        String id = generateId();
+        while(questionsRepository.existsById(id))
+        {
+            id =generateId();
+        }
+        question.setId(id);
+        questionsRepository.save(question);
+        return true;
+    }
+
     public Question getNewQuestion(List<Question> questionList) throws Exception {
         Question randomQuestion  = getRandomQuestion();
         while(randomQuestion.ifQuestionExist(questionList)){
@@ -39,4 +54,19 @@ public class QuestionsService implements QuestionsRegistration<Question> {
         }
         return randomQuestion;
     }
+
+    public String generateId()
+    {
+        String pattern = "1234567890" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        StringBuilder sb = new StringBuilder(5);
+        Random random = new Random();
+        int randomNum = random.nextInt((10));
+        for (int i=0; i< randomNum ; i++)
+        {
+            int index = (int)(pattern.length() * Math.random());
+            sb.append(pattern.charAt(index));
+        }
+        return sb.toString();
+    }
+
 }

@@ -48,6 +48,10 @@ public class LocationsControllerNew {
     ResponseEntity CasinoLocation() throws Exception {
         return new ResponseEntity<>(locationServices.getCasinoLocation(),HttpStatus.OK);
     }
+    @GetMapping("/WatchTower")
+    ResponseEntity WatchTowerLocation() throws Exception {
+        return new ResponseEntity<>(locationServices.getWatchTowerLocation(),HttpStatus.OK);
+    }
 
 
     @PostMapping("/Next")

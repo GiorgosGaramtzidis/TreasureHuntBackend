@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,9 @@ import javax.persistence.GeneratedValue;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "Users")
-public class User {
+@Document(collection = "DemoWatchTower")
+public class WatchTower {
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -24,23 +26,6 @@ public class User {
     )
     private String id;
     private String userName;
-    private int score;
-    private String password;
-    private int userLives;
-    private Status status;
-    private UserState userState;
-    private UserRole userRole ;
-
-    //Player Creation
-    public User(String userName , String passWord)
-    {
-        this.userName = userName;
-        this.password = passWord;
-        this.score = 0;
-        this.userLives = 5;
-        this.status = Status.Away;
-        this.userState = UserState.PLAYING;
-        this.userRole = UserRole.Player;
-    }
+    private String locationTitle;
 
 }

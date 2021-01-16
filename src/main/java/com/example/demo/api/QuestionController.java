@@ -27,4 +27,11 @@ public class QuestionController {
     ResponseEntity getNewQuestion(@RequestBody List<Question> questionList) throws Exception{
         return new ResponseEntity<>(questionsService.getNewQuestion(questionList), HttpStatus.OK);
     }
+
+    @PostMapping(value = "/addQuestion")
+    ResponseEntity addQuestion(@RequestBody Question question)throws Exception
+    {
+        return new ResponseEntity(questionsService.addQuestion(question),HttpStatus.OK);
+    }
+
 }

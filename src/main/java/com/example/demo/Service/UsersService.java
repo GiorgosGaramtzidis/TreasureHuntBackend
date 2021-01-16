@@ -31,7 +31,6 @@ public class UsersService implements IUserService<UUID, User> {
         usersRepository.save(user);
         return true;
     }
-
     @Override
     public Optional<User> getUser(String userId) throws Exception {
         if (!usersRepository.existsById(userId))
@@ -58,7 +57,6 @@ public class UsersService implements IUserService<UUID, User> {
         }
         throw new Exception("user id is null");
     }
-
 
     @Override
     public int addScore(String userName, int score) throws Exception {
