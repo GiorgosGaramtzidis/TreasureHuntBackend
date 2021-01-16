@@ -2,6 +2,7 @@ package com.example.demo.Service;
 
 import com.example.demo.dao.QuestionsRepository;
 import com.example.demo.model.Question;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,20 +39,11 @@ public class QuestionsServiceTest {
     public void getRandomQuestionWhenCollectionHaveOneQuestion() throws Exception {
         List<Question> questionList = new ArrayList<>();
         Question question = new Question("1","EROTISI","APANTISI",5);
-
-
         questionList.add(question);
-
-
         when(questionsRepository.findAll()).thenReturn(questionList);
-
         when(questionsRepository.findAll().stream().collect(Collectors.toList())).thenReturn(questionList);
         Question actualQuestion = questionsService.getRandomQuestion();
         assertEquals(question,actualQuestion);
-
     }
 
-    @Test
-    public void getNewQuestion() {
-    }
 }
